@@ -1,0 +1,3 @@
+Compiler command:
+
+g++ wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp -lcurl `wx-config --cxxflags --libs`
