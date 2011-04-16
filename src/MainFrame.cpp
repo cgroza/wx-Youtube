@@ -1,4 +1,5 @@
 #include "MainFrame.hpp"
+#include "PrefWindow.hpp"
 #ifdef MAINFRAME_H
 
 
@@ -9,6 +10,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Here we will define our controls
 
+    pref_window = new PrefWindow(this);
 
     //Combo box options
     wxArrayString choice_string;
@@ -123,7 +125,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(MENU_Pref, MainFrame::OnSearch)
+    //EVT_(MENU_Pref, MainFrame::OnSearch)
     EVT_MENU(MENU_Quit, MainFrame::OnQuit)
     EVT_MENU(MENU_About, MainFrame::OnAbout)
     EVT_MENU(MENU_Pref, MainFrame::OnPref)
@@ -143,7 +145,9 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
         wxOK | wxICON_INFORMATION, this);
 }
 
-void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event)){
+void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
+{
+    pref_window -> Show();
 
 }
 

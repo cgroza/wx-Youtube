@@ -56,7 +56,8 @@ void deal_with_result() //Needed some help with this one
 void get_search_result(wxString search)  //had help with this
 {
     using boost::format;
-    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s")  % search) ;
+    std::string converted = std::string(search.mb_str());
+    std::string search_url = std::string("http://gdata.youtube.com/feeds/api/videos?q=" +converted) ;
 
     CURL *curl;
     CURLcode result;
