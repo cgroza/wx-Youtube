@@ -24,7 +24,6 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
-#include <boost/format.hpp>
 #include "curl/curl.h"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_print.hpp"
