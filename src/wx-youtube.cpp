@@ -76,7 +76,7 @@ void get_search_result(wxString search)  //had help with this
 
 	//Attempt to retrive the remote page
 	result = curl_easy_perform(curl);
-
+    std::cout << result;
 	//Always cleanup
 	curl_easy_cleanup(curl);
 
