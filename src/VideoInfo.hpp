@@ -5,7 +5,7 @@
 class VideoInfo
 {
     public:
-        VideoInfo(const std::string name, const std::string link, const std::string descr, const std::string author);
+        VideoInfo(const std::string& name = "None", const std::string& link = "None", const std::string& descr = "None", const std::string& author = "None");
 
         virtual std::string getName() const;
         virtual std::string getLink() const;

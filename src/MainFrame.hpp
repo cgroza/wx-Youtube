@@ -15,7 +15,6 @@ public:
     void OnSearch(wxCommandEvent& event);
     void OnPref(wxCommandEvent& event);
 
-    wxFrame* pref_window;
     wxButton *go_button;
     wxTextCtrl *search_box;
     wxMenuBar *MainMenu;

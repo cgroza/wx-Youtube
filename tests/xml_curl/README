@@ -1,0 +1,8 @@
+Complie with pymake
+
+
+Usage:
+xml_curl [xml_url]
+
+Example:
+./xml_curl "http://gdata.youtube.com/feeds/api/videos?q=example"

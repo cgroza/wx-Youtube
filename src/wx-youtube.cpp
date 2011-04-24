@@ -1,21 +1,3 @@
-//      Youtube-wx
-//      Copyright 2011 Stealth. <stealth@ubuntu>
-//
-//      This program is free software; you can redistribute it and/or modify
-//      it under the terms of the GNU General Public License as published by
-//      the Free Software Foundation; either version 2 of the License, or
-//      (at your option) any later version.
-//
-//      This program is distributed in the hope that it will be useful,
-//      but WITHOUT ANY WARRANTY; without even the implied warranty of
-//      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//      GNU General Public License for more details.
-//
-//      You should have received a copy of the GNU General Public License
-//      along with this program; if not, write to the Free Software
-//      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-//      MA 02110-1301, USA.
-
 
 
 #include "wx-youtube.hpp"
@@ -40,23 +22,49 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     return result;
 }
 
-void deal_with_result() //Needed some help with this one
+std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 {
+    using namespace rapidxml;
+	request_information *page_information;
+	page_information = new request_information;
+
+
     std::vector<char> xml_copy(buffer.begin(), buffer.end());
     xml_copy.push_back('\0');
     rapidxml::xml_document<> doc;
-    doc.parse<rapidxml::parse_full>(&xml_copy[0]);
-    std::string version = doc.first_node()->first_attribute("version")->value();
-    std::string encoding = doc.first_node()->first_attribute("encoding")->value();
-    //std::cout << "Result " << doc << endl << "Version: " << version << endl << "Encoding " << encoding << endl;
+    doc.parse<parse_declaration_node | parse_no_data_nodes>(&xml_copy[0]);
+
+
+    page_information->version = doc.first_node()->first_attribute("version")->value();
+    page_information->encoding = doc.first_node()->first_attribute("encoding")->value();
+
+
+    xml_node<>* cur_node = doc.first_node("feed")->first_node("entry"); //Setup our initial node
+
+    //Below is a prototype for the list insertion. I cannot seem to figure out how to insert into the wxlist from here.
+
+    std::vector<VideoInfo*> * videos = new std::vector<VideoInfo*>; //the videos we just found.
+
+    while (cur_node != NULL)
+	{
+	//	std::cout << cur_node->first_node("title")->value() << std::endl; // Find the first title node and output the value
+
+        videos -> push_back( new VideoInfo(cur_node -> first_node("title") -> value()) ); //creating video info object for each found video.
+        cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
+
+	}
+
+    std::cout << videos -> at(0) -> getName();
+
+    return videos; //return the videos we just found. These are to be taken and added to the GUI list.
 }
 
 
 
-void get_search_result(wxString search)  //had help with this
+std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with this
 {
-    std::string converted = std::string(search.mb_str());
-    std::string search_url = std::string("http://gdata.youtube.com/feeds/api/videos?q=" +converted) ;
+    using boost::format;
+    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s")  % search.mb_str()) ;
 
     CURL *curl;
     CURLcode result;
@@ -76,7 +84,7 @@ void get_search_result(wxString search)  //had help with this
 
 	//Attempt to retrive the remote page
 	result = curl_easy_perform(curl);
-    std::cout << result;
+
 	//Always cleanup
 	curl_easy_cleanup(curl);
 
@@ -84,13 +92,13 @@ void get_search_result(wxString search)  //had help with this
 	//Did we succeed?
 	if (result == CURLE_OK)
 	{
-	    deal_with_result();
+	   return deal_with_result();
 	}
 	else
 	{
 	    //Needs to be a popup message
 	    std::cout << "Error [" << result << "] - " << errorBuffer << std::endl;
-	    exit(-1);
+	    return 0;
 	}
     }
 }

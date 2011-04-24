@@ -1,3 +1,25 @@
-Compiler command:
+wx-Youtube
 
+A small utility to download youtube videos, similar to the CLI "youtube-dl"
+
+
+==Dependencies==
+If your on Debian based system install the following packages:
+libwxgtk2.8-dev libwxgtk2.8-dbg libcurl4-gnutls-dev libboost1.42-dev
+
+If your not compile and install the following:
+[boost_url_here]
+[libcurl_url_here]
+[wxWidgets_url_here]
+
+
+ 
+==INSTALLATION==
+
+=Method 1=
+chmod +x pymake
+./pymake
+
+=Method 2=
+Run the following command in your terminal:
 g++ wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp -lcurl `wx-config --cxxflags --libs`

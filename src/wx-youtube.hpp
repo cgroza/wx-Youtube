@@ -24,11 +24,21 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include <boost/format.hpp>
 #include "curl/curl.h"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_print.hpp"
+#include "VideoInfo.hpp"
 
 //All the interent shit
+
+struct request_information
+{
+	std::string encoding;
+	std::string version;
+};
+
+
 
 //Write any errors in here
 static char errorBuffer[CURL_ERROR_SIZE];
@@ -40,9 +50,9 @@ static std::string buffer;
 //This is the writer call back function used by curl
 static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 
-void deal_with_result();
+std::vector<VideoInfo*>* deal_with_result();
 
 
-void get_search_result(wxString search);
+std::vector<VideoInfo*>* get_search_result(wxString& search);
 
 #endif

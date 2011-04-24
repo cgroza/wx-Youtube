@@ -1,5 +1,4 @@
 #include "MainFrame.hpp"
-#include "PrefWindow.hpp"
 #ifdef MAINFRAME_H
 
 
@@ -10,7 +9,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Here we will define our controls
 
-    pref_window = new PrefWindow(this);
 
     //Combo box options
     wxArrayString choice_string;
@@ -125,7 +123,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    //EVT_(MENU_Pref, MainFrame::OnSearch)
+    EVT_MENU(MENU_Pref, MainFrame::OnSearch)
     EVT_MENU(MENU_Quit, MainFrame::OnQuit)
     EVT_MENU(MENU_About, MainFrame::OnAbout)
     EVT_MENU(MENU_Pref, MainFrame::OnPref)
@@ -147,7 +145,6 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 {
-    pref_window -> Show();
 
 }
 
@@ -155,7 +152,10 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value;
     search_value = search_box->GetValue();
-    get_search_result(search_value);
+    std::vector<VideoInfo*>* videos = get_search_result(search_value);
+
+    //TODO: Add the items to the list, it is prefered to derive a custom
+    // wxListItem which will contain a VideoInfo object, this way, we wont hawe to manage them, the wxListCtrl will.
 
 }
 

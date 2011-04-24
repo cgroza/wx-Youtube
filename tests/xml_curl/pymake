@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+from os import system
+
+#File to compile
+file="xml_curl_test.cxx"
+
+#Output file options
+output_name="xml_curl"
+
+#Compiler args
+args="-Wall  `curl-config --cflags` `curl-config --libs`"
+
+#Compiler
+compiler="g++"
+
+command = "%s %s -o %s %s" % (compiler, file, output_name, args)
+
+#print "Using command: ", command 
+
+system(command)
