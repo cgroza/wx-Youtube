@@ -27,8 +27,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     go_button = new wxButton(this, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
 
     //List control, this contains the video information
-    video_list = new wxListCtrl(this, LIST_Video_list, wxDefaultPosition, wxSize(600,400), wxLC_REPORT | wxLC_SINGLE_SEL);
-
+    video_list = new VideoListCtrl(this);
     //List control initial items
 
     //Title
@@ -152,7 +151,17 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value;
     search_value = search_box->GetValue();
-    std::vector<VideoInfo*>* videos = get_search_result(search_value);
+
+    listed_videos = get_search_result(search_value);
+
+    video_list -> ClearAll();
+    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
+
+    //std::cout << listed_videos -> at(0) -> getName();
+    for(p; p != listed_videos -> end(); ++p){
+        video_list -> AddVideo(*p);
+
+    }
 
     //TODO: Add the items to the list, it is prefered to derive a custom
     // wxListItem which will contain a VideoInfo object, this way, we wont hawe to manage them, the wxListCtrl will.

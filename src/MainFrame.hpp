@@ -3,6 +3,8 @@
 
 #include <wx/wx.h>
 #include "wx-youtube.hpp"
+#include "VideoListCtrl.hpp"
+#include "Enums.hpp"
 
 class MainFrame: public wxFrame
 {
@@ -15,27 +17,18 @@ public:
     void OnSearch(wxCommandEvent& event);
     void OnPref(wxCommandEvent& event);
 
+    std::vector<VideoInfo*>* listed_videos;
     wxButton *go_button;
     wxTextCtrl *search_box;
     wxMenuBar *MainMenu;
     wxComboBox *combo_box;
-    wxListCtrl *video_list;
+    VideoListCtrl *video_list;
 
     DECLARE_EVENT_TABLE()
 };
 
 
 
-enum
-{
-    TEXT_Search = wxID_HIGHEST + 1,
-    MENU_Quit = 1,
-    MENU_About,
-    MENU_Pref,
-    BUTTON_Go,
-    ID_COMBOBOX,
-    LIST_Video_list,
-};
 
 
 #endif
