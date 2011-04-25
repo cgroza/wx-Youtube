@@ -5,11 +5,11 @@
 
 class PrefWindow: public wxFrame
 {
-    public:
+public:
         PrefWindow(wxWindow* parent);
 
-    protected:
-    private:
+protected:
+private:
 };
 
 #endif // PREFWINDOW_H
