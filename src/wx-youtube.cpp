@@ -24,6 +24,7 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
 
 std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 {
+
     using namespace rapidxml;
 	request_information *page_information;
 	page_information = new request_information;
@@ -45,6 +46,9 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 
     std::vector<VideoInfo*> * videos = new std::vector<VideoInfo*>; //the videos we just found.
 
+    //BUG : I do not know why, but this function always returns the results of the first search.
+    //Example: I search skate, the results for skate show up. Next, I search Linux, the results for skate show up!!!!
+
     while (cur_node != NULL)
 	{
 	//	std::cout << cur_node->first_node("title")->value() << std::endl; // Find the first title node and output the value
@@ -53,6 +57,7 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
 
 	}
+
 
     return videos; //return the videos we just found. These are to be taken and added to the GUI list.
 }
@@ -90,7 +95,7 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 	//Did we succeed?
 	if (result == CURLE_OK)
 	{
-	   return deal_with_result();
+	   return deal_with_result(); //returns the videos collected by deal_with_result()
 	}
 	else
 	{

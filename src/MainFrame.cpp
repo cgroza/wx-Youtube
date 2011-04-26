@@ -133,30 +133,18 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     wxString search_value;
     search_value = search_box->GetValue();
 
+    //get the sealrh results
     listed_videos = get_search_result(search_value);
 
-    video_list -> ClearAll();
-
     //Prepare the list for new population
-    wxListItem itemTitle;
-    itemTitle.SetText(wxT("Title"));
-    video_list -> InsertColumn(0, itemTitle);
-    video_list ->SetColumnWidth(0, 200);
+    //We must delete the old entries to add the new ones.
+    video_list -> DeleteAllItems();
 
-    //Rating
-    wxListItem itemRating;
-    itemRating.SetText(wxT("Rating"));
-    video_list -> InsertColumn(1, itemRating);
-    video_list ->SetColumnWidth(1, 100);
-
-    //Description
-    wxListItem itemDescription;
-    itemDescription.SetText(wxT("Description"));
-    video_list -> InsertColumn(2, itemDescription);
-    video_list ->SetColumnWidth(2, 300);
+    //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
 
 
+    //add the items one by one
     for(p; p != listed_videos -> end(); ++p){
         video_list -> AddVideo(*p);
 

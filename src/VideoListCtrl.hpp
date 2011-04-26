@@ -19,6 +19,11 @@ public:
 private:
 
 
+    wxListItem itemTitle;  //title column
+    wxListItem itemDescription; //description column
+    wxListItem itemRating; //rating column
+
+
 protected:
 
 };
