@@ -13,7 +13,7 @@ If your not compile and install the following:
 [wxWidgets_url_here]
 
 
- 
+
 ==INSTALLATION==
 
 =Method 1=
@@ -22,4 +22,4 @@ chmod +x pymake
 
 =Method 2=
 Run the following command in your terminal:
-g++ wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp -lcurl `wx-config --cxxflags --libs`
+g++ Enums.hpp VideoEntry.hpp VideoEntry.cpp VideoListCtrl.hpp VideoListCtrl.cpp  VideoInfo.hpp VideoInfo.cpp  wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp -lcurl `wx-config --cxxflags --libs`
