@@ -54,8 +54,6 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 
 	}
 
-    std::cout << videos -> at(0) -> getName();
-
     return videos; //return the videos we just found. These are to be taken and added to the GUI list.
 }
 

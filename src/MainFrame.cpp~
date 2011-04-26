@@ -30,6 +30,25 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     video_list = new VideoListCtrl(this);
     //List control initial items
 
+    //Title
+    wxListItem itemTitle;
+    itemTitle.SetText(wxT("Title"));
+    video_list->InsertColumn(0, itemTitle);
+    video_list->SetColumnWidth(0, wxLIST_AUTOSIZE_USEHEADER);
+
+    //Rating
+    wxListItem itemRating;
+    itemRating.SetText(wxT("Rating"));
+    video_list->InsertColumn(1, itemRating);
+    video_list->SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER);
+
+    //Description
+    wxListItem itemDescription;
+    itemDescription.SetText(wxT("Description"));
+    video_list->InsertColumn(2, itemDescription);
+    video_list->SetColumnWidth(2, wxLIST_AUTOSIZE_USEHEADER);
+
+
 
     wxBoxSizer *box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -136,32 +155,16 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     listed_videos = get_search_result(search_value);
 
     video_list -> ClearAll();
-
-    //Prepare the list for new population
-    wxListItem itemTitle;
-    itemTitle.SetText(wxT("Title"));
-    video_list -> InsertColumn(0, itemTitle);
-    video_list ->SetColumnWidth(0, 200);
-
-    //Rating
-    wxListItem itemRating;
-    itemRating.SetText(wxT("Rating"));
-    video_list -> InsertColumn(1, itemRating);
-    video_list ->SetColumnWidth(1, 100);
-
-    //Description
-    wxListItem itemDescription;
-    itemDescription.SetText(wxT("Description"));
-    video_list -> InsertColumn(2, itemDescription);
-    video_list ->SetColumnWidth(2, 300);
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
 
-
+    //std::cout << listed_videos -> at(0) -> getName();
     for(p; p != listed_videos -> end(); ++p){
         video_list -> AddVideo(*p);
 
     }
 
+    //TODO: Add the items to the list, it is prefered to derive a custom
+    // wxListItem which will contain a VideoInfo object, this way, we wont hawe to manage them, the wxListCtrl will.
 
 }
 
