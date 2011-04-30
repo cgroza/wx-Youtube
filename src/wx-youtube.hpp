@@ -30,7 +30,6 @@
 #include "rapidxml/rapidxml_print.hpp"
 #include "VideoInfo.hpp"
 
-//All the interent shit
 
 struct request_information
 {

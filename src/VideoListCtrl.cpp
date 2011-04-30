@@ -11,17 +11,29 @@ VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListCtrl(parent, LIST_Video_l
     InsertColumn(0, itemTitle);
     SetColumnWidth(0, 200);
 
-    //Rating
+    //Author
 
-    itemRating.SetText(wxT("Rating"));
-    InsertColumn(1, itemRating);
+    itemAuthor.SetText(wxT("Author"));
+    InsertColumn(1, itemAuthor);
     SetColumnWidth(1, 100);
+
+    //Rating
+    itemRating.SetText(wxT("Rating"));
+    InsertColumn(2, itemRating);
+    SetColumnWidth(2, 100);
+
+    //Views
+
+    itemViews.SetText(wxT("Views"));
+    InsertColumn(3, itemViews);
+    SetColumnWidth(3, 100);
+
 
     //Description
 
     itemDescription.SetText(wxT("Description"));
-    InsertColumn(2, itemDescription);
-    SetColumnWidth(2, 300);
+    InsertColumn(4, itemDescription);
+    SetColumnWidth(4, 300);
 
 }
 
@@ -30,6 +42,8 @@ void VideoListCtrl::AddVideo(VideoInfo* video_data){
 
     long int item_index = InsertItem(entry);
     SetItem(item_index, 0, wxString(video_data -> getName().c_str(),wxConvUTF8)); //want this for col. 0
-    SetItem(item_index, 2, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 2
-
+    SetItem(item_index, 1, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 1
+    SetItem(item_index, 2, wxString(video_data -> getRating().c_str(),wxConvUTF8)); //col 2
+    SetItem(item_index, 3, wxString(video_data -> getViews().c_str(),wxConvUTF8)); //col 3
+    SetItem(item_index, 4, wxString(video_data -> getDescription().c_str() , wxConvUTF8)); //col. 4
 }

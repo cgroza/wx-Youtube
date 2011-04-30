@@ -42,8 +42,6 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 
     xml_node<>* cur_node = doc.first_node("feed")->first_node("entry"); //Setup our initial node
 
-    //Below is a prototype for the list insertion. I cannot seem to figure out how to insert into the wxlist from here.
-
     std::vector<VideoInfo*> * videos = new std::vector<VideoInfo*>; //the videos we just found.
 
     //BUG : I do not know why, but this function always returns the results of the first search.
@@ -51,9 +49,14 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 
     while (cur_node != NULL)
 	{
-	//	std::cout << cur_node->first_node("title")->value() << std::endl; // Find the first title node and output the value
 
-        videos -> push_back( new VideoInfo(cur_node -> first_node("title") -> value()) ); //creating video info object for each found video.
+        videos -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
+          cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
+          cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
+          "None",
+          cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
+          cur_node -> first_node("author") -> first_node("name") -> value()) ); //creating video info object for each found video.
+
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
 
 	}
@@ -67,7 +70,7 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with this
 {
     using boost::format;
-    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s")  % search.mb_str()) ;
+    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str()) ;
 
     CURL *curl;
     CURLcode result;

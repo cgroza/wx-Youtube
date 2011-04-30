@@ -22,7 +22,8 @@ private:
     wxListItem itemTitle;  //title column
     wxListItem itemDescription; //description column
     wxListItem itemRating; //rating column
-
+    wxListItem itemViews;
+    wxListItem itemAuthor;
 
 protected:
 
