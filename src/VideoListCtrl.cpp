@@ -28,13 +28,6 @@ VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListCtrl(parent, LIST_Video_l
     InsertColumn(3, itemViews);
     SetColumnWidth(3, 100);
 
-
-    //Description
-
-    itemDescription.SetText(wxT("Description"));
-    InsertColumn(4, itemDescription);
-    SetColumnWidth(4, 300);
-
 }
 
 void VideoListCtrl::AddVideo(VideoInfo* video_data){
@@ -45,5 +38,5 @@ void VideoListCtrl::AddVideo(VideoInfo* video_data){
     SetItem(item_index, 1, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 1
     SetItem(item_index, 2, wxString(video_data -> getRating().c_str(),wxConvUTF8)); //col 2
     SetItem(item_index, 3, wxString(video_data -> getViews().c_str(),wxConvUTF8)); //col 3
-    SetItem(item_index, 4, wxString(video_data -> getDescription().c_str() , wxConvUTF8)); //col. 4
+
 }

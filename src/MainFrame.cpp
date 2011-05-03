@@ -16,22 +16,30 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     choice_string.Add(wxT("User videos"));
     choice_string.Add(wxT("Playlist"));
 
+    splitter_win = new wxSplitterWindow(this);
+    splitter_win -> SetMinimumPaneSize(1);
+    upper_panel = new wxPanel(splitter_win);
+    lower_panel = new wxPanel(splitter_win);
+
     //Combo box, (option box), to give the user a more specific search
-    combo_box = new wxComboBox(this, ID_COMBOBOX, wxT("Search"), wxDefaultPosition, wxDefaultSize, choice_string, wxCB_READONLY);
+    combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Search"), wxDefaultPosition, wxDefaultSize, choice_string, wxCB_READONLY);
 
     //Search box, this is where the user types in the url, user name, or other relevant info.
-    search_box = new wxTextCtrl(this, TEXT_Search, wxT("Enter a valid url or search query"), wxDefaultPosition, wxSize(200,-1),
+    search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Enter a valid url or search query"), wxDefaultPosition, wxSize(-1,-1),
 				    wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
-    go_button = new wxButton(this, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
+    go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
 
     //List control, this contains the video information
-    video_list = new VideoListCtrl(this);
+    video_list = new VideoListCtrl(upper_panel);
     //List control initial items
 
+    video_descr = new wxTextCtrl(lower_panel, wxID_ANY, wxT("Video description.") ,wxDefaultPosition, wxSize(-1, -1),
+            wxTE_READONLY | wxBORDER_SUNKEN | wxTE_RICH | wxTE_MULTILINE, wxDefaultValidator, wxTextCtrlNameStr);
 
-    wxBoxSizer *box_sizer = new wxBoxSizer(wxHORIZONTAL);
+
+    box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     box_sizer->Add(search_box,
 			     1,
@@ -55,7 +63,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 
 
-    wxBoxSizer *topsizer = new wxBoxSizer(wxVERTICAL);
+    topsizer = new wxBoxSizer(wxVERTICAL);
 
     topsizer->Add(box_sizer,
 			    0,
@@ -69,11 +77,18 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 			    wxALL,
 			    0);
 
+    upper_panel -> SetSizerAndFit(topsizer);
 
+    lower_sizer = new wxBoxSizer(wxHORIZONTAL);
 
+    lower_sizer-> Add( video_descr,
+                    1,
+                    wxEXPAND | wxALL,
+                    0);
 
+    lower_panel -> SetSizerAndFit(lower_sizer);
 
-    SetSizerAndFit(topsizer);
+    splitter_win -> SplitHorizontally(upper_panel, lower_panel, -1);
 
     //Menu Bar
     MainMenu = new wxMenuBar();
@@ -135,6 +150,12 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     //get the sealrh results
     listed_videos = get_search_result(search_value);
+
+    if(listed_videos == NULL){
+        //notify user of failure
+
+        return;
+    }
 
     //Prepare the list for new population
     //We must delete the old entries to add the new ones.
