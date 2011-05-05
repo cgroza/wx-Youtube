@@ -13,6 +13,7 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     //Is there anything in the buffer?
     if (buffer != NULL)
     {
+
 	//Append the data to the buffer
 	buffer->append(data, size * nmemb);
 
@@ -76,6 +77,7 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
     CURLcode result;
 
     //Create our curl handle
+    buffer.clear();
     curl = curl_easy_init();
 
     if(curl)
@@ -110,9 +112,3 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 }
 
 #endif
-
-
-
-
-
-
