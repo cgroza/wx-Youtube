@@ -104,6 +104,28 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 	}
 	else
 	{
+		switch(result)
+		{
+			case 6:
+				wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			case 7:
+				wxMessageBox(_("Could not connect"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			case 28:
+				wxMessageBox(_("Operation timed out"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			case 52:
+				wxMessageBox(_("Got nothing"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			case 56:
+				wxMessageBox(_("Recieve error"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			default:
+				wxMessageBox(_("Undocumented error"), _("Error"), wxOK | wxICON_INFORMATION);
+				break;
+			}
+			
 	    return 0;
 	}
     }
