@@ -104,8 +104,7 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 	}
 	else
 	{
-	    //Needs to be a popup message
-	    std::cout << "Error [" << result << "] - " << errorBuffer << std::endl;
+	    wxMessageBox(_("Curl has had an error, are you connected to the internet?"),_("Error"), wxOK | wxICON_INFORMATION);
 	    return 0;
 	}
     }

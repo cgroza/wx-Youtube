@@ -1,15 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 from os import system
 
 #File to compile
-files="wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp"
+files="Enums.hpp MainFrame.hpp VideoEntry.hpp VideoListCtrl.hpp MainApp.cpp PrefWindow.cpp VideoInfo.cpp wx-youtube.cpp MainApp.hpp PrefWindow.hpp VideoInfo.hpp wx-youtube.hpp MainFrame.cpp VideoEntry.cpp VideoListCtrl.cpp"
 
 #Output file options
 output_name="Youtube-wx"
 
 #Compiler args
-args="-Wall -lcurl `wx-config --cxxflags --libs`"
+args=" -lcurl `wx-config --cxxflags --libs`"
 
 #Compiler
 compiler="g++"
