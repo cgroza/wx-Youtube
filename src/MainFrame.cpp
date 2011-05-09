@@ -153,6 +153,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     if(listed_videos == NULL){
         //notify user of failure
+        wxMessageBox(_("Curl has had an error, are you connected to the internet?"),_("Error"), wxOK | wxICON_INFORMATION);
 
         return;
     }

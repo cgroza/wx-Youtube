@@ -104,7 +104,6 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 	}
 	else
 	{
-	    wxMessageBox(_("Curl has had an error, are you connected to the internet?"),_("Error"), wxOK | wxICON_INFORMATION);
 	    return 0;
 	}
     }
