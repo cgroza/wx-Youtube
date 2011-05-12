@@ -39,9 +39,6 @@ struct request_information
 
 
 
-//Write any errors in here
-static char errorBuffer[CURL_ERROR_SIZE];
-
 //Write all expected data in here
 static std::string buffer;
 

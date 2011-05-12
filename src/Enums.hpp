@@ -11,6 +11,7 @@ enum
     BUTTON_Go,
     ID_COMBOBOX,
     LIST_Video_list,
+    ID_RADIOBUTTON1,
 };
 
 #endif

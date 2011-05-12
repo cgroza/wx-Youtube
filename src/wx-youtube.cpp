@@ -13,7 +13,7 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     //Is there anything in the buffer?
     if (buffer != NULL)
     {
-
+		
 	//Append the data to the buffer
 	buffer->append(data, size * nmemb);
 
@@ -45,9 +45,7 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 
     std::vector<VideoInfo*> * videos = new std::vector<VideoInfo*>; //the videos we just found.
 
-    //BUG : I do not know why, but this function always returns the results of the first search.
-    //Example: I search skate, the results for skate show up. Next, I search Linux, the results for skate show up!!!!
-
+	
     while (cur_node != NULL)
 	{
 
@@ -71,7 +69,7 @@ std::vector<VideoInfo*>* deal_with_result() //Needed some help with this one
 std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with this
 {
     using boost::format;
-    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str()) ;
+    std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
 
     CURL *curl;
     CURLcode result;
@@ -83,7 +81,6 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
     if(curl)
     {
 	//Now set up all of the curl options
-	curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 	curl_easy_setopt(curl, CURLOPT_URL, search_url.c_str());
 	curl_easy_setopt(curl, CURLOPT_HEADER, 0);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
@@ -96,39 +93,33 @@ std::vector<VideoInfo*>* get_search_result(wxString& search)  //had help with th
 	//Always cleanup
 	curl_easy_cleanup(curl);
 
-
-	//Did we succeed?
-	if (result == CURLE_OK)
+	switch(result)
 	{
-	   return deal_with_result(); //returns the videos collected by deal_with_result()
-	}
-	else
-	{
-		switch(result)
-		{
-			case 6:
-				wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
-			case 7:
-				wxMessageBox(_("Could not connect"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
-			case 28:
-				wxMessageBox(_("Operation timed out"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
-			case 52:
-				wxMessageBox(_("Got nothing"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
-			case 56:
-				wxMessageBox(_("Recieve error"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
-			default:
-				wxMessageBox(_("Undocumented error"), _("Error"), wxOK | wxICON_INFORMATION);
-				break;
+		case 0:
+			return deal_with_result(); //Success
+		case 6:
+			wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 7:				
+			wxMessageBox(_("Could not connect"), 	  _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 28:
+			wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 52:
+			wxMessageBox(_("Got nothing"), 			  _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 56:
+			wxMessageBox(_("Recieve error"),          _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		default:
+			wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
+			break;
 			}
 			
 	    return 0;
 	}
-    }
+    
 }
 
 #endif

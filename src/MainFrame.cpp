@@ -1,4 +1,5 @@
 #include "MainFrame.hpp"
+#include "PrefWindow.hpp"
 #ifdef MAINFRAME_H
 
 
@@ -25,7 +26,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Search"), wxDefaultPosition, wxDefaultSize, choice_string, wxCB_READONLY);
 
     //Search box, this is where the user types in the url, user name, or other relevant info.
-    search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Enter a valid url or search query"), wxDefaultPosition, wxSize(-1,-1),
+    search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Search"), wxDefaultPosition, wxSize(-1,-1),
 				    wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
@@ -49,10 +50,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 
     box_sizer->Add(combo_box,
-			    0, 		//make vertically strechable
+			    0, 			//make vertically strechable
 			    wxEXPAND  | //make horizontally stretchable
-			    wxALL, 	// and make border all around
-			    0);		//set border width to 0
+			    wxALL, 		//and make border all around
+			    0);			//set border width to 0
 
 
     box_sizer->Add(go_button,
@@ -110,7 +111,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     SetMenuBar(MainMenu);
     CreateStatusBar();
-    SetStatusText(_("youtube-wx, version 0.0.1"));
+    SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % ("0.0.1"))
 
 
 
@@ -118,13 +119,15 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(MENU_Pref, MainFrame::OnSearch)
     EVT_MENU(MENU_Quit, MainFrame::OnQuit)
     EVT_MENU(MENU_About, MainFrame::OnAbout)
     EVT_MENU(MENU_Pref, MainFrame::OnPref)
     EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
     EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
+    
 END_EVENT_TABLE()
+
+
 
 void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
@@ -140,7 +143,11 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 {
-
+	PrefWindow *pref = new PrefWindow(this);
+	
+	pref->Show(true);
+	
+	return;
 }
 
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
@@ -153,8 +160,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     if(listed_videos == NULL){
         //notify user of failure
-        wxMessageBox(_("Curl has had an error, are you connected to the internet?"),_("Error"), wxOK | wxICON_INFORMATION);
-
+        wxMessageBox(_("No videos found"),_("Notice"), wxOK | wxICON_INFORMATION);
+        
         return;
     }
 
