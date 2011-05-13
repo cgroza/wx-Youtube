@@ -7,6 +7,8 @@ class PrefWindow: public wxFrame
 {
     public:
         PrefWindow(wxWindow* parent);
+        
+        wxBoxSizer* pref_sizer;
 
     protected:
     private:

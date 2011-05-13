@@ -124,6 +124,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(MENU_Pref, MainFrame::OnPref)
     EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
     EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
+    EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
     
 END_EVENT_TABLE()
 
