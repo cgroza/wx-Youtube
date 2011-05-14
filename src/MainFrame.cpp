@@ -193,7 +193,7 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
         wxWindow* win = wxWindow::FindWindowById(video_item_index + 5000);
         VideoEntry* item = dynamic_cast<VideoEntry*>(win);
         //BUG: segmentation fault at getVideoData.
-        video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str()), wxConvUTF8));
+        video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str(), wxConvUTF8));
     }
 
 }
