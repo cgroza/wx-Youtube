@@ -17,6 +17,7 @@ public:
     void OnAbout(wxCommandEvent& event);
     void OnSearch(wxCommandEvent& event);
     void OnPref(wxCommandEvent& event);
+    void OnVideoSelect(wxListEvent& event);
 
     std::vector<VideoInfo*>* listed_videos;
 

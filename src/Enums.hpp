@@ -4,8 +4,8 @@
 
 enum
 {
-    TEXT_Search = wxID_HIGHEST + 1,
-    MENU_Quit = 1,
+    TEXT_Search =  1,
+    MENU_Quit  ,
     MENU_About,
     MENU_Pref,
     BUTTON_Go,

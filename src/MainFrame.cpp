@@ -125,7 +125,8 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
     EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
     EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
-    
+    EVT_LIST_ITEM_SELECTED(LIST_Video_list, MainFrame::OnVideoSelect)
+
 END_EVENT_TABLE()
 
 
@@ -145,9 +146,9 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 {
 	PrefWindow *pref = new PrefWindow(this);
-	
+
 	pref->Show(true);
-	
+
 	return;
 }
 
@@ -162,7 +163,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     if(listed_videos == NULL){
         //notify user of failure
         wxMessageBox(_("No videos found"),_("Notice"), wxOK | wxICON_INFORMATION);
-        
+
         return;
     }
 
@@ -180,7 +181,22 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     }
 
+}
+
+
+
+
+void MainFrame::OnVideoSelect(wxListEvent& event)
+{
+    long video_item_index = video_list -> getSelectedItems();
+    if (video_item_index){
+        wxWindow* win = wxWindow::FindWindowById(video_item_index + 5000);
+        VideoEntry* item = dynamic_cast<VideoEntry*>(win);
+        //BUG: segmentation fault at getVideoData.
+        video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str()), wxConvUTF8));
+    }
 
 }
+
 
 #endif

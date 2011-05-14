@@ -16,6 +16,7 @@ public:
 
     /*This method creates a wxListItem and sets its arguments as labels. */
     void AddVideo(VideoInfo* video_data);
+    long getSelectedItems();
 private:
 
 

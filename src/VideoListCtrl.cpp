@@ -38,5 +38,20 @@ void VideoListCtrl::AddVideo(VideoInfo* video_data){
     SetItem(item_index, 1, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 1
     SetItem(item_index, 2, wxString(video_data -> getRating().c_str(),wxConvUTF8)); //col 2
     SetItem(item_index, 3, wxString(video_data -> getViews().c_str(),wxConvUTF8)); //col 3
+    entry.SetId(item_index + 5000); //we need to find it later.
+}
 
+long VideoListCtrl::getSelectedItems()
+{
+    long itemIndex = -1;
+
+    for (;;) {
+        itemIndex = GetNextItem(itemIndex,
+                                         wxLIST_NEXT_ALL,
+                                         wxLIST_STATE_SELECTED);
+
+        if (itemIndex == -1) break;
+
+    }
+    return itemIndex;
 }
