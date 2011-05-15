@@ -12,10 +12,10 @@ public:
     VideoEntry(VideoInfo* video_data);
 
     /*Video data getter function. */
-    VideoInfo* getVideoData();
+    virtual VideoInfo* getVideoData();
 
     /*Video data setter function.*/
-    void setVideoData(VideoInfo* video_data);
+    virtual void setVideoData(VideoInfo* video_data);
 
 private:
     VideoInfo* video;

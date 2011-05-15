@@ -2,7 +2,7 @@
 #include "Enums.hpp"
 #include "VideoInfo.hpp"
 
-VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListCtrl(parent, LIST_Video_list, wxDefaultPosition, wxSize(600,400), wxLC_REPORT | wxLC_SINGLE_SEL){
+VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListView(parent, LIST_Video_list, wxDefaultPosition, wxSize(600,400), wxLC_REPORT | wxLC_SINGLE_SEL){
 
     //setting up the columns.
 
@@ -31,27 +31,24 @@ VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListCtrl(parent, LIST_Video_l
 }
 
 void VideoListCtrl::AddVideo(VideoInfo* video_data){
-    VideoEntry entry(video_data);
+    VideoEntry* entry = new VideoEntry(video_data);
 
-    long int item_index = InsertItem(entry);
+    long int item_index = InsertItem(*entry);
     SetItem(item_index, 0, wxString(video_data -> getName().c_str(),wxConvUTF8)); //want this for col. 0
     SetItem(item_index, 1, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 1
     SetItem(item_index, 2, wxString(video_data -> getRating().c_str(),wxConvUTF8)); //col 2
     SetItem(item_index, 3, wxString(video_data -> getViews().c_str(),wxConvUTF8)); //col 3
-    entry.SetId(item_index + 5000); //we need to find it later.
+    entries.push_back(entry);
 }
 
-long VideoListCtrl::getSelectedItems()
+VideoEntry* VideoListCtrl::GetVideoEntry(long index)
 {
-    long itemIndex = -1;
+    return entries[index];
+}
 
-    for (;;) {
-        itemIndex = GetNextItem(itemIndex,
-                                         wxLIST_NEXT_ALL,
-                                         wxLIST_STATE_SELECTED);
+bool VideoListCtrl::DeleteAllItems()
+{
+    entries.clear();
+    wxListView::DeleteAllItems();
 
-        if (itemIndex == -1) break;
-
-    }
-    return itemIndex;
 }

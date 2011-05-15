@@ -2,9 +2,10 @@
 #define VIDEOLISTCTRL_H
 #include <wx/wx.h>
 #include <string>
+#include <vector>
 #include "VideoEntry.hpp"
 
-class VideoListCtrl: public wxListCtrl {
+class VideoListCtrl: public wxListView {
 
 /* This class was created to facilitate video entries management easier.
  * Feel free to add any method that you may think it will make things easier.
@@ -16,14 +17,19 @@ public:
 
     /*This method creates a wxListItem and sets its arguments as labels. */
     void AddVideo(VideoInfo* video_data);
-    long getSelectedItems();
+
+    VideoEntry* GetVideoEntry(long index);
+    bool DeleteAllItems();
 private:
 
+
+    std::vector<VideoEntry*> entries;
 
     wxListItem itemTitle;  //title column
     wxListItem itemRating; //rating column
     wxListItem itemViews;
     wxListItem itemAuthor;
+
 
 protected:
 

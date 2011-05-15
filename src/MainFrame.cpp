@@ -188,14 +188,14 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
-    long video_item_index = video_list -> getSelectedItems();
-    if (video_item_index){
-        wxWindow* win = wxWindow::FindWindowById(video_item_index + 5000);
-        VideoEntry* item = dynamic_cast<VideoEntry*>(win);
-        //BUG: segmentation fault at getVideoData.
-        video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str(), wxConvUTF8));
-    }
+    long video_item_index = video_list -> GetFirstSelected () ;
+    if (video_item_index != -1){
 
+        VideoEntry* item = video_list -> GetVideoEntry(video_item_index);
+        video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str(), wxConvUTF8));
+        //else std::cout<<"FAILED"<<std::endl;
+    }
+    event.Skip();
 }
 
 
