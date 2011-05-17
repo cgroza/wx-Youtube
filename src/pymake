@@ -3,7 +3,7 @@
 from os import system
 
 #File to compile
-files="Enums.hpp MainFrame.hpp VideoEntry.hpp VideoListCtrl.hpp MainApp.cpp PrefWindow.cpp VideoInfo.cpp wx-youtube.cpp MainApp.hpp PrefWindow.hpp VideoInfo.hpp wx-youtube.hpp MainFrame.cpp VideoEntry.cpp VideoListCtrl.cpp"
+files="Enums.hpp MainFrame.hpp VideoEntry.hpp VideoListCtrl.hpp MainApp.cpp PrefWindow.cpp VideoInfo.cpp wx-youtube.cpp MainApp.hpp PrefWindow.hpp VideoInfo.hpp wx-youtube.hpp MainFrame.cpp VideoEntry.cpp VideoListCtrl.cpp DownloadThread.hpp DownloadThread.cpp"
 
 #Output file options
 output_name="Youtube-wx"
