@@ -1,6 +1,6 @@
 #ifndef ENUMS_H
 #define ENUMS_H
-#include <wx/wx.h>
+
 
 enum
 {
@@ -12,6 +12,13 @@ enum
     ID_COMBOBOX,
     LIST_Video_list,
     ID_RADIOBUTTON1,
+};
+
+enum SearchType
+{
+    VIDEO_SEARCH,
+    USER_VIDEO_SEARCH,
+    PLAY_LIST_SEARCH
 };
 
 #endif

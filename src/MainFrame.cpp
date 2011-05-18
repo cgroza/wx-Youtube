@@ -1,6 +1,5 @@
 #include "MainFrame.hpp"
-#include "PrefWindow.hpp"
-#ifdef MAINFRAME_H
+
 
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -156,9 +155,9 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value;
     search_value = search_box->GetValue();
-
-    //get the sealrh results
-    listed_videos = get_search_result(search_value);
+    SearchURL search_url(VIDEO_SEARCH, search_value);
+    //get the search results
+    listed_videos = get_search_result(search_url);
 
     if(listed_videos == NULL){
         //notify user of failure
@@ -199,4 +198,3 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 }
 
 
-#endif

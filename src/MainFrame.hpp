@@ -6,6 +6,8 @@
 #include "wx-youtube.hpp"
 #include "VideoListCtrl.hpp"
 #include "Enums.hpp"
+#include "SearchURL.hpp"
+#include "PrefWindow.hpp"
 
 class MainFrame: public wxFrame
 {

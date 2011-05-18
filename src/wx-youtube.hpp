@@ -24,12 +24,11 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
-#include <boost/format.hpp>
 #include "curl/curl.h"
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_print.hpp"
 #include "VideoInfo.hpp"
-
+#include "SearchURL.hpp"
 
 struct request_information
 {
@@ -49,6 +48,6 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 std::vector<VideoInfo*>* deal_with_result();
 
 
-std::vector<VideoInfo*>* get_search_result(wxString& search);
+std::vector<VideoInfo*>* get_search_result(const SearchURL& search_url);
 
 #endif
