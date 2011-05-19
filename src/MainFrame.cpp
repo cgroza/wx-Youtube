@@ -157,14 +157,45 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     search_value = search_box->GetValue();
     SearchURL search_url(VIDEO_SEARCH, search_value);
     //get the search results
-    listed_videos = get_search_result(search_url);
+    VideoSearch video_search(&search_url);
 
-    if(listed_videos == NULL){
-        //notify user of failure
-        wxMessageBox(_("No videos found"),_("Notice"), wxOK | wxICON_INFORMATION);
-
+    if (video_search.doSearch())
+    {
+        listed_videos = video_search.getSearchResults();
+    }else
+    {
+        switch (video_search.getCurlCode()){
+		case 6:
+			wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 7:
+			wxMessageBox(_("Could not connect"), 	  _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 28:
+			wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 52:
+			wxMessageBox(_("Got nothing"), 			  _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		case 56:
+			wxMessageBox(_("Recieve error"),          _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+		default:
+			wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
+			break;
+			}
         return;
-    }
+        }
+
+
+
+
+    //if(listed_videos == NULL){
+    //    //notify user of failure
+    //    wxMessageBox(_("No videos found"),_("Notice"), wxOK | wxICON_INFORMATION);
+
+    //    return;
+    //}
 
     //Prepare the list for new population
     //We must delete the old entries to add the new ones.

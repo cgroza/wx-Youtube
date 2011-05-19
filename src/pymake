@@ -3,9 +3,10 @@
 from os import system
 
 #File to compile
-files = "wx-youtube.hpp wx-youtube.cpp Enums.hpp VideoInfo.hpp VideoInfo.cpp SearchURL.hpp SearchURL.cpp DownloadThread.hpp DownloadThread.cpp VideoEntry.hpp VideoEntry.cpp VideoListCtrl.hpp  VideoListCtrl.cpp PrefWindow.hpp PrefWindow.cpp   MainFrame.hpp MainFrame.cpp MainApp.hpp MainApp.cpp -o Youtube-wx  -lcurl `wx-config --cxxflags --libs`"
 #Output file options
 output_name="Youtube-wx"
+
+files = "VideoSearch.hpp VideoSearch.cpp Enums.hpp VideoInfo.hpp VideoInfo.cpp SearchURL.hpp SearchURL.cpp DownloadThread.hpp DownloadThread.cpp VideoEntry.hpp VideoEntry.cpp VideoListCtrl.hpp  VideoListCtrl.cpp PrefWindow.hpp PrefWindow.cpp   MainFrame.hpp MainFrame.cpp MainApp.hpp MainApp.cpp"
 
 #Compiler args
 args=" -lcurl `wx-config --cxxflags --libs`"
