@@ -188,23 +188,10 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
         }
 
 
-
-
-    //if(listed_videos == NULL){
-    //    //notify user of failure
-    //    wxMessageBox(_("No videos found"),_("Notice"), wxOK | wxICON_INFORMATION);
-
-    //    return;
-    //}
-
-    //Prepare the list for new population
-    //We must delete the old entries to add the new ones.
     video_list -> DeleteAllItems();
 
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
-
-
     //add the items one by one
     for(p; p != listed_videos -> end(); ++p){
         video_list -> AddVideo(*p);
