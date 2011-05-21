@@ -1,7 +1,13 @@
 #include "VideoInfo.hpp"
 
-VideoInfo::VideoInfo(const std::string& name, const std::string& rating, const std::string& views ,const std::string& link, const std::string& descr, const std::string& author):
-    m_name(name), m_rating(rating), m_views(views) ,m_link(link), m_description(descr), m_author(author)
+VideoInfo::VideoInfo(const std::string& name,
+                      const std::string& rating,
+                       const std::string& views ,
+                        const std::string& link,
+                         const std::string& descr,
+                          const std::string& author,
+                           const std::string& id):
+    m_name(name), m_rating(rating), m_views(views) ,m_link(link), m_description(descr), m_author(author), m_id(id)
 {
 
 }
@@ -28,4 +34,8 @@ std::string VideoInfo::getRating() const{
 
 std::string VideoInfo::getViews() const{
     return m_views;
+}
+
+std::string VideoInfo::getId() const{
+    return m_id;
 }

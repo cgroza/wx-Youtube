@@ -38,6 +38,7 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     rapidxml::xml_document<> doc;
     doc.parse<parse_declaration_node | parse_no_data_nodes>(&xml_copy[0]);
 
+    std::cout << doc << std::endl; //for debugging, usefull to have it.
 
     page_information->version = doc.first_node()->first_attribute("version")->value();
     page_information->encoding = doc.first_node()->first_attribute("encoding")->value();
@@ -54,9 +55,10 @@ void VideoSearch::dealWithResult() //Needed some help with this one
         videos -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
           cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
           cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
-          "None",
+          cur_node -> first_node("link") -> first_attribute("href") -> value(),
           cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
-          cur_node -> first_node("author") -> first_node("name") -> value()) ); //creating video info object for each found video.
+          cur_node -> first_node("author") -> first_node("name") -> value(),
+          cur_node -> first_node("id") -> value())); //creating video info object for each found video.
 
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
 

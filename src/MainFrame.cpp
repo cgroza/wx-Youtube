@@ -26,7 +26,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Search box, this is where the user types in the url, user name, or other relevant info.
     search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Search"), wxDefaultPosition, wxSize(-1,-1),
-				    wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+				    wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
     go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
@@ -125,7 +125,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
     EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
     EVT_LIST_ITEM_SELECTED(LIST_Video_list, MainFrame::OnVideoSelect)
-
+    EVT_TEXT_ENTER(TEXT_Search, MainFrame::OnSearch)
 END_EVENT_TABLE()
 
 
