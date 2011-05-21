@@ -6,8 +6,10 @@ VideoInfo::VideoInfo(const std::string& name,
                         const std::string& link,
                          const std::string& descr,
                           const std::string& author,
-                           const std::string& id):
-    m_name(name), m_rating(rating), m_views(views) ,m_link(link), m_description(descr), m_author(author), m_id(id)
+                           const std::string& id,
+                            const std::string& thumbnail):
+    m_name(name), m_rating(rating), m_views(views) ,m_link(link),
+    m_description(descr), m_author(author), m_id(id), m_thumbnail(thumbnail)
 {
 
 }
@@ -38,4 +40,8 @@ std::string VideoInfo::getViews() const{
 
 std::string VideoInfo::getId() const{
     return m_id;
+}
+
+std::string VideoInfo::getThumbnail() const{
+    return m_thumbnail;
 }

@@ -58,7 +58,8 @@ void VideoSearch::dealWithResult() //Needed some help with this one
           cur_node -> first_node("link") -> first_attribute("href") -> value(),
           cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
           cur_node -> first_node("author") -> first_node("name") -> value(),
-          cur_node -> first_node("id") -> value())); //creating video info object for each found video.
+          cur_node -> first_node("id") -> value(),
+          cur_node -> first_node("media:group") -> first_node("media:thumbnail") -> first_attribute("url") -> value())); //creating video info object for each found video.
 
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
 
