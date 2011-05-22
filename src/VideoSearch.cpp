@@ -38,7 +38,7 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     rapidxml::xml_document<> doc;
     doc.parse<parse_declaration_node | parse_no_data_nodes>(&xml_copy[0]);
 
-    std::cout << doc << std::endl; //for debugging, usefull to have it.
+    //std::cout << doc << std::endl; //for debugging, usefull to have it.
 
     page_information->version = doc.first_node()->first_attribute("version")->value();
     page_information->encoding = doc.first_node()->first_attribute("encoding")->value();

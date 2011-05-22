@@ -8,6 +8,7 @@
 #include "Enums.hpp"
 #include "SearchURL.hpp"
 #include "PrefWindow.hpp"
+#include <iostream>
 
 class MainFrame: public wxFrame
 {
@@ -20,6 +21,8 @@ public:
     void OnSearch(wxCommandEvent& event);
     void OnPref(wxCommandEvent& event);
     void OnVideoSelect(wxListEvent& event);
+
+    SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;
 

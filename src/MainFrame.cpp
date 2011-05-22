@@ -23,7 +23,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Search"), wxDefaultPosition, wxDefaultSize, choice_string, wxCB_READONLY);
-
+    combo_box -> SetSelection(0); //initially, it is set to -1
     //Search box, this is where the user types in the url, user name, or other relevant info.
     search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Search"), wxDefaultPosition, wxSize(-1,-1),
 				    wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
@@ -155,7 +155,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value;
     search_value = search_box->GetValue();
-    SearchURL search_url(VIDEO_SEARCH, search_value);
+    SearchURL search_url(getSearchType(), search_value);
     //get the search results
     VideoSearch video_search(&search_url);
 
@@ -215,4 +215,23 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
     event.Skip();
 }
 
+SearchType MainFrame::getSearchType()
+{
+    int index = combo_box -> GetCurrentSelection();
+
+    std::cout << index << std::endl;
+    switch (index)
+    {
+        case 0:
+            return VIDEO_SEARCH;
+            break;
+        case 1:
+            return USER_VIDEO_SEARCH;
+            break;
+        case 2:
+            return PLAY_LIST_SEARCH;
+            break;
+    }
+
+}
 

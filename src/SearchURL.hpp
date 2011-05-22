@@ -14,7 +14,7 @@ private:
      std::string m_url;
 
      static const std::string VIDEO_SEARCH_URL;
-
+     static const std::string USER_VIDEO_SEARCH_URL;
 
 public:
     SearchURL(SearchType search_t, wxString& search_str);
