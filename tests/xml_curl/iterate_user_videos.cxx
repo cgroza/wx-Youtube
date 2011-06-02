@@ -139,11 +139,7 @@ void get_result(int &page_num)
 		
 		if (counter == 25)
 		{
-		    
 			page_num++;
-			std::cout << "page_num is at" << page_num << std::endl;
-			std::cout << "Counter is at: " << counter << std::endl;
-			
 			request(page_num);
 		}
 	}
