@@ -3,13 +3,13 @@
 from os import system
 
 #File to compile
-file="xml_curl_test.cxx"
+file="iterate_user_videos.cxx"
 
 #Output file options
-output_name="xml_curl"
+output_name="iterate_videos"
 
 #Compiler args
-args="-Wall  `curl-config --cflags` `curl-config --libs`"
+args=" `curl-config --cflags` `curl-config --libs`"
 
 #Compiler
 compiler="g++"

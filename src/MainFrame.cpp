@@ -110,7 +110,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     SetMenuBar(MainMenu);
     CreateStatusBar();
-    SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % ("0.0.1"))
+    SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % (_WXYT_VERSION))
 
 
 
@@ -162,7 +162,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     if (video_search.doSearch())
     {
         listed_videos = video_search.getSearchResults();
-    }else
+    }
+    else
     {
         switch (video_search.getCurlCode()){
 		case 6:
@@ -175,7 +176,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 			wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
 			break;
 		case 52:
-			wxMessageBox(_("Got nothing"), 			  _("Error"), wxOK | wxICON_INFORMATION);
+			wxMessageBox(_("Got nothing"), 	          _("Error"), wxOK | wxICON_INFORMATION);
 			break;
 		case 56:
 			wxMessageBox(_("Recieve error"),          _("Error"), wxOK | wxICON_INFORMATION);
