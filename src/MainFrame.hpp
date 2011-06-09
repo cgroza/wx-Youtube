@@ -9,6 +9,8 @@
 #include "SearchURL.hpp"
 #include "PrefWindow.hpp"
 #include <iostream>
+#include "DownloadThread.hpp"
+
 
 class MainFrame: public wxFrame
 {
@@ -21,6 +23,7 @@ public:
     void OnSearch(wxCommandEvent& event);
     void OnPref(wxCommandEvent& event);
     void OnVideoSelect(wxListEvent& event);
+    void OnVideoWatch(wxListEvent& event);
 
     SearchType getSearchType();
 
@@ -43,6 +46,7 @@ public:
 
     VideoListCtrl *video_list;
 
+    PrefWindow* pref;
     DECLARE_EVENT_TABLE()
 };
 

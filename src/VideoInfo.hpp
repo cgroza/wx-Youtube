@@ -5,14 +5,14 @@
 class VideoInfo
 {
     public:
-        VideoInfo(const std::string& name = "None",
-                   const std::string& rating = "None",
-                    const std::string& views = "None",
-                     const std::string& link = "None",
-                      const std::string& descr = "None",
-                       const std::string& author = "None",
-                        const std::string& id = "None",
-                         const std::string& thumbnail = "None");
+        VideoInfo(const std::string& name = "N/A",
+                   const std::string& rating = "N/A",
+                    const std::string& views = "N/A",
+                     const std::string& link = "N/A",
+                      const std::string& descr = "N/A",
+                       const std::string& author = "N/A",
+                        const std::string& id = "N/A",
+                         const std::string& thumbnail = "N/A");
 
         virtual std::string getName() const;
         virtual std::string getLink() const;

@@ -41,13 +41,18 @@ public:
 
     VideoSearch(const SearchURL* search_url);
 
+    // fetches the youtube xml feed
     bool doSearch();
 
     //returns search video info entries.
     std::vector<VideoInfo*>* getSearchResults();
 
     int getCurlCode() const;
-
+    // parses youtube playlist feed.
+    static void parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
+    // parses the youtube video feed
+    static void parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
+    
 };
 
 
