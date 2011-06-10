@@ -7,6 +7,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 {
     //Here we will initalize our controls
 
+    //initialize dled_thumbnails
+    dled_thumbnails = new std::vector<std::string*>();
+
     //Combo box options
     wxArrayString choice_string;
     choice_string.Add(wxT("Videos"));

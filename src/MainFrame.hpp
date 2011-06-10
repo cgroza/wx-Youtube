@@ -28,6 +28,7 @@ public:
     SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;
+    std::vector<std::string*>* dled_thumbnails; // contains video IDs
 
     wxSplitterWindow* splitter_win;
 
