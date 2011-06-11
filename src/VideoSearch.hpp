@@ -40,6 +40,7 @@ private:
 public:
 
     VideoSearch(const SearchURL* search_url);
+    ~VideoSearch();
 
     // fetches the youtube xml feed
     bool doSearch();

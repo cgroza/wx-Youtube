@@ -9,6 +9,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //initialize dled_thumbnails
     dled_thumbnails = new std::vector<std::string>();
+    listed_videos = new std::vector<VideoInfo*>();
 
     //Combo box options
     wxArrayString choice_string;
@@ -163,6 +164,13 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     //get the search results
     VideoSearch video_search(&search_url);
 
+
+    // delete the the VideoInfo allocated on the heap
+    if(listed_videos -> size()){
+	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
+	for(it; it != listed_videos -> end(); ++it) delete (*it);
+    }
+
     if (video_search.doSearch()) //do the search
     {
       listed_videos = video_search.getSearchResults(); //get search results
@@ -203,7 +211,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
         video_list -> AddVideo(*p);
 
     }
-
+    // delete listed_videos;
 }
 
 

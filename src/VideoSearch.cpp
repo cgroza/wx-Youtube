@@ -6,6 +6,10 @@ VideoSearch::VideoSearch(const SearchURL* search_url): m_search_url(search_url)
   m_search_results = new std::vector<VideoInfo*>();
 }
 
+VideoSearch::~VideoSearch()
+
+}
+
 //This is the writer call back function used by curl
 int VideoSearch::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
 {
@@ -127,16 +131,17 @@ void VideoSearch:: parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::
         {
 
 	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
-          "N/A",
-          "N/A",
+					       "N/A",
+					       "N/A",
 
 	   cur_node -> first_node("link")-> next_sibling("link") -> first_attribute("href") -> value(),
 
-	   std::string("Entries: " + std::string(cur_node -> first_node("yt:countHint")-> value())+ "\n" + std::string(cur_node -> first_node("summary") -> value())),
+	   std::string("Entries: " + std::string(cur_node -> first_node("yt:countHint")-> value())+
+		       "\n" + std::string(cur_node -> first_node("summary") -> value())),
 
           cur_node -> first_node("author") -> first_node("name") -> value(),
           cur_node -> first_node("yt:playlistId") -> value(),
-         "N/A"));
+					       "N/A"));
 
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
         }
@@ -148,10 +153,10 @@ void VideoSearch::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_
 {
     xml_node<>* cur_node = feed.first_node("feed")->first_node("entry"); //Setup our initial node
 
-
+    //creating video info object for each found video.
     while (cur_node != NULL)
         {
-http://gdata.youtube.com/feeds/api/videos/0A165KKUj1A
+
 
 	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
           cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
@@ -160,7 +165,7 @@ http://gdata.youtube.com/feeds/api/videos/0A165KKUj1A
           cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
           cur_node -> first_node("author") -> first_node("name") -> value(),
           std::string( cur_node -> first_node("id") -> value()).substr(42, std::string::npos),
-          cur_node -> first_node("media:group") -> first_node("media:thumbnail") -> first_attribute("url") -> value())); //creating video info object for each found video.
+          cur_node -> first_node("media:group") -> first_node("media:thumbnail") -> first_attribute("url") -> value()));
 
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
         }
