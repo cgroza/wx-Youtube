@@ -1,6 +1,10 @@
 #ifndef VIDEOINFO_H
 #define VIDEOINFO_H
 #include <string>
+#include <wx/wx.h>
+
+
+
 
 class VideoInfo
 {
@@ -22,6 +26,9 @@ class VideoInfo
         virtual std::string getViews() const;
         virtual std::string getId() const;
         virtual std::string getThumbnail() const;
+	virtual wxImage* getImage() const;
+        virtual void setImage( wxImage* img );
+
     protected:
         std::string m_name;
         std::string m_rating;
@@ -31,6 +38,7 @@ class VideoInfo
         std::string m_author;
         std::string m_id;
         std::string m_thumbnail;
+        wxImage* m_image;
 
     private:
 };

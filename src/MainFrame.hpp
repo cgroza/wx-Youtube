@@ -8,8 +8,8 @@
 #include "Enums.hpp"
 #include "SearchURL.hpp"
 #include "PrefWindow.hpp"
-#include <iostream>
 #include "DownloadThread.hpp"
+#include <algorithm>
 
 
 class MainFrame: public wxFrame
@@ -28,7 +28,7 @@ public:
     SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;
-    std::vector<std::string*>* dled_thumbnails; // contains video IDs
+    std::vector<std::string>* dled_thumbnails; // contains video IDs
 
     wxSplitterWindow* splitter_win;
 

@@ -8,7 +8,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     //Here we will initalize our controls
 
     //initialize dled_thumbnails
-    dled_thumbnails = new std::vector<std::string*>();
+    dled_thumbnails = new std::vector<std::string>();
 
     //Combo box options
     wxArrayString choice_string;
@@ -194,7 +194,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 
     video_list -> DeleteAllItems(); //prepare list for new entry stream
-
+    dled_thumbnails -> clear();	    // we will not need these images anymore
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
     // add the items one by one
@@ -215,19 +215,38 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
   if (video_item_index != -1){ //if found
 
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
+    VideoInfo*  info = item -> getVideoData();
     //display it's description
-    video_descr -> SetValue(wxString(item -> getVideoData() -> getDescription().c_str(), wxConvUTF8));
+    video_descr -> SetValue(wxString( info -> getDescription().c_str(), wxConvUTF8));
         //else std::cout<<"FAILED"<<std::endl;
 
     // download thumbnail 
     // create a tread to start a pararel download
 
-    DownloadThread* thumb_dl = new DownloadThread(item -> getVideoData());
-    thumb_dl -> Create();
-    thumb_dl -> Run();
+    // check if we have it in the dled vector
+
+    std::vector<std::string>::iterator it;
+    it = std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info -> getId());
+
+    bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
+
+    if(! dled)
+    {
+	DownloadThread* thumb_dl = new DownloadThread( info );
+	thumb_dl -> Create();
+	thumb_dl -> Run();
+
+	// add this video's ID to the available thumbnails to avoid re-download.
+	dled_thumbnails -> push_back( info -> getId() );
+
+	// create wxImage and set it to VideoInfo object
+
     }
 
+    // show thumbnail
+
     event.Skip();
+  }
 }
 
 SearchType MainFrame::getSearchType()

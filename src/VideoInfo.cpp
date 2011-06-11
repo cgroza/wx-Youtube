@@ -45,3 +45,13 @@ std::string VideoInfo::getId() const{
 std::string VideoInfo::getThumbnail() const{
     return m_thumbnail;
 }
+
+wxImage* VideoInfo::getImage() const
+{
+    return m_image;
+}
+
+void VideoInfo::setImage(wxImage* img)
+{
+    m_image = img;
+}
