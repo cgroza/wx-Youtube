@@ -4,8 +4,8 @@ LIBS=`wx-config --cxxflags --libs`
 
 all: wxyoutube
 
-wxyoutube: Enums.hpp ThumbnailFrame.o VideoInfo.o SearchURL.o VideoSearch.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
-	$(CC) -o  Youtube-wx Enums.hpp ThumbnailFrame.o VideoInfo.o SearchURL.o VideoSearch.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o $(CFLAGS) $(LIBS)
+wxyoutube: Enums.hpp Parser.o ThumbnailFrame.o VideoInfo.o SearchURL.o VideoSearch.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
+	$(CC) -o  Youtube-wx Enums.hpp Parser.o ThumbnailFrame.o VideoInfo.o SearchURL.o VideoSearch.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o $(CFLAGS) $(LIBS)
 
 VideoSearch.o: VideoSearch.hpp VideoSearch.cpp
 	$(CC) -c -o VideoSearch.o  VideoSearch.cpp  $(CFLAGS) $(LIBS)
@@ -37,6 +37,8 @@ MainApp.o:  MainApp.hpp MainApp.cpp
 ThumbnailFrame.o: ThumbnailFrame.hpp ThumbnailFrame.cpp
 	$(CC) -c -o ThumbnailFrame.o ThumbnailFrame.cpp $(CFLAGS) $(LIBS)
 
+Parser.o: Parser.hpp Parser.cpp
+	$(CC) -c -o Parser.o Parser.cpp $(CFLAGS) $(LIBS)
 #Enums.o: Enums.hpp 
 #	$(CC) -c -o Enums.o Enums.hpp $(CFLAGS) $(LIBS)
 

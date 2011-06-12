@@ -47,7 +47,7 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     }
     catch(rapidxml::parse_error e) {
 
-      std::cout << "Could not parse youtube xml feedback!";
+      std::cout << "Could not parse youtube xml feed!";
       return;
     }
     //std::cout << doc << std::endl; //for debugging, usefull to have it.
@@ -59,10 +59,10 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     {
         case VIDEO_SEARCH:
         case USER_VIDEO_SEARCH:
-            parseVideoFeed(m_search_results, doc);
+	    Parser::parseVideoFeed(m_search_results, doc);
 	    break;
         case PLAY_LIST_SEARCH:
-    	  parsePlaylistFeed(m_search_results, doc);
+	    Parser::parsePlaylistFeed(m_search_results, doc);
 	    break;
     }
 
@@ -120,57 +120,6 @@ std::vector<VideoInfo*>* VideoSearch::getSearchResults()
 int VideoSearch::getCurlCode() const
 {
     return m_curl_result;
-}
-
-void VideoSearch:: parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed)
-{
-    xml_node<>* cur_node = feed.first_node("feed")->first_node("entry"); //Setup our initial node
-
-
-    while (cur_node != NULL)
-        {
-
-	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
-					       "N/A",
-					       "N/A",
-
-	   cur_node -> first_node("link")-> next_sibling("link") -> first_attribute("href") -> value(),
-
-	   std::string("Entries: " + std::string(cur_node -> first_node("yt:countHint")-> value())+
-		       "\n" + std::string(cur_node -> first_node("summary") -> value())),
-
-          cur_node -> first_node("author") -> first_node("name") -> value(),
-          cur_node -> first_node("yt:playlistId") -> value(),
-					       "N/A"));
-
-        cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
-        }
-
-	delete cur_node;	
-}
-
-void VideoSearch::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed)
-{
-    xml_node<>* cur_node = feed.first_node("feed")->first_node("entry"); //Setup our initial node
-
-    //creating video info object for each found video.
-    while (cur_node != NULL)
-        {
-
-
-	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
-          cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
-          cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
-          cur_node -> first_node("link") -> first_attribute("href") -> value(),
-          cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
-          cur_node -> first_node("author") -> first_node("name") -> value(),
-          std::string( cur_node -> first_node("id") -> value()).substr(42, std::string::npos),
-          cur_node -> first_node("media:group") -> first_node("media:thumbnail") -> first_attribute("url") -> value()));
-
-        cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
-        }
-
-	delete cur_node;	
 }
 
 // initializing static strings

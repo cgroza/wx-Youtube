@@ -2,7 +2,6 @@
 #define VIDEO_SEARCH_H
 
 #include <wx/wx.h>
-#include <iostream>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -11,6 +10,7 @@
 #include "rapidxml/rapidxml_print.hpp"
 #include "VideoInfo.hpp"
 #include "SearchURL.hpp"
+#include "Parser.hpp"
 
 
 class VideoSearch
@@ -49,11 +49,6 @@ public:
     std::vector<VideoInfo*>* getSearchResults();
 
     int getCurlCode() const;
-    // parses youtube playlist feed.
-    static void parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
-    // parses the youtube video feed
-    static void parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
-    
 };
 
 
