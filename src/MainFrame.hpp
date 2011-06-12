@@ -11,6 +11,7 @@
 #include "DownloadThread.hpp"
 #include <algorithm>
 #include <wx/stdpaths.h>
+#include "ThumbnailFrame.hpp"
 
 
 

@@ -1,7 +1,8 @@
 #ifndef THUMB_NAIL_FRAME_H
     #define THUMB_NAIL_H
 #include <wx/wx.h>
-
+#include "VideoInfo.hpp"
+#include <string>
 
 // A scrolled window for showing an image.
 class ThumbnailFrame: public wxScrolledWindow
@@ -13,6 +14,8 @@ public:
 
 
     void LoadImage(wxImage &image);
+
+   static void ProcessNewThumbnail(VideoInfo* video_data, std::string& path);
 
 protected:
     wxBitmap bitmap;

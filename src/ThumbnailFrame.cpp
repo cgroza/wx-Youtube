@@ -21,6 +21,21 @@ void ThumbnailFrame::LoadImage(wxImage &image)
 
 }
 
+
+void ThumbnailFrame::ProcessNewThumbnail(VideoInfo* video_data, std::string& path)
+{
+	// This must be executed at the end of the thread. Right now, it is executed before the
+	// file is created and it generates an error.
+
+	// create wxImage and set it to VideoInfo object
+	wxImage* thumbnail = new wxImage();
+	if(thumbnail -> LoadFile( wxString(path.c_str(), wxConvUTF8), wxBITMAP_TYPE_JPEG))
+	{
+	    video_data -> setImage(thumbnail);
+
+	}
+}
+
 void ThumbnailFrame::OnMouse(wxMouseEvent &event)
 {
         int xx,yy;

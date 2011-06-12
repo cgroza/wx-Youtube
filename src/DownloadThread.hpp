@@ -12,16 +12,20 @@ class DownloadThread : public wxThread
 {
 
 public:
-    DownloadThread(const std::string& url, const std::string& path);
+    DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path, 
+		                                     void (*callback)(VideoInfo*, std::string&));
+
     virtual void* Entry();
 
 protected:
-    std::string m_url;
-    std::string m_path;
+    std::string m_url; //downolad url
+    std::string m_path; //save path
+    VideoInfo* m_video_data; //additional data required by callback function
+    void (*p_callback)(VideoInfo*, std::string&); //called on tread end
 
 private:
 
-    bool doDownload();
+    bool doDownload();  //fetches the file
 };
 
 

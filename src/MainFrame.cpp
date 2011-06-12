@@ -247,7 +247,8 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 
         std::string path(std::string(wxStandardPaths::Get().GetTempDir().mb_str()) + "/" + info -> getId());
 
-	DownloadThread* thumb_dl = new DownloadThread( info -> getThumbnail(), path);
+	DownloadThread* thumb_dl = new DownloadThread(info, info -> getThumbnail(), path,
+						      &ThumbnailFrame::ProcessNewThumbnail);
 
 	thumb_dl -> Create();
 	thumb_dl -> Run();
@@ -255,16 +256,6 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 	// add this video's ID to the available thumbnails to avoid re-download.
 	dled_thumbnails -> push_back( info -> getId() );
 
-	// This must be executed at the end of the thread. Right now, it is executed before the
-	// file is created and it generates an error.
-
-	// create wxImage and set it to VideoInfo object
-	wxImage* thumbnail = new wxImage();
-	if(thumbnail -> LoadFile( wxString(path.c_str(), wxConvUTF8), wxBITMAP_TYPE_JPEG))
-	{
-	    info -> setImage(thumbnail);
-
-	}
     }
 
     // show thumbnail
