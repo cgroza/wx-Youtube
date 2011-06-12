@@ -233,14 +233,15 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 
     // check if we have it in the dled vector
 
-    std::vector<std::string>::iterator it;
-    it = std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info -> getId());
-
     bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
 
     if(! dled)
     {
-	DownloadThread* thumb_dl = new DownloadThread( info );
+
+        std::string path(std::string(wxStandardPaths::Get().GetTempDir().mb_str()) + "/" + info -> getId());
+
+	DownloadThread* thumb_dl = new DownloadThread( info -> getThumbnail(), path);
+
 	thumb_dl -> Create();
 	thumb_dl -> Run();
 

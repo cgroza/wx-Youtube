@@ -7,7 +7,7 @@ VideoSearch::VideoSearch(const SearchURL* search_url): m_search_url(search_url)
 }
 
 VideoSearch::~VideoSearch()
-
+{
 }
 
 //This is the writer call back function used by curl

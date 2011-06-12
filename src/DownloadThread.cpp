@@ -1,6 +1,6 @@
 #include "DownloadThread.hpp"
 
-DownloadThread::DownloadThread(VideoInfo* video_data) : wxThread() ,video_info(video_data)
+DownloadThread::DownloadThread(const std::string& url, const std::string& path ) : wxThread() , m_url(url), m_path(path)
 {
 
 }
@@ -15,14 +15,11 @@ void* DownloadThread::Entry()
 
 bool DownloadThread::doDownload()
  {
-
-     std::cout << video_info -> getId().c_str() << std::endl;
-
-     const char* file_name = video_info -> getLink().c_str();
+     // std::cout << m_path << std::endl;
 
 	CURL* easyhandle = curl_easy_init();
-        curl_easy_setopt( easyhandle, CURLOPT_URL, video_info -> getThumbnail().c_str() ) ;
-        FILE* file = fopen(video_info -> getId().c_str(), "wb");
+        curl_easy_setopt( easyhandle, CURLOPT_URL, m_url.c_str() ) ;
+        FILE* file = fopen(m_path.c_str(), "wb");
 	if(file){
 	    curl_easy_setopt( easyhandle, CURLOPT_WRITEDATA, file) ;
 	    curl_easy_perform( easyhandle );

@@ -10,6 +10,8 @@
 #include "PrefWindow.hpp"
 #include "DownloadThread.hpp"
 #include <algorithm>
+#include <wx/stdpaths.h>
+
 
 
 class MainFrame: public wxFrame
