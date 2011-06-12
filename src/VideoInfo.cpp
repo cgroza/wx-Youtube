@@ -9,7 +9,7 @@ VideoInfo::VideoInfo(const std::string& name,
                            const std::string& id,
                             const std::string& thumbnail):
     m_name(name), m_rating(rating), m_views(views) ,m_link(link),
-    m_description(descr), m_author(author), m_id(id), m_thumbnail(thumbnail)
+    m_description(descr), m_author(author), m_id(id), m_thumbnail(thumbnail), m_image(0)
 {
 
 }

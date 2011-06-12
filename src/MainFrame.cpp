@@ -168,22 +168,37 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     wxString search_value  = search_box->GetValue(); //get search string
     SearchURL search_url(getSearchType(), search_value); //make URL with search string
     //get the search results
-    VideoSearch video_search(&search_url);
+    XMLFeed feed(&search_url);
 
 
     // delete the the VideoInfo allocated on the heap
     if(listed_videos -> size()){
 	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
 	for(it; it != listed_videos -> end(); ++it) delete (*it);
+	listed_videos -> clear();
+
     }
 
-    if (video_search.doSearch()) //do the search
+
+    if (feed.fetchFeed()) //fetch youtube xml feed
     {
-      listed_videos = video_search.getSearchResults(); //get search results
+
+	switch(search_url.getSearchType())
+
+	{
+        case VIDEO_SEARCH:
+        case USER_VIDEO_SEARCH:
+	    Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
+	    break;
+        case PLAY_LIST_SEARCH:
+	    Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
+	    break;
+	}
+
     }
     else //something went wrong
     {
-      switch (video_search.getCurlCode()){ // recovering the curl exit code
+      switch (feed.getCurlCode()){ // recovering the curl exit code
                 case 6:
                         wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
                         break;

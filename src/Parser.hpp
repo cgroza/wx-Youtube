@@ -10,9 +10,9 @@ class Parser
 {
 public:
     // parses youtube playlist feed.
-    static void parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
+    static void parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed);
     // parses the youtube video feed
-    static void parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed);
+    static void parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed);
     
 
 };

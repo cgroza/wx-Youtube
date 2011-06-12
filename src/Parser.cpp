@@ -1,10 +1,11 @@
 #include "Parser.hpp"
+#include <iostream>
 
 
-
-void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed)
+void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
-    rapidxml::xml_node<>* cur_node = feed.first_node("feed")->first_node("entry"); //Setup our initial node
+
+    rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
 
 
     while (cur_node != NULL)
@@ -29,9 +30,13 @@ void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_do
 	delete cur_node;	
 }
 
-void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>& feed)
+void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
-    rapidxml::xml_node<>* cur_node = feed.first_node("feed")->first_node("entry"); //Setup our initial node
+
+
+
+    rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
+
 
     //creating video info object for each found video.
     while (cur_node != NULL)

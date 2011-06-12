@@ -3,7 +3,7 @@
 
 #include <wx/wx.h>
 #include <wx/splitter.h>
-#include "VideoSearch.hpp"
+#include "XMLFeed.hpp"
 #include "VideoListCtrl.hpp"
 #include "Enums.hpp"
 #include "SearchURL.hpp"
