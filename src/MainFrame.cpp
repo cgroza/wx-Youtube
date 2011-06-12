@@ -5,9 +5,15 @@
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, -1, title, pos, size)
 {
+
+
     //Here we will initalize our controls
 
-    //initialize dled_thumbnails
+    // initialize jpeg image handler
+    wxInitAllImageHandlers();
+
+
+    //initialize dled_thumbnails vector
     dled_thumbnails = new std::vector<std::string>();
     listed_videos = new std::vector<VideoInfo*>();
 
@@ -220,7 +226,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
-  if (video_item_index != -1){ //if found
+  if (video_item_index != -1)
+  { //if found
 
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
     VideoInfo*  info = item -> getVideoData();
@@ -248,8 +255,16 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 	// add this video's ID to the available thumbnails to avoid re-download.
 	dled_thumbnails -> push_back( info -> getId() );
 
-	// create wxImage and set it to VideoInfo object
+	// This must be executed at the end of the thread. Right now, it is executed before the
+	// file is created and it generates an error.
 
+	// create wxImage and set it to VideoInfo object
+	wxImage* thumbnail = new wxImage();
+	if(thumbnail -> LoadFile( wxString(path.c_str(), wxConvUTF8), wxBITMAP_TYPE_JPEG))
+	{
+	    info -> setImage(thumbnail);
+
+	}
     }
 
     // show thumbnail

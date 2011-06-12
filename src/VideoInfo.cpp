@@ -14,6 +14,11 @@ VideoInfo::VideoInfo(const std::string& name,
 
 }
 
+VideoInfo::~VideoInfo()
+{
+    if (m_image) delete m_image;
+}
+
 std::string VideoInfo::getName() const{
     return m_name;
 }

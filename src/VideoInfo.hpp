@@ -17,6 +17,7 @@ class VideoInfo
                        const std::string& author = "N/A",
                         const std::string& id = "N/A",
                          const std::string& thumbnail = "N/A");
+	virtual ~VideoInfo();
 
         virtual std::string getName() const;
         virtual std::string getLink() const;
