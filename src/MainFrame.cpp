@@ -224,6 +224,10 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
+    // the video selection has changed, clear the thumbnail frame
+
+    thumbnail_frame -> Clear();
+
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
   if (video_item_index != -1) //if found
   {
@@ -236,6 +240,9 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 
     // download thumbnail 
     // create a tread to start a pararel download
+
+    // check if the video has a thumbnail url
+    if(info -> getThumbnail() == "N/A") return; // abort, we don't need to continue any longer.
 
     // check if we have it in the dled vector
     bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
