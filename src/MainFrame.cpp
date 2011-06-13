@@ -25,7 +25,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     lower_panel = new wxPanel(splitter_win);
 
     // Thumbnail preview frame
-    thumbnail_frame = new ThumbnailFrame(lower_panel, wxDefaultPosition, wxSize(300,150));
+    thumbnail_frame = new ThumbnailFrame(lower_panel);
     
 
     //Combo box, (option box), to give the user a more specific search
@@ -85,12 +85,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     lower_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     lower_sizer-> Add( video_descr,
-                    1,
+                    2,
                     wxEXPAND | wxALL,
                     0);
 
     lower_sizer -> Add( thumbnail_frame,
-			0,
+			1,
 			wxEXPAND | wxALL,
 			0);
 
@@ -251,7 +251,8 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 
 	thumb_dl -> Create();
 	thumb_dl -> Run();
-
+	thumb_dl -> Wait();
+	Layout();
 	// add this video's ID to the available thumbnails to avoid re-download.
 	dled_thumbnails -> push_back( info -> getId() );
 
