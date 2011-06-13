@@ -251,7 +251,7 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 
 	thumb_dl -> Create();
 	thumb_dl -> Run();
-	thumb_dl -> Wait();
+
 	Layout();
 	// add this video's ID to the available thumbnails to avoid re-download.
 	dled_thumbnails -> push_back( info -> getId() );
