@@ -3,11 +3,12 @@ using namespace rapidxml;
 
 XMLFeed::XMLFeed(const SearchURL* search_url): m_search_url(search_url), m_xml_feed(0)
 {
-
+    m_xml_feed = new rapidxml::xml_document<>();
 }
 
 XMLFeed::~XMLFeed()
 {
+    delete m_xml_feed;
 }
 
 //This is the writer call back function used by curl
@@ -31,8 +32,8 @@ int XMLFeed::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
 
 void XMLFeed::parseFeed() //Needed some help with this one
 {   
-    request_information *page_information;
-    page_information = new request_information;
+    // request_information *page_information;
+    // page_information = new request_information;
 
 
 //    std::vector<char> xml_copy(XMLFeed::buffer.begin(), XMLFeed::buffer.end());
@@ -42,7 +43,6 @@ void XMLFeed::parseFeed() //Needed some help with this one
 
     try{                        // in the case of an invalid xml document sent by curl
                                 // an invalid user search may throw an exception
-	m_xml_feed = new rapidxml::xml_document<>();
 	m_xml_feed -> parse<parse_declaration_node | parse_no_data_nodes>(&XMLFeed::buffer[0]);
     }
     catch(rapidxml::parse_error e) {
@@ -52,16 +52,16 @@ void XMLFeed::parseFeed() //Needed some help with this one
     }
 
 
-    page_information->version = m_xml_feed -> first_node()->first_attribute("version")->value();
-    page_information->encoding = m_xml_feed -> first_node()->first_attribute("encoding")->value();
+    // page_information->version = m_xml_feed -> first_node()->first_attribute("version")->value();
+    // page_information->encoding = m_xml_feed -> first_node()->first_attribute("encoding")->value();
 
-
+    
 
 }
 
 
 
-bool XMLFeed::fetchFeed()  //had help with this
+bool XMLFeed::fetchFeed()
 {
     //using boost::format;
     //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());

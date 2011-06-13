@@ -5,13 +5,9 @@
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, -1, title, pos, size)
 {
-
-
     //Here we will initalize our controls
-
     // initialize jpeg image handler
     wxInitAllImageHandlers();
-
 
     //initialize dled_thumbnails vector
     dled_thumbnails = new std::vector<std::string>();
@@ -27,6 +23,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     splitter_win -> SetMinimumPaneSize(1);
     upper_panel = new wxPanel(splitter_win);
     lower_panel = new wxPanel(splitter_win);
+
+    // Thumbnail preview frame
+    thumbnail_frame = new ThumbnailFrame(lower_panel, wxDefaultPosition, wxSize(300,150));
+    
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
@@ -47,7 +47,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     video_descr = new wxTextCtrl(lower_panel, wxID_ANY, wxT("Description") ,wxDefaultPosition, wxSize(-1, -1),
             wxTE_READONLY | wxBORDER_SUNKEN | wxTE_RICH | wxTE_MULTILINE, wxDefaultValidator, wxTextCtrlNameStr);
 
-
     box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     box_sizer->Add(search_box,
@@ -56,13 +55,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                              wxALL,
                              0);
 
-
     box_sizer->Add(combo_box,
 		   0,            //make vertically strechable
 		   wxEXPAND  |   //make horizontally stretchable
 		   wxALL,        //and make border all around
 		   0);           //set border width to 0
-
 
     box_sizer->Add(go_button,
                             0,
@@ -70,15 +67,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                             wxALL,
                             0);
 
-
-
     topsizer = new wxBoxSizer(wxVERTICAL);
 
     topsizer->Add(box_sizer,
                             0,
                             wxEXPAND |
                             wxALIGN_CENTER);
-
 
     topsizer->Add(video_list,
                             1,
@@ -95,15 +89,19 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                     wxEXPAND | wxALL,
                     0);
 
+    lower_sizer -> Add( thumbnail_frame,
+			0,
+			wxEXPAND | wxALL,
+			0);
+
     lower_panel -> SetSizerAndFit(lower_sizer);
 
-    splitter_win -> SplitHorizontally(upper_panel, lower_panel, -1); // split the window in 2
+    splitter_win -> SplitHorizontally(upper_panel, lower_panel, 1); // split the window in 2
 
     //Menu Bar
     MainMenu = new wxMenuBar();
     wxMenu *FileMenu = new wxMenu();
     wxMenu *EditMenu = new wxMenu();
-
 
     //Edit Menu functions
     EditMenu->Append(MENU_Pref, wxT("&Preferences\tCTRL+P"), wxT("Edit your preferences"));
@@ -111,8 +109,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     //File Menu functions
     FileMenu->Append(MENU_About, wxT("&About"), wxT("About youtube-wx"));
     FileMenu->Append(MENU_Quit, wxT("&Quit\tCTRL+Q"), wxT("Quit the program"));
-
-
 
     MainMenu->Append(FileMenu, wxT("&File"));
     MainMenu->Append(EditMenu, wxT("&Edit"));
@@ -123,9 +119,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     CreateStatusBar();
     SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % (_WXYT_VERSION))
-
-
-
 
 }
 
@@ -159,7 +152,6 @@ void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 {
         pref->Show(true); 	// show the preferences window
-
         return;
 }
 
@@ -170,31 +162,26 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     //get the search results
     XMLFeed feed(&search_url);
 
-
     // delete the the VideoInfo allocated on the heap
     if(listed_videos -> size()){
 	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
 	for(it; it != listed_videos -> end(); ++it) delete (*it);
 	listed_videos -> clear();
-
     }
-
 
     if (feed.fetchFeed()) //fetch youtube xml feed
     {
-
 	switch(search_url.getSearchType())
-
 	{
         case VIDEO_SEARCH:
         case USER_VIDEO_SEARCH:
 	    Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
 	    break;
+
         case PLAY_LIST_SEARCH:
 	    Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
 	    break;
 	}
-
     }
     else //something went wrong
     {
@@ -221,7 +208,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
       return;    // abbort the function
         }
 
-
+    // delete listed_videos;
     video_list -> DeleteAllItems(); //prepare list for new entry stream
     dled_thumbnails -> clear();	    // we will not need these images anymore
     //vector iterator
@@ -232,17 +219,14 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
         video_list -> AddVideo(*p);
 
     }
-    // delete listed_videos;
+
 }
-
-
-
 
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
-  if (video_item_index != -1)
-  { //if found
+  if (video_item_index != -1) //if found
+  {
 
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
     VideoInfo*  info = item -> getVideoData();
@@ -254,16 +238,16 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
     // create a tread to start a pararel download
 
     // check if we have it in the dled vector
-
     bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
 
     if(! dled)
     {
-
         std::string path(std::string(wxStandardPaths::Get().GetTempDir().mb_str()) + "/" + info -> getId());
 
+	
+
 	DownloadThread* thumb_dl = new DownloadThread(info, info -> getThumbnail(), path,
-						      &ThumbnailFrame::ProcessNewThumbnail);
+					      new ThumbnailDownloadCallback(thumbnail_frame) );
 
 	thumb_dl -> Create();
 	thumb_dl -> Run();
@@ -272,8 +256,7 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 	dled_thumbnails -> push_back( info -> getId() );
 
     }
-
-    // show thumbnail
+    // show thumbnail, will be probably implemented in the callback function of the DownoladThread
 
     event.Skip();
   }
@@ -284,7 +267,6 @@ SearchType MainFrame::getSearchType()
   int index = combo_box -> GetCurrentSelection(); //get the index from the search 
                                                   //criteria selection box
 
-    //  std::cout << index << std::endl; //debug purposes
     switch (index)
     {
         case 0:

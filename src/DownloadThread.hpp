@@ -7,21 +7,23 @@
 #include <curl/curl.h>
 #include <string>
 #include <iostream>
+#include "DownloadCallback.hpp"
+
 
 class DownloadThread : public wxThread
 {
 
 public:
     DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path, 
-		                                     void (*callback)(VideoInfo*, std::string&));
-
+		                                     DownloadCallback* callback);
+    ~DownloadThread();
     virtual void* Entry();
 
 protected:
     std::string m_url; //downolad url
     std::string m_path; //save path
     VideoInfo* m_video_data; //additional data required by callback function
-    void (*p_callback)(VideoInfo*, std::string&); //called on tread end
+    DownloadCallback* p_callback; //function object called on tread end
 
 private:
 

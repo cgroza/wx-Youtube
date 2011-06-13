@@ -1,12 +1,17 @@
 #include "DownloadThread.hpp"
 
 DownloadThread::DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path,
-			       void (*callback)(VideoInfo*, std::string&) ) : 
+			       DownloadCallback* callback ) : 
     wxThread() , m_url(url), m_path(path), m_video_data(video_data), p_callback(callback)
 {
 
 }
 
+
+DownloadThread::~DownloadThread()
+{
+    delete p_callback;
+}
 
 void* DownloadThread::Entry()
 {
@@ -27,7 +32,7 @@ bool DownloadThread::doDownload()
 	    curl_easy_perform( easyhandle );
 	    curl_easy_cleanup( easyhandle );
 	    fclose(file); //make sure to close file
-	    p_callback(m_video_data, m_path);
+	    p_callback->operator()(m_video_data, m_path);
 	}
 
 	

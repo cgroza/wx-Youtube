@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <wx/stdpaths.h>
 #include "ThumbnailFrame.hpp"
+#include "DownloadCallback.hpp"
 
 
 
@@ -27,6 +28,7 @@ public:
     void OnPref(wxCommandEvent& event);
     void OnVideoSelect(wxListEvent& event);
     void OnVideoWatch(wxListEvent& event);
+
 
     SearchType getSearchType();
 
@@ -49,6 +51,7 @@ public:
     wxTextCtrl* video_descr;
 
     VideoListCtrl *video_list;
+    ThumbnailFrame *thumbnail_frame;
 
     PrefWindow* pref;
     DECLARE_EVENT_TABLE()
