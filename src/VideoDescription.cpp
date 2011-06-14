@@ -4,6 +4,8 @@ VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, con
 	   const wxPoint& pos, const wxSize& size ): wxPanel(parent, id, pos, size)
 {
     selected_video_event  = new OnSelectedVideoCall(this);
+    deleted_video_event  = new OnDeletedVideoCall(this);
+
     //initialize dled_thumbnails vector
     dled_thumbnails = new std::vector<std::string>();
 
@@ -19,6 +21,8 @@ VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, con
     SetSizerAndFit(m_sizer);
 
     evt_man -> BindSelectVideoEvent(selected_video_event);
+    evt_man -> BindDeleteVideosEvent(deleted_video_event);
+
 }
 
 ThumbnailFrame* VideoDescription::GetThumbnailFrame() const
@@ -71,4 +75,9 @@ void VideoDescription::OnVideoSelect(VideoSelectEvent& event)
 
 
 }
-void VideoDescription::OnDeleteVideos(VideoDeleteEvent& event){}
+void VideoDescription::OnDeleteVideos(VideosDeleteEvent& event)
+{
+    m_thumbnail_frame -> Clear();   //reset thumbnail pictre
+    dled_thumbnails -> clear();	    // we will not need these images anymore
+    m_descr -> SetValue(wxT("Description"));
+}

@@ -47,7 +47,7 @@ private:
 
 };
 
-class VideoDeleteEvent : EventBase
+class VideosDeleteEvent : EventBase
 /* This event represents the total deletion of the displayed videos. It contains nothing. */
 {
 public:

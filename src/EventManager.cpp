@@ -33,7 +33,7 @@ void EventManager::FireVideoSelectEvent(VideoSelectEvent* event) const
 
 }
 
-void EventManager::FireVideosDeleteEvent(VideoDeleteEvent* event) const
+void EventManager::FireVideosDeleteEvent(VideosDeleteEvent* event) const
 {
     std::vector<DeleteVideos>::const_iterator it = delete_listeners.begin();
     for(it; it < delete_listeners.end(); ++it) (*it)->operator()(event);

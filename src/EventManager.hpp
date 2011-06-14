@@ -23,10 +23,10 @@ public:
     virtual void operator()(VideoSelectEvent* event){};
 };
 
-class VideoDeleteObjectFunction : public FunctionObject
+class VideosDeleteObjectFunction : public FunctionObject
 {
 public:
-    virtual void operator()(VideoDeleteEvent* event){};
+    virtual void operator()(VideosDeleteEvent* event){};
 };
 
 
@@ -42,7 +42,7 @@ upon firing an event.
 public:
     typedef SearchObjectFunction* Search;
     typedef VideoSelectObjectFunction* VideoSelect;
-    typedef  VideoDeleteObjectFunction*  DeleteVideos;
+    typedef  VideosDeleteObjectFunction*  DeleteVideos;
 
     EventManager();
     /*
@@ -64,7 +64,7 @@ public:
 
     void FireVideoSearchEvent(VideoSearchEvent* event) const;
     void FireVideoSelectEvent(VideoSelectEvent* event) const;
-    void FireVideosDeleteEvent(VideoDeleteEvent* event) const;
+    void FireVideosDeleteEvent(VideosDeleteEvent* event) const;
 
 protected:
     std::vector<Search> search_listeners;

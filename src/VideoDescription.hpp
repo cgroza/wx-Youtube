@@ -27,7 +27,7 @@ public:
     wxTextCtrl* GetDescription() const;
     void OnSearch(VideoSearchEvent& event);
     void OnVideoSelect(VideoSelectEvent& event);
-    void OnDeleteVideos(VideoDeleteEvent& event);
+    void OnDeleteVideos(VideosDeleteEvent& event);
 
 
 
@@ -43,10 +43,21 @@ private:
     public:
  	OnSelectedVideoCall(VideoDescription* parent): m_parent(parent){}
 	virtual void operator()(VideoSelectEvent* event){ m_parent -> OnVideoSelect(*event);}
-	    private:
-		VideoDescription* m_parent;
+    private:
+	VideoDescription* m_parent;
     };
+
+    class OnDeletedVideoCall: public VideosDeleteObjectFunction
+    {
+    public:
+	OnDeletedVideoCall(VideoDescription* parent): m_parent(parent){}
+	virtual void operator()(VideosDeleteEvent* event){ m_parent -> OnDeleteVideos(*event);}
+    private:
+	VideoDescription* m_parent;
+    };
+
     OnSelectedVideoCall* selected_video_event;
+    OnDeletedVideoCall* deleted_video_event;
 };
 
 #endif	// VIDEO_DESCRPTION_H
