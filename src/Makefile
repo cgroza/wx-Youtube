@@ -1,11 +1,11 @@
 CC=g++
-CFLAGS=-lcurl
+CFLAGS=-lcurl -g
 LIBS=`wx-config --cxxflags --libs`
 
 all: wxyoutube
 
-wxyoutube: Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
-	$(CC) -o  Youtube-wx Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o $(CFLAGS) $(LIBS)
+wxyoutube: Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
+	$(CC) -o  Youtube-wx Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o $(CFLAGS) $(LIBS)
 
 XMLFeed.o: XMLFeed.hpp XMLFeed.cpp
 	$(CC) -c -o XMLFeed.o  XMLFeed.cpp  $(CFLAGS) $(LIBS)
@@ -49,7 +49,14 @@ ImageProc.o: ImageProc.hpp ImageProc.cpp
 ImageBox.o: ImageBox.hpp ImageBox.cpp
 	$(CC) -c -o ImageBox.o ImageBox.cpp $(CFLAGS) $(LIBS)
 
+EventManager.o : EventManager.hpp EventManager.cpp
+	$(CC) -c -o EventManager.o EventManager.cpp $(CFLAGS) $(LIBS)
 
+Events.o : Events.hpp Events.cpp
+	$(CC) -c -o Events.o Events.cpp $(CFLAGS) $(LIBS)
+
+VideoDescription.o: VideoDescription.hpp VideoDescription.cpp
+	$(CC) -c -o VideoDescription.o VideoDescription.cpp $(CFLAGS) $(LIBS)
 
 #Enums.o: Enums.hpp 
 #	$(CC) -c -o Enums.o Enums.hpp $(CFLAGS) $(LIBS)

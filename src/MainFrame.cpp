@@ -8,10 +8,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     //Here we will initalize our controls
     // initialize jpeg image handler
     wxInitAllImageHandlers();
-
-    //initialize dled_thumbnails vector
-    dled_thumbnails = new std::vector<std::string>();
     listed_videos = new std::vector<VideoInfo*>();
+    event_manager = new EventManager();
 
     //Combo box options
     wxArrayString choice_string;
@@ -23,10 +21,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     splitter_win -> SetMinimumPaneSize(1);
     upper_panel = new wxPanel(splitter_win);
     lower_panel = new wxPanel(splitter_win);
+    lower_notebook = new wxNotebook(lower_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    description = new VideoDescription(lower_notebook, event_manager, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
-    // Thumbnail preview frame
-    thumbnail_frame = new ThumbnailFrame(lower_panel);
-    
+    lower_notebook -> AddPage(description, wxT("Description"));
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
@@ -43,9 +41,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     //List control, this contains the video information
     video_list = new VideoListCtrl(upper_panel);
     //List control initial items
-
-    video_descr = new wxTextCtrl(lower_panel, wxID_ANY, wxT("Description") ,wxDefaultPosition, wxSize(-1, -1),
-            wxTE_READONLY | wxBORDER_SUNKEN | wxTE_RICH | wxTE_MULTILINE, wxDefaultValidator, wxTextCtrlNameStr);
 
     box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -83,17 +78,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel -> SetSizerAndFit(topsizer);
 
     lower_sizer = new wxBoxSizer(wxHORIZONTAL);
-
-    lower_sizer-> Add( video_descr,
-                    2,
-                    wxEXPAND | wxALL,
-                    0);
-
-    lower_sizer -> Add( thumbnail_frame,
-			1,
-			wxEXPAND | wxALL,
-			0);
-
+    lower_sizer -> Add(lower_notebook, 1, wxEXPAND | wxALL, 0);
     lower_panel -> SetSizerAndFit(lower_sizer);
 
     splitter_win -> SplitHorizontally(upper_panel, lower_panel, 1); // split the window in 2
@@ -212,7 +197,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     // delete listed_videos;
     video_list -> DeleteAllItems(); //prepare list for new entry stream
-    dled_thumbnails -> clear();	    // we will not need these images anymore
+//    dled_thumbnails -> clear();	    // we will not need these images anymore
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
     // add the items one by one
@@ -226,49 +211,18 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
-    // the video selection has changed, clear the thumbnail frame
-    thumbnail_frame -> Clear();
-
+    
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
   if (video_item_index != -1) //if found
   {
 
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
     VideoInfo*  info = item -> getVideoData();
-    //display it's description
-    video_descr -> SetValue(wxString( info -> getDescription().c_str(), wxConvUTF8));
-        //else std::cout<<"FAILED"<<std::endl;
-
-    // download thumbnail 
-    // create a thread to start a pararel download
-
-    // check if the video has a thumbnail url
-    if(info -> getThumbnail() == "N/A") return; // abort, we don't need to continue any longer.
-
-    // check if we have it in the dled vector
-    bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
-
-    if(! dled)
-    {
-        std::string path(std::string(wxStandardPaths::Get().GetTempDir().mb_str()) + "/" + info -> getId());
-
-	
-
-	DownloadThread* thumb_dl = new DownloadThread(info, info -> getThumbnail(), path,
-					      new ThumbnailDownloadCallback(thumbnail_frame) );
-
-	thumb_dl -> Create();
-	thumb_dl -> Run();
-
-	Layout();
-	// add this video's ID to the available thumbnails to avoid re-download.
-	dled_thumbnails -> push_back( info -> getId() );
-
-    }
-    // show thumbnail, will be probably implemented in the callback function of the DownoladThread
-
-    event.Skip();
+    VideoSelectEvent evt(info);
+    event_manager -> FireVideoSelectEvent(&evt);
   }
+    event.Skip();
+
 }
 
 SearchType MainFrame::getSearchType()
