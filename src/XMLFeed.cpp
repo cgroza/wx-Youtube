@@ -48,6 +48,7 @@ bool XMLFeed::parseFeed() //Needed some help with this one
     catch(rapidxml::parse_error e) {
 
       std::cout << "Could not parse youtube xml feed!" << std::endl;
+      m_error_code = NO_SEARCH_RESULT; //no videos found, we do this to prevent a segfault
       return false;
     }
 
@@ -91,11 +92,11 @@ bool XMLFeed::fetchFeed()
         switch(result)
         {
         case 0:
-            m_curl_result = result;
+            m_error_code = result;
             return parseFeed();
 
         default:
-            m_curl_result = result;
+            m_error_code = result;
             return false;
 
 
@@ -109,9 +110,9 @@ rapidxml::xml_document<>* XMLFeed::getXMLFeed() const
     return m_xml_feed;
 }
 
-int XMLFeed::getCurlCode() const
+int XMLFeed::getErrorCode() const
 {
-    return m_curl_result;
+    return m_error_code;
 }
 
 // initializing static strings

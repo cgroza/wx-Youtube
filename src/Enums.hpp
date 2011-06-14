@@ -21,6 +21,12 @@ enum SearchType
     PLAY_LIST_SEARCH
 };
 
+
+enum
+{
+    NO_SEARCH_RESULT=1000
+
+};
 #endif
 
 

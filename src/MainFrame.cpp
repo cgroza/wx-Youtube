@@ -185,7 +185,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     }
     else //something went wrong
     {
-      switch (feed.getCurlCode()){ // recovering the curl exit code
+      switch (feed.getErrorCode()){ // recovering the curl exit code
                 case 6:
                         wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
                         break;
@@ -200,6 +200,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
                         break;
                 case 56:
                         wxMessageBox(_("Recieve error"),          _("Error"), wxOK | wxICON_INFORMATION);
+                        break;
+                case NO_SEARCH_RESULT:
                         break;
                 default:
                         wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);

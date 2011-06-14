@@ -33,7 +33,7 @@ private:
 
 //search URL used by the youtube API
     const SearchURL* m_search_url;
-    int m_curl_result;
+    int m_error_code;
     rapidxml::xml_document<>*  m_xml_feed;
 
 
@@ -48,7 +48,7 @@ public:
     //returns search video info entries.
     rapidxml::xml_document<>* getXMLFeed() const;
 
-    int getCurlCode() const;
+    int getErrorCode() const;
 };
 
 

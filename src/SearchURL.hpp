@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 #include "Enums.hpp"
-#include <wx/wx.h>
+#include <wx/string.h>
 
 class SearchURL
 {
