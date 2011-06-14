@@ -30,7 +30,7 @@ int XMLFeed::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     return result;
 }
 
-void XMLFeed::parseFeed() //Needed some help with this one
+bool XMLFeed::parseFeed() //Needed some help with this one
 {   
     // request_information *page_information;
     // page_information = new request_information;
@@ -47,15 +47,15 @@ void XMLFeed::parseFeed() //Needed some help with this one
     }
     catch(rapidxml::parse_error e) {
 
-      std::cout << "Could not parse youtube xml feed!";
-      return;
+      std::cout << "Could not parse youtube xml feed!" << std::endl;
+      return false;
     }
 
 
     // page_information->version = m_xml_feed -> first_node()->first_attribute("version")->value();
     // page_information->encoding = m_xml_feed -> first_node()->first_attribute("encoding")->value();
 
-    
+    return true;
 
 }
 
@@ -92,8 +92,8 @@ bool XMLFeed::fetchFeed()
         {
         case 0:
             m_curl_result = result;
-            parseFeed();
-            return true;
+            return parseFeed();
+
         default:
             m_curl_result = result;
             return false;

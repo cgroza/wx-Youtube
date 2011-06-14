@@ -29,7 +29,7 @@ private:
     static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 
 //creates the video info vector
-    void parseFeed();
+    bool parseFeed();
 
 //search URL used by the youtube API
     const SearchURL* m_search_url;

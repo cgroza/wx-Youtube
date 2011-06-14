@@ -225,7 +225,6 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
     // the video selection has changed, clear the thumbnail frame
-
     thumbnail_frame -> Clear();
 
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
@@ -239,7 +238,7 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
         //else std::cout<<"FAILED"<<std::endl;
 
     // download thumbnail 
-    // create a tread to start a pararel download
+    // create a thread to start a pararel download
 
     // check if the video has a thumbnail url
     if(info -> getThumbnail() == "N/A") return; // abort, we don't need to continue any longer.
