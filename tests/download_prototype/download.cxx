@@ -6,12 +6,16 @@
 #include <boost/regex.hpp>
 #include <sstream>
 #include <string>
+#include "urilite.h"
+
+
 
 
 
 
 
 static std::string buffer;
+
 
 static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
 {
@@ -35,25 +39,67 @@ std::string return_url()
 {
     //Static url
     std::string url;
-    url = "http://www.youtube.com/get_video_info?&video_id=9boD5WIUGTw&el=detailpage&ps=default&eurl=&gl=US&hl=en";
+    url = "http://www.youtube.com/get_video_info?&video_id=9boD5WIUGTw";
     return url;
     
 }
+
 
 std::string get_result()
 
 {
     //fmt_url_map=37
-    //^  --match the beggining of a line
-    //?  --match the preceding expression zero or one time
-    //
+    //http://www.youtube.com/get_video?video_id=video_id&t=token&fmt=18
+    //http://v12.lscache5.c.youtube.com/
     
     int start;
     int end;
-    start = buffer.find("fmt_url_map=");
-    end = start - start+14;
+    std::string format;
+    std::string token;
+    std::string video_id;
+    std::string test;
+    std::string q_string;
     
-    std::cout << buffer.substr(start, end) << std::endl;
+    
+    start = buffer.find("fmt_url_map=");
+    start = start + 12;
+    
+    format = buffer.substr(start, 2);
+    
+    start = buffer.find("&token=");
+    start = start + 7;
+    end = buffer.find("&thumbnail_url=") - start;
+    
+    token = buffer.substr(start, end);
+    
+    //start = buffer.find("video_id=");
+    //start = start + 9;
+    
+    //end = buffer.find("&length_seconds=") - start;
+    
+    //video_id = buffer.substr(start, end);
+    
+    
+    
+    start = buffer.find("fmt_url_map=") + 17;
+    
+    
+    
+    q_string = buffer.substr(start, buffer.length());
+    
+    std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
+    
+    
+    
+    
+    //std::cout << real_url << std::endl;
+    
+     
+    std::cout << "Token: "  << token  << std::endl;
+    std::cout << "Format: " << format << std::endl;
+    std::cout << "Video ID: " << video_id << std::endl;
+    std::cout << "Url: " << real_url << std::endl; 
+    
     return buffer;
     
 }
@@ -78,8 +124,7 @@ std::string request()
 
 	if(curl)
 	{
-		std::string search = return_url();
-		
+	    std::string search = return_url();
 		
 	    //Now set up all of the curl options
 	    curl_easy_setopt(curl, CURLOPT_URL, search.c_str());
@@ -98,7 +143,7 @@ std::string request()
 	    //Did we succeed?
 	    if (result == CURLE_OK)
 	    {
-		std::cout << "Getting result\n";
+		//std::cout << "Getting result\n";
 		get_result();
 		exit(0);
 	    }
