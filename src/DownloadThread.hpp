@@ -1,5 +1,5 @@
 #ifndef DOWNLOAD_THREAD_H
-#define DOWNOLAD_THREAD_H
+#define DOWNLOAD_THREAD_H
 
 #include <wx/thread.h>
 #include "VideoInfo.hpp"

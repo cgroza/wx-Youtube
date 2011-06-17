@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include <wx/splitter.h>
+#include <wx/notebook.h>
 #include "XMLFeed.hpp"
 #include "VideoListCtrl.hpp"
 #include "Enums.hpp"
@@ -10,9 +11,10 @@
 #include "PrefWindow.hpp"
 #include "DownloadThread.hpp"
 #include <algorithm>
-#include <wx/stdpaths.h>
-#include "ThumbnailFrame.hpp"
 #include "DownloadCallback.hpp"
+#include "VideoDescription.hpp"
+#include "EventManager.hpp"
+#include "Events.hpp"
 
 
 
@@ -33,7 +35,7 @@ public:
     SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;
-    std::vector<std::string>* dled_thumbnails; // contains video IDs
+
 
     wxSplitterWindow* splitter_win;
 
@@ -48,10 +50,11 @@ public:
     wxTextCtrl *search_box;
     wxMenuBar *MainMenu;
     wxComboBox *combo_box;
-    wxTextCtrl* video_descr;
+    wxNotebook *lower_notebook;
+    VideoDescription* description;
 
     VideoListCtrl *video_list;
-    ThumbnailFrame *thumbnail_frame;
+    EventManager* event_manager;
 
     PrefWindow* pref;
     DECLARE_EVENT_TABLE()
