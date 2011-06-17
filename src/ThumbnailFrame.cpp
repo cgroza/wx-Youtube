@@ -8,6 +8,7 @@ ThumbnailFrame::ThumbnailFrame(wxWindow* parent, wxWindowID id) : wxImageBox(par
 void ThumbnailFrame::SetThumbnail(wxImage& image)
 {
     m_image = image;
+    SetScale(scFIT_TO_PAGE);
     Update();
 }
 

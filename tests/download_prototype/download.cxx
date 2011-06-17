@@ -1,9 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include <vector>
 #include "curl/curl.h"
 #include <boost/format.hpp>
-#include <boost/regex.hpp>
 #include <sstream>
 #include <string>
 #include "urilite.h"
@@ -34,18 +32,20 @@ static int writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     return result;
 }
 
-std::string return_url()
+std::string return_url(std::string url_to_download)
 
 {
     //Static url
     std::string url;
+    //using boost::format;
+    //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
     url = "http://www.youtube.com/get_video_info?&video_id=9boD5WIUGTw";
     return url;
     
 }
 
 
-std::string get_result()
+std::string deal_with_result()
 
 {
     //fmt_url_map=37
@@ -100,18 +100,18 @@ std::string get_result()
     std::cout << "Video ID: " << video_id << std::endl;
     std::cout << "Url: " << real_url << std::endl; 
     
-    return buffer;
+    return real_url;
     
 }
 
 
 
-std::string request()
+std::string request_download_url(std::string url_to_download)
 {
 
 
 
-	std::cout << "Retrieving " << std::endl;
+	std::cout << "Retrieving video url" << std::endl;
 
 	//Our curl objects
 	CURL *curl;
@@ -124,7 +124,7 @@ std::string request()
 
 	if(curl)
 	{
-	    std::string search = return_url();
+	    std::string search = return_url(url_to_download);
 		
 	    //Now set up all of the curl options
 	    curl_easy_setopt(curl, CURLOPT_URL, search.c_str());
@@ -144,7 +144,7 @@ std::string request()
 	    if (result == CURLE_OK)
 	    {
 		//std::cout << "Getting result\n";
-		get_result();
+		deal_with_result();
 		exit(0);
 	    }
 	    else
@@ -157,7 +157,7 @@ std::string request()
     }
 
 
-int main()
+int main ( int argc, char *argv[] )
 {
-    request();
+    request_download_url(argv[1]);
 }
