@@ -32,7 +32,7 @@ bool DownloadThread::doDownload()
 	    curl_easy_perform( easyhandle );
 	    curl_easy_cleanup( easyhandle );
 	    fclose(file); //make sure to close file
-	    p_callback->operator()(m_video_data, m_path);
+	    if(p_callback)  p_callback->operator()(m_video_data, m_path);
 	}
 
 	

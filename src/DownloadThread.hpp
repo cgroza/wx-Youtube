@@ -15,7 +15,7 @@ class DownloadThread : public wxThread
 
 public:
     DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path, 
-		                                     DownloadCallback* callback);
+		                                     DownloadCallback* callback = 0);
     ~DownloadThread();
     virtual void* Entry();
 
