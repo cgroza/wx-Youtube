@@ -5,7 +5,7 @@ LIBS=`wx-config --cxxflags --libs`
 all: wxyoutube
 
 wxyoutube: Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
-	$(CC) -o  Youtube-wx Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o $(CFLAGS) $(LIBS)
+	$(CC) -o  Youtube-wx Enums.hpp Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
 
 XMLFeed.o: XMLFeed.hpp XMLFeed.cpp
 	$(CC) -c -o XMLFeed.o  XMLFeed.cpp  $(CFLAGS) $(LIBS)
@@ -57,6 +57,9 @@ Events.o : Events.hpp Events.cpp
 
 VideoDescription.o: VideoDescription.hpp VideoDescription.cpp
 	$(CC) -c -o VideoDescription.o VideoDescription.cpp $(CFLAGS) $(LIBS)
+	
+Extract.o: Extract.hpp Extract.cpp
+	$(CC) -c -o Extract.o Extract.cpp $(CFLAGS) $(LIBS)
 
 #Enums.o: Enums.hpp 
 #	$(CC) -c -o Enums.o Enums.hpp $(CFLAGS) $(LIBS)
