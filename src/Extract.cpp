@@ -58,8 +58,12 @@ std::string Extract::resolve_real_url(std::string url)
 	//Did we succeed?
 	if (result == CURLE_OK)
 	{
-	    std::cout << "We have a good result" << std::endl;
-	    return resolve_buffer;
+	    //All the magic happens here
+	    int start = resolve_buffer.find("fmt_url_map=") + 17;
+	    std::string q_string = resolve_buffer.substr(start, resolve_buffer.length());
+	    std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
+	    std::cout << "Download link found!" << std::endl;
+	    return real_url;
 	}
 	else
 	{
