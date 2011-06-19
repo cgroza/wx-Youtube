@@ -232,8 +232,14 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	VideoInfo*  info = item -> getVideoData();
 	real_url = Extract::resolve_real_url(info -> getId());
 	
-	std::cout << "Video id is: " << info -> getId() << std::endl;
-	std::cout << "Real url is: " << real_url << std::endl;
+	 std::cout << "Video id is: " << info -> getId() << std::endl;
+	 std::cout << "Real url is: " << real_url << std::endl;
+
+	//you should atach the ext here, after getting the path
+	DownloadThread* video_dl = new DownloadThread(info, real_url,"/tmp/video");
+	video_dl -> Create();
+	video_dl -> Run();
+	video_dl -> Wait();
     }
 }
 
