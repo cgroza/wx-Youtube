@@ -9,7 +9,7 @@
 
     
 
-//Extract::resolve_buffer;
+std::string Extract::resolve_buffer;
 
 int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer)
 {
