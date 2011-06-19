@@ -9,6 +9,7 @@ enum
     MENU_About,
     MENU_Pref,
     BUTTON_Go,
+    BUTTON_Download,
     ID_COMBOBOX,
     LIST_Video_list,
     ID_RADIOBUTTON1,

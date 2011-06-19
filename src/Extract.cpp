@@ -28,14 +28,31 @@ int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_
     return result;
 }
 
+std::string Extract::format_url(std::string id)
 
-std::string Extract::resolve_real_url(std::string url)
+{
+    
+    std::string url;
+    //using boost::format;
+    //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
+    //http://www.youtube.com/watch?v=WSeNSzJ2-Jw
+    
+    
+    url = "http://www.youtube.com/get_video_info?&video_id=" + id;
+    std::cout << "Formated url: " << url << std::endl;
+    
+    return url;
+    
+}
+
+std::string Extract::resolve_real_url(std::string id)
 {
     //This function connects to the internet, and retrieves the
     //real download url so we can pass it to our download function
     //AFAIK videos can only be downloaded once from the given url (each url has a unique signature), and can only be downloaded from that IP address.
     
-    std::cout << "Resolving real url" << std::endl;
+    id = format_url(id);
+    std::cout << "Resolving real url for " << id << std::endl;
     CURL *resolve;
     CURLcode result;
     resolve_buffer.clear();
@@ -43,7 +60,7 @@ std::string Extract::resolve_real_url(std::string url)
     if(resolve)
     {
 	//Curl options
-	curl_easy_setopt(resolve, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(resolve, CURLOPT_URL, id.c_str());
 	curl_easy_setopt(resolve, CURLOPT_HEADER, 0);
 	curl_easy_setopt(resolve, CURLOPT_FOLLOWLOCATION, 1);
 	curl_easy_setopt(resolve, CURLOPT_WRITEFUNCTION, writer);
@@ -68,25 +85,11 @@ std::string Extract::resolve_real_url(std::string url)
 	else
 	{
 	    std::cout << "Error [" << result << "] - " << std::endl;
-	    return "no_data";
+	    return "";
 	}
     }
 }
 
 
 
-std::string Extract::format_url(std::string id)
 
-{
-    
-    std::string url;
-    //using boost::format;
-    //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
-    //http://www.youtube.com/watch?v=WSeNSzJ2-Jw
-    
-    
-    url = "http://www.youtube.com/get_video_info?&video_id=" + id;
-    
-    return url;
-    
-}

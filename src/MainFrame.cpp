@@ -37,6 +37,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Go Button, this initiates the search
     go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
+    
+    download_button = new wxButton(upper_panel, BUTTON_Download, _T("Download"), wxDefaultPosition, wxDefaultSize);
 
     //List control, this contains the video information
     video_list = new VideoListCtrl(upper_panel);
@@ -55,7 +57,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		   wxEXPAND  |   //make horizontally stretchable
 		   wxALL,        //and make border all around
 		   0);           //set border width to 0
-
+    box_sizer->Add(download_button,
+		   0,
+		   wxEXPAND |
+		   wxALL,
+		   0);
+    
     box_sizer->Add(go_button,
                             0,
                             wxEXPAND |
@@ -111,6 +118,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(MENU_Quit, MainFrame::OnQuit)
     EVT_MENU(MENU_About, MainFrame::OnAbout)
     EVT_MENU(MENU_Pref, MainFrame::OnPref)
+    EVT_BUTTON(BUTTON_Download, MainFrame::OnVideoDownload)
     EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
     EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
     EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
@@ -212,13 +220,32 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 }
 
+void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
+{
+    long video_item_index = video_list -> GetFirstSelected ();
+    if (video_item_index != -1) //if found
+    {
+	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
+	std::string video_id;
+	
+	std::string real_url;
+	VideoInfo*  info = item -> getVideoData();
+	real_url = Extract::resolve_real_url(info -> getId());
+	
+	std::cout << "Video id is: " << info -> getId() << std::endl;
+	std::cout << "Real url is: " << real_url << std::endl;
+    }
+}
+
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
     
   long video_item_index = video_list -> GetFirstSelected () ; //get selected video
   if (video_item_index != -1) //if found
   {
-
+    //wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+    
+    
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
     VideoInfo*  info = item -> getVideoData();
     VideoSelectEvent evt(info);

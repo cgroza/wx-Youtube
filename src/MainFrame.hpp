@@ -15,6 +15,7 @@
 #include "VideoDescription.hpp"
 #include "EventManager.hpp"
 #include "Events.hpp"
+#include "Extract.hpp"
 
 
 
@@ -30,7 +31,7 @@ public:
     void OnPref(wxCommandEvent& event);
     void OnVideoSelect(wxListEvent& event);
     void OnVideoWatch(wxListEvent& event);
-
+    void OnVideoDownload(wxCommandEvent& event);
 
     SearchType getSearchType();
 
@@ -47,6 +48,7 @@ public:
     wxBoxSizer* lower_sizer;
 
     wxButton *go_button;
+    wxButton *download_button;
     wxTextCtrl *search_box;
     wxMenuBar *MainMenu;
     wxComboBox *combo_box;

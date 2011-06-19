@@ -5,8 +5,8 @@
 class Extract
 {
     public:
-	std::string resolve_real_url(std::string url);
-	std::string format_url(std::string id);
+	static std::string resolve_real_url(std::string id);
+	static std::string format_url(std::string id);
 	static std::string resolve_buffer;
 	
     protected:
