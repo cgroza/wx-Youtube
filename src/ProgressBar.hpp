@@ -19,7 +19,7 @@ public:
 protected:
 private:
     static  ProgressBar* self; 	// static reference to itself to be accessed by static functions.
-
+    static int progress; 
 };
 
 

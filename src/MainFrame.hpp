@@ -16,6 +16,7 @@
 #include "EventManager.hpp"
 #include "Events.hpp"
 #include "Extract.hpp"
+#include "ProgressBar.hpp"
 
 
 

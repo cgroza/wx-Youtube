@@ -232,14 +232,22 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	VideoInfo*  info = item -> getVideoData();
 	real_url = Extract::resolve_real_url(info -> getId());
 	
-	 std::cout << "Video id is: " << info -> getId() << std::endl;
-	 std::cout << "Real url is: " << real_url << std::endl;
+	std::cout << "Video id is: " << info -> getId() << std::endl;
+	std::cout << "Real url is: " << real_url << std::endl;
+
+	// create progress bar dialog
+	ProgressBar* progress =  new ProgressBar(wxT("Downloading..."), 
+						 wxT("The video is downloading now. Please wait."), 100, this, 
+			     wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME  );
+
 
 	//you should atach the ext here, after getting the path
-	DownloadThread* video_dl = new DownloadThread(info, real_url,"/tmp/video");
+	DownloadThread* video_dl = new DownloadThread(info, real_url,"/tmp/video", 0,
+						       &ProgressBar::CurlProgressCallback);
+	progress -> Show();
 	video_dl -> Create();
 	video_dl -> Run();
-	video_dl -> Wait();
+
     }
 }
 

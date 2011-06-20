@@ -29,12 +29,16 @@ bool DownloadThread::doDownload()
 	CURL* easyhandle = curl_easy_init();
         curl_easy_setopt( easyhandle, CURLOPT_URL, m_url.c_str() ) ;
         FILE* file = fopen(m_path.c_str(), "wb");
+
 	if(file){
+
 	    if(m_curl_progress_callback)
 	    {
+
 		// Install the callback function
-		curl_easy_setopt(easyhandle, CURLOPT_NOPROGRESS, false);
+		curl_easy_setopt(easyhandle, CURLOPT_NOPROGRESS, 0);
 		curl_easy_setopt(easyhandle, CURLOPT_PROGRESSFUNCTION, m_curl_progress_callback);
+
 	    }
 
 	    curl_easy_setopt( easyhandle, CURLOPT_WRITEDATA, file) ;
