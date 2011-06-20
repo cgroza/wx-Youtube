@@ -1,8 +1,10 @@
 #include "DownloadThread.hpp"
 
 DownloadThread::DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path,
-			       DownloadCallback* callback ) : 
-    wxThread() , m_url(url), m_path(path), m_video_data(video_data), p_callback(callback)
+        DownloadCallback* callback ,  void (*progress_callback)(void*, double, double , double , double)) : 
+
+    wxThread() , m_url(url), m_path(path), m_video_data(video_data), p_callback(callback),
+    m_curl_progress_callback(progress_callback)
 {
 
 }
@@ -28,6 +30,13 @@ bool DownloadThread::doDownload()
         curl_easy_setopt( easyhandle, CURLOPT_URL, m_url.c_str() ) ;
         FILE* file = fopen(m_path.c_str(), "wb");
 	if(file){
+	    if(m_curl_progress_callback)
+	    {
+		// Install the callback function
+		curl_easy_setopt(easyhandle, CURLOPT_NOPROGRESS, false);
+		curl_easy_setopt(easyhandle, CURLOPT_PROGRESSFUNCTION, m_curl_progress_callback);
+	    }
+
 	    curl_easy_setopt( easyhandle, CURLOPT_WRITEDATA, file) ;
 	    curl_easy_perform( easyhandle );
 	    curl_easy_cleanup( easyhandle );
