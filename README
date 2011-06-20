@@ -1,23 +1,21 @@
 A small utility to download youtube videos, similar to the CLI "youtube-dl"
 
 
-==Dependencies==
+<Dependencies>
 If your on Debian based system install the following packages:
 libwxgtk2.8-dev libwxgtk2.8-dbg libcurl4-gnutls-dev libboost1.42-dev
 
-If your not compile and install the following:
-[boost_url_here]
-[libcurl_url_here]
-[wxWidgets_url_here]
+If you run Arch install the following with pacman:
+boost wxgtk curl
 
 
+If your on neither, compile and install the following libs from these urls:
+[http://www.boost.org/] [curl.haxx.se/libcurl/] [http://www.wxwidgets.org/]
 
-==INSTALLATION==
 
-=Method 1=
-chmod +x pymake
-./pymake
+<Compiling>
+cd to the "src" directory and run "make", if all goes well the executable "wx-Youtube" will be there.
 
-=Method 2=
-Run the following command in your terminal:
-g++ Enums.hpp VideoEntry.hpp VideoEntry.cpp VideoListCtrl.hpp VideoListCtrl.cpp  VideoInfo.hpp VideoInfo.cpp  wx-youtube.hpp wx-youtube.cpp MainApp.hpp MainApp.cpp MainFrame.hpp MainFrame.cpp -lcurl `wx-config --cxxflags --libs`
+
+<Notes>
+This will be in the AUR once it becomes more stable.
