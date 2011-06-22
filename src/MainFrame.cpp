@@ -225,24 +225,32 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
     long video_item_index = video_list -> GetFirstSelected ();
     if (video_item_index != -1) //if found
     {
+	Extract::video_struct current_video;
 	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
-	std::string video_id;
-	
-	std::string real_url;
 	VideoInfo*  info = item -> getVideoData();
-	real_url = Extract::resolve_real_url(info -> getId());
 	
-	std::cout << "Video id is: " << info -> getId() << std::endl;
-	std::cout << "Real url is: " << real_url << std::endl;
-
+	current_video.actual_url = Extract::resolve_real_url(info -> getId());
+	current_video.id = info->getId();
+	current_video.title = info->getName();
+	current_video.save_dir = "/tmp/";
+	current_video.extension = Extract::extension();
+	current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
+	
+	
+	
+	
+	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
+	std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;
+	std::cout << "[#]Format is: " << current_video.extension << std::endl;
+	std::cout << "[#]Full save path: " << current_video.full_save_path << std::endl;
+	
 	// create progress bar dialog
 	ProgressBar* progress =  new ProgressBar(wxT("Downloading..."), 
-						 wxT("The video is downloading now. Please wait."), 100, this, 
+						 wxT("Downloading, please wait"), 100, this, 
 			     wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME  );
 
-
 	//you should atach the ext here, after getting the path
-	DownloadThread* video_dl = new DownloadThread(info, real_url,"/tmp/video", 0,
+	DownloadThread* video_dl = new DownloadThread(info, current_video.actual_url,current_video.full_save_path, 0,
 						       &ProgressBar::CurlProgressCallback);
 	progress -> Show();
 	video_dl -> Create();

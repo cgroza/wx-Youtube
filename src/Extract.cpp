@@ -10,6 +10,7 @@
     
 
 std::string Extract::resolve_buffer;
+int start;
 
 int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer)
 {
@@ -45,6 +46,39 @@ std::string Extract::format_url(std::string id)
     
 }
 
+
+std::string Extract::extension()
+{
+    std::string format;
+    start = resolve_buffer.find("fmt_url_map=");
+    start = start + 12;
+    
+    
+    switch (atoi(resolve_buffer.substr(start, 2).c_str()))
+    {
+	case 5 :  
+	case 34: 
+	case 35: 
+	format = "flv"; 
+	break;
+	
+	case 18:
+	case 22:
+	case 37:
+	case 38:
+	format = "mp4";
+	break;
+	
+	case 17:
+	format = "3gp";
+	break;
+	
+	default: 
+	format = "";
+	break;
+    }
+    return format;	 
+}
 std::string Extract::resolve_real_url(std::string id)
 {
     //This function connects to the internet, and retrieves the
@@ -76,7 +110,7 @@ std::string Extract::resolve_real_url(std::string id)
 	if (result == CURLE_OK)
 	{
 	    //All the magic happens here
-	    int start = resolve_buffer.find("fmt_url_map=") + 17;
+	    start = resolve_buffer.find("fmt_url_map=") + 17;
 	    std::string q_string = resolve_buffer.substr(start, resolve_buffer.length());
 	    std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
 	    std::cout << "Download link found!" << std::endl;

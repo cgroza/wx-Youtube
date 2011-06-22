@@ -2,6 +2,7 @@
 #define PREFWINDOW_H
 
 #include <wx/wx.h>
+#include <wx/stattext.h>
 
 class PrefWindow: public wxFrame
 {
@@ -9,6 +10,10 @@ class PrefWindow: public wxFrame
         PrefWindow(wxWindow* parent);
         
         wxBoxSizer* pref_sizer;
+	wxTextCtrl *save_directory;
+	wxString save_dir();
+	wxStaticText *save_directory_label;
+	
 
     protected:
     private:
