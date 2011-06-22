@@ -11,6 +11,7 @@ ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxStr
 
 void ProgressBar::Update(int val)
 {
+
     wxGauge::SetValue(val);
 
 }
@@ -21,11 +22,8 @@ int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_no
     {
 	int percentage = (dled_now / total_dl) * 100; // calculate %
 	std::cout << percentage  << std::endl;
-	if(percentage != progress)
-	{
-	    progress = percentage;
-	    self -> Update(percentage);
-	}
+	self -> Update(percentage);
+
     }
     return 0;
 }
