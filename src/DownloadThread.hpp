@@ -15,7 +15,7 @@ class DownloadThread : public wxThread
 
 public:
     DownloadThread(VideoInfo* video_data, const std::string& url, const std::string& path, 
-	   DownloadCallback* callback = 0, void (*progress_callback)(void*, double, double , double , double)=0);
+	   DownloadCallback* callback = 0, int (*progress_callback)(void*, double, double , double , double)=0);
 
 
     ~DownloadThread();
@@ -26,7 +26,7 @@ protected:
     std::string m_path; //save path
     VideoInfo* m_video_data; //additional data required by callback function
     DownloadCallback* p_callback; //function object called on tread end
-    void (*m_curl_progress_callback)(void*, double, double , double , double);
+    int (*m_curl_progress_callback)(void*, double, double , double , double);
 
 private:
 

@@ -245,9 +245,8 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	std::cout << "[#]Full save path: " << current_video.full_save_path << std::endl;
 	
 	// create progress bar dialog
-	ProgressBar* progress =  new ProgressBar(wxT("Downloading..."), 
-						 wxT("Downloading, please wait"), 100, this, 
-			     wxPD_SMOOTH | wxPD_ELAPSED_TIME | wxPD_ESTIMATED_TIME | wxPD_REMAINING_TIME  );
+	ProgressBar* progress =  new ProgressBar(this, wxID_ANY, 100,
+						 wxT("Downloading, please wait"));
 
 	//you should atach the ext here, after getting the path
 	DownloadThread* video_dl = new DownloadThread(info, current_video.actual_url,current_video.full_save_path, 0,

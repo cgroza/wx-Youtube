@@ -1,19 +1,21 @@
 #ifndef PROGRESS_BAR_HPP
     #define PROGRESS_BAR_HPP
 
-#include <wx/progdlg.h>
+#include <wx/gauge.h>
 
 
-class ProgressBar : public wxProgressDialog
+class ProgressBar : public wxGauge
 {
 /* This class will serve as progress indicator and it includes a curl progress callback function.  */
 
 
 public:
-    ProgressBar(const wxString& title, const wxString& message, int maximum = 100,
-		wxWindow * parent = NULL, int style = wxPD_AUTO_HIDE | wxPD_APP_MODAL);
+    ProgressBar( wxWindow* parent, wxWindowID id, int range, const wxString& name, const wxPoint& pos = wxDefaultPosition,
+		 const wxSize& size = wxDefaultSize, long style = wxGA_HORIZONTAL, 
+		 const wxValidator& validator = wxDefaultValidator);
 
-    static void CurlProgressCallback(void* ptr, double total_dl, double dled_now , double total_upl  , double upled_now);
+    void Update(int range); 
+    static int CurlProgressCallback(void* ptr, double total_dl, double dled_now , double total_upl  , double upled_now);
 
 
 protected:
