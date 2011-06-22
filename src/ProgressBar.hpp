@@ -2,9 +2,12 @@
     #define PROGRESS_BAR_HPP
 
 #include <wx/gauge.h>
+#include <wx/sizer.h>
+#include <wx/panel.h>
+#include <wx/button.h>
+#include <wx/app.h>
 
-
-class ProgressBar : public wxGauge
+class ProgressBar : public wxPanel
 {
 /* This class will serve as progress indicator and it includes a curl progress callback function.  */
 
@@ -19,9 +22,13 @@ public:
 
 
 protected:
+    wxBoxSizer* h_sizer;
+    wxGauge* gauge;
+    wxButton* cancel_bt;
+
 private:
     static  ProgressBar* self; 	// static reference to itself to be accessed by static functions.
-    static int progress; 
+
 };
 
 
