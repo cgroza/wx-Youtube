@@ -6,17 +6,22 @@
 
 class PrefWindow: public wxFrame
 {
-    public:
-        PrefWindow(wxWindow* parent);
+public:
+    PrefWindow(wxWindow* parent);
+
         
-        wxBoxSizer* pref_sizer;
-	wxTextCtrl *save_directory;
-	wxString save_dir();
-	wxStaticText *save_directory_label;
+    wxBoxSizer* pref_sizer;
+
+    wxRadioButton* rd_save_dir;
+    wxRadioButton* rd_ask_on_dl;
+
+    wxTextCtrl *save_directory;
+    wxString save_dir();
+    wxStaticText *save_directory_label;
 	
 
-    protected:
-    private:
+protected:
+private:
 };
 
 #endif // PREFWINDOW_H
