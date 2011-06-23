@@ -34,6 +34,8 @@ public:
     void OnVideoWatch(wxListEvent& event);
     void OnVideoDownload(wxCommandEvent& event);
 
+    void OnComboBoxSelect(wxCommandEvent& event);
+
     SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;

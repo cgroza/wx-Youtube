@@ -125,7 +125,8 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_LIST_ITEM_SELECTED(LIST_Video_list, MainFrame::OnVideoSelect)
     EVT_LIST_ITEM_ACTIVATED(LIST_Video_list, MainFrame::OnVideoWatch)
     EVT_TEXT_ENTER(TEXT_Search, MainFrame::OnSearch)
-    
+    EVT_COMBOBOX(ID_COMBOBOX, MainFrame::OnComboBoxSelect)
+
 END_EVENT_TABLE()
 
 
@@ -236,9 +237,6 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.extension = Extract::extension();
 	current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
 	
-	
-	
-	
 	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
 	std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;
 	std::cout << "[#]Format is: " << current_video.extension << std::endl;
@@ -280,7 +278,6 @@ SearchType MainFrame::getSearchType()
 {
   int index = combo_box -> GetCurrentSelection(); //get the index from the search 
                                                   //criteria selection box
-
     switch (index)
     {
         case 0:
@@ -293,7 +290,6 @@ SearchType MainFrame::getSearchType()
 	    return PLAY_LIST_SEARCH;
             break;
     }
-
 }
 
 void MainFrame::OnVideoWatch(wxListEvent& event)
@@ -307,4 +303,13 @@ void MainFrame::OnVideoWatch(wxListEvent& event)
 
     }
     event.Skip();
+}
+
+void MainFrame::OnComboBoxSelect(wxCommandEvent& event)
+{
+
+    if(combo_box -> GetCurrentSelection() == 2) download_button -> Disable();
+    else download_button -> Enable();
+    event.Skip();
+
 }
