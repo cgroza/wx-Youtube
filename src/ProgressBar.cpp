@@ -18,23 +18,33 @@ ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxStr
     SetSizerAndFit(h_sizer);
 }
 
+
 void ProgressBar::Update(int val)
 {
 
     gauge -> SetValue(val);
     wxWakeUpIdle();
+
 }
 
 int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_now , double total_upl  , double upled_now)
 {
-    if (total_dl > 0) 		// avoid division by zero
-    {
-	int percentage = (dled_now / total_dl) * 100; // calculate %
+    if(self){
+	if (total_dl > 0) 		// avoid division by zero
+	{
+	    int percentage = (dled_now / total_dl) * 100; // calculate %
+      
+	    self -> Update(percentage);
+	    if(total_dl == dled_now)
+	    {
 
-	self -> Update(percentage);
-	for(int i = 0; i < 10; ++i) 	wxYield();
+		std::cout << "HERE" << std::endl;
+		self -> Destroy();
+		self = 0;
+	    }
+	    // we should notify the user here that the downlod is complete.
+	}
     }
-
     return 0;
 }
 

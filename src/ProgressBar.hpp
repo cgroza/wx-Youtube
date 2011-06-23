@@ -22,9 +22,10 @@ public:
 
 
 protected:
-    wxBoxSizer* h_sizer;
     wxGauge* gauge;
     wxButton* cancel_bt;
+    wxBoxSizer* h_sizer;
+
 
 private:
     static  ProgressBar* self; 	// static reference to itself to be accessed by static functions.
