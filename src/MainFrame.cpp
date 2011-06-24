@@ -229,19 +229,30 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	Extract::video_struct current_video;
 	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
 	VideoInfo*  info = item -> getVideoData();
+	// put config check later here, user may have a default directory
+
+	wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), wxT(""), wxT(""), wxFD_SAVE);
+
+	path_dlg.ShowModal();
 	
 	current_video.actual_url = Extract::resolve_real_url(info -> getId());
 	current_video.id = info->getId();
 	current_video.title = info->getName();
-	current_video.save_dir = "/tmp/";
+	current_video.save_dir = path_dlg.GetDirectory().mb_str();
 	current_video.extension = Extract::extension();
-	current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
-	
+	current_video.full_save_path = std::string(
+	    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
+
+
+	// current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
+
+
+	std::cout << current_video.full_save_path << std::endl;
 	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
 	std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;
 	std::cout << "[#]Format is: " << current_video.extension << std::endl;
 	std::cout << "[#]Full save path: " << current_video.full_save_path << std::endl;
-	
+
 	// create progress bar dialog
 	ProgressBar* progress =  new ProgressBar(GetStatusBar(), wxID_ANY, 100,
 						 wxT("Downloading, please wait"));

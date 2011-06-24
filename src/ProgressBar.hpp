@@ -20,12 +20,20 @@ public:
     void Update(int range); 
     static int CurlProgressCallback(void* ptr, double total_dl, double dled_now , double total_upl  , double upled_now);
 
-
 protected:
     wxGauge* gauge;
     wxButton* cancel_bt;
     wxBoxSizer* h_sizer;
+    static int curl_callback_code;
+    DECLARE_EVENT_TABLE()
 
+    
+    enum
+	{
+	    ID_CANCEL_BUTTON
+	};
+
+    void OnCancel(wxCommandEvent& event);
 
 private:
     static  ProgressBar* self; 	// static reference to itself to be accessed by static functions.

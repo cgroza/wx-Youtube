@@ -8,7 +8,7 @@ ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxStr
 {
     self = this;
     h_sizer = new wxBoxSizer(wxHORIZONTAL);
-    cancel_bt = new wxButton(this, wxID_ANY, wxT("Cancel"));
+    cancel_bt = new wxButton(this, ID_CANCEL_BUTTON, wxT("Cancel"));
     gauge = new wxGauge(this, id, range, pos, size, style, validator, name );
 
 
@@ -37,16 +37,25 @@ int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_no
 	    self -> Update(percentage);
 	    if(total_dl == dled_now)
 	    {
-
-		std::cout << "HERE" << std::endl;
 		self -> Destroy();
 		self = 0;
 	    }
 	    // we should notify the user here that the downlod is complete.
 	}
     }
-    return 0;
+    return curl_callback_code;
+}
+
+void ProgressBar::OnCancel(wxCommandEvent& event)
+{
+    curl_callback_code = 1; 	// abort curl download
+    self -> Destroy();		// destroy progress bar and remove it from status bar
+
 }
 
 ProgressBar* ProgressBar::self = 0; // default
+int ProgressBar::curl_callback_code = 0; 
 
+BEGIN_EVENT_TABLE(ProgressBar, wxPanel)
+    EVT_BUTTON(ID_CANCEL_BUTTON, ProgressBar::OnCancel)
+END_EVENT_TABLE()
