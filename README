@@ -10,7 +10,7 @@ boost wxgtk curl
 
 
 If your on neither, compile and install the following libs from these urls:
-[http://www.boost.org/] [curl.haxx.se/libcurl/] [http://www.wxwidgets.org/]
+[http://www.boost.org/] [http://curl.haxx.se/libcurl/] [http://www.wxwidgets.org/]
 
 
 <Compiling>
