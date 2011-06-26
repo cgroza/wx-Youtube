@@ -15,7 +15,7 @@ class Extract
 	static std::string extension();
 	static void gather_formats();
 	static std::vector<std::string> formats;
-	
+	static std::string return_url();
 	
 	
 	

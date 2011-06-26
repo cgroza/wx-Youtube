@@ -59,42 +59,48 @@ std::string Extract::format_url(std::string id)
 
 void Extract::gather_formats()
 {
-    
+    //This function goes through the retrieved url and grabs all the formats available.
     using namespace boost;
     std::string format;
-    
+    std::cout << "[#]Gathering formats" << std::endl;
+    //First we need index the location of "fmt_url_map" and save it to a var.
     start = resolve_buffer.find("fmt_url_map=");
     start = start + 12;
     
-    
-    //std::vector<std::string> formats;
+    //Here we initilize a vector, decode the buffer, and seperate the relative string.
     std::vector<std::string> tmp;
     std::string fmt_map = urilite::uri::decode2(resolve_buffer.substr(start, resolve_buffer.length()).c_str());
+    
+    //I used boost to split this, similar to Python
     split(tmp, fmt_map, is_any_of(","));
     
-    
+    //For each "," we will run our validation checks and attempt to grab a url, if successful, it will be "push_back" into the vector.
     for (int num = 0; num < tmp.size(); num++)
     {
-	std::string tmp_str = tmp[num].substr(0,3);
+	std::string tmp_str = tmp[num].substr(0,3);  //We only need to check the first three characters
 	
-	if (tmp_str.find("|") == std::string::npos)
+	if (tmp_str.find("|") == std::string::npos)  //If "|" cannot be found, then it is invalid
 	{
-	    //std::cout << "Not valid" << std::endl;
 	    continue;
 	}
 	    
-	else
+	else //If a valid format/url is found, we will continue to process it.
 	{
-	    std::string real_url = tmp[num].substr(tmp[num].find("http:"), tmp[num].length());
+	    std::string real_url = tmp[num].substr(tmp[num].find_first_of("h"), tmp[num].length());
 	    
-	    if (tmp[num].find("http:") != std::string::npos)
+	    
+	    real_url = real_url.substr(0, real_url.find("|"));
+	    
+	    real_url = real_url.substr(0, real_url.find(",")); 
+	    
 	    {
-		switch (atoi(tmp_str.c_str()))
+		
+		switch (atoi(tmp_str.c_str())) 		     //Turns the str into a int, so we can use "switch"
 		{
 		    case 5 :  
 		    case 34: 
 		    case 35: 
-		    formats.push_back("flv");
+		    formats.push_back("flv"); 	
 		    flv_url = real_url;
 		    break;
 
@@ -112,7 +118,6 @@ void Extract::gather_formats()
 		    break;
 	
 		    default: 
-		    std::cout << "No format found" << std::endl;
 		    break;
 		
 		}	
@@ -121,10 +126,12 @@ void Extract::gather_formats()
     }
 }
 
+
 std::string Extract::extension()
 {
-    std::string best_format = "";
-    gather_formats();
+    //Here we return the best format, it goes in order, returning the first one found.
+    
+    //gather_formats();
     
     if (mp4_url != "") { return "mp4"; }
     if (flv_url != "") { return "flv"; }
@@ -132,9 +139,24 @@ std::string Extract::extension()
 	
     
     
-    return best_format;
+    return "";
 }
 
+std::string Extract::return_url()
+{
+    gather_formats();
+    //extension();
+    std::string best = "[#]Best format: ";
+    std::cout << "[#]Finding highest quality" << std::endl;
+    
+    if (mp4_url != "") { std::cout << best + mp4_url << std::endl; return mp4_url; }
+    if (flv_url != "") { std::cout << best + flv_url << std::endl; return flv_url; }
+    if (three_gp_url != "") { std::cout << best + three_gp_url << std::endl; return three_gp_url; }
+	
+    
+    
+    return "";
+}
 
 std::string Extract::resolve_real_url(std::string id)
 {
@@ -143,7 +165,7 @@ std::string Extract::resolve_real_url(std::string id)
     //AFAIK videos can only be downloaded once from the given url (each url has a unique signature), and can only be downloaded from that IP address.
     
     id = format_url(id);
-    std::cout << "Resolving real url for " << id << std::endl;
+    std::cout << "[#]Resolving real url for " << id << std::endl;
     CURL *resolve;
     CURLcode result;
     resolve_buffer.clear();
@@ -167,11 +189,12 @@ std::string Extract::resolve_real_url(std::string id)
 	if (result == CURLE_OK)
 	{
 	    //All the magic happens here
-	    start = resolve_buffer.find("fmt_url_map=") + 17;
-	    std::string q_string = resolve_buffer.substr(start, resolve_buffer.length());
-	    std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
-	    std::cout << "Download link found!" << std::endl;
-	    return real_url;
+	    
+	    //std::string q_string = resolve_buffer.substr(start, resolve_buffer.length());
+	    //std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
+	    //std::cout << "Download link found!" << std::endl;
+	    
+	    return return_url();
 	}
 	else
 	{
