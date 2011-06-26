@@ -43,7 +43,12 @@ int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_no
 	    // we should notify the user here that the downlod is complete.
 	}
     }
-    return curl_callback_code;
+    if(curl_callback_code)
+      {
+	curl_callback_code = 0;	// reset the curl callback code
+	return 1;
+      }
+    else return 0;
 }
 
 void ProgressBar::OnCancel(wxCommandEvent& event)
