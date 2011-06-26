@@ -149,9 +149,9 @@ std::string Extract::return_url()
     std::string best = "[#]Best format: ";
     std::cout << "[#]Finding highest quality" << std::endl;
     
-    if (mp4_url != "") { std::cout << best + mp4_url << std::endl; return mp4_url; }
-    if (flv_url != "") { std::cout << best + flv_url << std::endl; return flv_url; }
-    if (three_gp_url != "") { std::cout << best + three_gp_url << std::endl; return three_gp_url; }
+    if (mp4_url != "") { std::cout << best + "mp4" << std::endl; return mp4_url; }
+    if (flv_url != "") { std::cout << best + "flv" << std::endl; return flv_url; }
+    if (three_gp_url != "") { std::cout << best + "3gp" << std::endl; return three_gp_url; }
 	
     
     

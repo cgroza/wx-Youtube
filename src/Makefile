@@ -5,7 +5,7 @@ LIBS=`wx-config --cxxflags --libs`
 all: wxyoutube
 
 wxyoutube: Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
-	$(CC) -o  Youtube-wx Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
+	$(CC) -o  wx-Youtube Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o XMLFeed.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
 
 XMLFeed.o: XMLFeed.hpp XMLFeed.cpp
 	$(CC) -c -o XMLFeed.o  XMLFeed.cpp  $(CFLAGS) $(LIBS)
