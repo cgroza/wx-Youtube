@@ -23,8 +23,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     lower_panel = new wxPanel(splitter_win);
     lower_notebook = new wxNotebook(lower_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
     description = new VideoDescription(lower_notebook, event_manager, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+    comments_board = new CommentsBoard(lower_notebook, event_manager, wxID_ANY);
 
     lower_notebook -> AddPage(description, wxT("Description"));
+    lower_notebook -> AddPage(comments_board, wxT("Comments Board"));    
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
