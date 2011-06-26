@@ -240,6 +240,7 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.title = info->getName();
 	current_video.save_dir = path_dlg.GetDirectory().mb_str();
 	current_video.extension = Extract::extension();
+	if (current_video.extension == "") {  wxMessageBox(_("We could not retrieve the download link for this video, this can be caused by the video being 18+ (requires login) or the video is not available in your country. We are implementing this feature, hang tight."), _("Our apologies"), wxOK | wxICON_INFORMATION); return;}
 	current_video.full_save_path = std::string(
 	    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
 

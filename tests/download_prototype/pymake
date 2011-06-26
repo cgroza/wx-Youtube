@@ -6,10 +6,10 @@ from os import system
 #Output file options
 output_name="downloader"
 
-files = "download.cxx"
+files = "iter_formats.cxx"
 
 #Compiler args
-args="  -I/usr/include/QtCore -I/usr/include/QtGui -I/usr/include -I. -lcurl `wx-config --cxxflags --libs`"
+args=" -I/usr/include -I. -lcurl `wx-config --cxxflags --libs`"
 
 #Compiler
 compiler="g++"
