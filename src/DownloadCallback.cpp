@@ -13,3 +13,12 @@ void ThumbnailDownloadCallback::operator()(VideoInfo* video_data, std::string& p
 
     m_thumb_obj -> ProcessNewThumbnail(video_data, path);
 }
+
+EnableWidgetCallback::EnableWidgetCallback(wxWindow* widget): m_widget(widget)
+{
+}
+
+void EnableWidgetCallback::operator()(VideoInfo* , std::string&)
+{
+  m_widget -> Enable();
+}

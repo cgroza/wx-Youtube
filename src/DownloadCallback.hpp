@@ -4,6 +4,7 @@
 #include "ThumbnailFrame.hpp"
 #include <string>
 
+
 class DownloadCallback
 {
 public:
@@ -22,4 +23,14 @@ public:
 private:
     ThumbnailFrame* m_thumb_obj;
 };
+
+class EnableWidgetCallback: public DownloadCallback
+{
+public:
+  EnableWidgetCallback(wxWindow* widget);
+  virtual void operator()(VideoInfo* , std::string& ); // dummy prototype
+protected:
+  wxWindow* m_widget;
+};
+
 #endif	// DOWNLOAD_CALLBACK_H
