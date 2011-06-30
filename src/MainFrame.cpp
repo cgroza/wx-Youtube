@@ -16,7 +16,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     choice_string.Add(wxT("Videos"));
     choice_string.Add(wxT("User Videos"));
     choice_string.Add(wxT("Playlist"));
-    choice_string.Add(wxT("Video Link"));
+
 
     splitter_win = new wxSplitterWindow(this);
     splitter_win -> SetMinimumPaneSize(1);
@@ -316,9 +316,7 @@ SearchType MainFrame::getSearchType()
         case 2:
 	    return PLAY_LIST_SEARCH;
             break;
-        case 3:
-	    return VIDEO_LINK_SEARCH;
-	    break;
+
     }
 }
 
