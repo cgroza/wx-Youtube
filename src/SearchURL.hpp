@@ -12,12 +12,13 @@ class SearchURL
 {
 
 private:
-     std::string m_url;
+    std::string m_url;
      // will be used to format a search url.
-     static const std::string VIDEO_SEARCH_URL;
-     static const std::string USER_VIDEO_SEARCH_URL;
-     static const std::string PLAYLIST_SEARCH_URL;
-     const SearchType m_search_type;
+    static const std::string VIDEO_SEARCH_URL;
+    static const std::string USER_VIDEO_SEARCH_URL;
+    static const std::string PLAYLIST_SEARCH_URL;
+    static const std::string VIDEO_LINK_SEARCH_URL;
+    const SearchType m_search_type;
 
 public:
     SearchURL(SearchType search_t, wxString& search_str);

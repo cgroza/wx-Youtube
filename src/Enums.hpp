@@ -20,7 +20,8 @@ enum SearchType
 {
     VIDEO_SEARCH,
     USER_VIDEO_SEARCH,
-    PLAY_LIST_SEARCH
+    PLAY_LIST_SEARCH,
+    VIDEO_LINK_SEARCH
 };
 
 

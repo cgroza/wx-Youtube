@@ -1,12 +1,8 @@
 #include "Parser.hpp"
-#include <iostream>
-
 
 void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
-
     rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
-
 
     while (cur_node != NULL)
         {
@@ -32,17 +28,11 @@ void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_do
 
 void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
-
-
-
     rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
-
 
     //creating video info object for each found video.
     while (cur_node != NULL)
         {
-
-
 	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
           cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
           cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
@@ -56,4 +46,25 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
         }
 
 	delete cur_node;	
+}
+
+void Parser::parseVideoEntry(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* entry)
+{
+
+    rapidxml::xml_node<>* cur_node = entry -> first_node("entry"); //Setup our initial node
+
+    //creating video info object for each found video.
+    while (cur_node != NULL)
+        {
+	    buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
+          cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
+          cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
+          cur_node -> first_node("link") -> first_attribute("href") -> value(),
+          cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
+          cur_node -> first_node("author") -> first_node("name") -> value(),
+          std::string( cur_node -> first_node("id") -> value()).substr(42, std::string::npos),
+          cur_node -> first_node("media:group") -> first_node("media:thumbnail") -> first_attribute("url") -> value()));
+        }
+	delete cur_node;	
+
 }
