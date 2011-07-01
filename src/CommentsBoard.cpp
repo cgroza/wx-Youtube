@@ -13,3 +13,16 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
   m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
   SetSizerAndFit(m_v_sizer);
 }
+
+CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
+    :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
+{
+    m_v_sizer = new wxBoxSizer(wxVERTICAL);
+    m_comment_txt = new wxStaticText(this, wxID_ANY, wxT(""));
+    m_v_sizer -> Add(m_comment_txt, 3, wxALL | wxEXPAND, 0);
+    SetSizerAndFit(m_v_sizer);
+}
+
+CommentsBoard::CommentRect::~CommentRect()
+{
+}

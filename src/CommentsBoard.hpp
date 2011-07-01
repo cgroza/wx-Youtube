@@ -19,9 +19,14 @@ public:
 
   class CommentRect : public wxPanel
   {
-    /*Displays and manages controls for a single video comment.*/
-    CommentRect(wxWindow* parent, wxWindowID id = wxID_ANY);
-    ~CommentRect();
+  public:
+      /*Displays and manages controls for a single video comment.*/
+      CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
+      ~CommentRect();
+  protected:
+      wxBoxSizer* m_v_sizer;
+      wxStaticText* m_comment_txt;
+      CommentInfo* m_comment_info;
   };
 protected:
   wxBoxSizer* m_v_sizer;
