@@ -17,6 +17,7 @@ private:
     static const std::string VIDEO_SEARCH_URL;
     static const std::string USER_VIDEO_SEARCH_URL;
     static const std::string PLAYLIST_SEARCH_URL;
+    static const std::string VIDEO_COMMENTS_SEARCH_URL;
 
     const SearchType m_search_type;
 

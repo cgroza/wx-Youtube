@@ -19,6 +19,10 @@ SearchURL::SearchURL(SearchType search_t, wxString& search_str) : m_search_type(
 	    m_url = (str(format(PLAYLIST_SEARCH_URL) % search_str.mb_str()));
 	    break;
 
+        case VIDEO_COMMENTS_SEARCH:
+	    m_url = (str(format(VIDEO_COMMENTS_SEARCH_URL) % search_str.mb_str()));
+	    break;
+
     }
     // replacing spaces with encoded space " " with -
     // if we do not do this, the search will fail.
@@ -41,4 +45,4 @@ SearchType SearchURL::getSearchType () const
 const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%s";
 const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploads";
 const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&v=2";
-
+const std::string SearchURL::VIDEO_COMMENTS_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos/%s/comments";

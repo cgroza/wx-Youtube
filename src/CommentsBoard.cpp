@@ -14,6 +14,11 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
   SetSizerAndFit(m_v_sizer);
 }
 
+void CommentsBoard::FetchCommentsFeed()
+{
+    
+}
+
 CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
     :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
 {

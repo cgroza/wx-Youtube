@@ -4,12 +4,19 @@
 #include <vector>
 #include <string>
 #include "EventManager.hpp"
+#include "XMLFeed.hpp"
+#include "SearchURL.hpp"
+#include "Enums.hpp"
+#include "Parser.hpp"
+#include "VideoInfo.hpp"
+
 
 class CommentsBoard : public wxPanel
 {
   /*Dispalys and manages video comments.*/
 public:
   CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id = wxID_ANY);
+
 
   class CommentInfo
   {
@@ -27,6 +34,7 @@ public:
       wxBoxSizer* m_v_sizer;
       wxStaticText* m_comment_txt;
       CommentInfo* m_comment_info;
+      VideoInfo* m_current_vid;
   };
 protected:
   wxBoxSizer* m_v_sizer;
@@ -35,5 +43,6 @@ protected:
   std::vector<CommentInfo*>* m_comments;
   
 private:
+    void FetchCommentsFeed();//populates the m_comments
 };
 #endif  // COMMENTS_BOARD_H

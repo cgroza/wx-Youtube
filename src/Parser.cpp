@@ -48,3 +48,7 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
 	delete cur_node;	
 }
 
+void Parser::parseCommentsFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
+{
+
+}

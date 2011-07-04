@@ -13,6 +13,9 @@ public:
     static void parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed);
     // parses the youtube video feed
     static void parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed);
+    // parses the youtube comments feed
+    static void parseCommentsFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed);
 };
+
 
 #endif	// PARSER_H
