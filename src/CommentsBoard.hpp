@@ -9,6 +9,8 @@
 #include "Enums.hpp"
 #include "Parser.hpp"
 #include "VideoInfo.hpp"
+#include "CommentInfo.hpp"
+
 
 
 class CommentsBoard : public wxPanel
@@ -16,13 +18,6 @@ class CommentsBoard : public wxPanel
   /*Dispalys and manages video comments.*/
 public:
   CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id = wxID_ANY);
-
-
-  class CommentInfo
-  {
-    CommentInfo(); 		// to be completed
-    /*Represent a video comment. Contains the video comment text, and and other information.*/
-  };
 
   class CommentRect : public wxPanel
   {

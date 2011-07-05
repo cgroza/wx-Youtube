@@ -48,7 +48,15 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
 	delete cur_node;	
 }
 
-void Parser::parseCommentsFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_document<>* feed)
+void Parser::parseCommentsFeed(std::vector<CommentInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
-
+    rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
+    while (cur_node != NULL)
+    {
+	buffer -> push_back( new CommentInfo(cur_node -> first_node("title") -> value(),
+					     cur_node -> first_node("autor") -> value(),
+					     cur_node -> first_node("content") -> value()
+				 ));
+    }
+    delete cur_node;
 }
