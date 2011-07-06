@@ -3,13 +3,13 @@
 #include "VideoInfo.hpp"
 #include "ThumbnailFrame.hpp"
 #include <string>
-
+#include "XMLFeed.hpp"
 
 class DownloadCallback
 {
 public:
 
-    virtual void operator()(VideoInfo* video_data, std::string& path);
+    virtual void operator()(VideoInfo* video_data, std::string& path) = 0;
 
 };
 
@@ -31,6 +31,13 @@ public:
   virtual void operator()(VideoInfo* , std::string& ); // dummy prototype
 protected:
   wxWindow* m_widget;
+};
+
+
+class FeedFetcherCallback
+{
+public:
+    virtual void operator()(rapidxml::xml_document<>*, int) = 0;
 };
 
 #endif	// DOWNLOAD_CALLBACK_H
