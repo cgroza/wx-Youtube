@@ -199,7 +199,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
                         wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
                         break;
                 case 56:
-                        wxMessageBox(_("Recieve error"),          _("Error"), wxOK | wxICON_INFORMATION);
+                        wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
                         break;
                 case NO_SEARCH_RESULT:
                         break;

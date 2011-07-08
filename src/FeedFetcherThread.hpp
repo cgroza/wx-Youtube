@@ -2,13 +2,13 @@
 #define FEED_FETCHER_THREAD_H
 #include "DownloadCallback.hpp"
 #include "XMLFeed.hpp"
-
+#include <wx/thread.h>
 
 class FeedFetcherThread : public wxThread
 {
 /* Takes a XMLFeed as an argument, runs it and calls the provided callback with a rapidxml::xml_document as an argument and the curl exit code.   */
 public:
-    FeedFetcherThread(FeedFetcherCallback* callback, XMLFeed* feed);
+    FeedFetcherThread(XMLFeed* feed, FeedFetcherCallback* callback = 0);
     ~FeedFetcherThread();
     virtual void* Entry();
 

@@ -12,7 +12,11 @@ DownloadThread::DownloadThread(VideoInfo* video_data, const std::string& url, co
 
 DownloadThread::~DownloadThread()
 {
-    delete p_callback;
+    if(p_callback)
+    {
+	delete p_callback;
+	p_callback = 0;
+    }
 }
 
 void* DownloadThread::Entry()
