@@ -19,7 +19,7 @@ VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, con
     m_sizer -> Add(m_thumbnail_frame, 1, wxEXPAND | wxALL, 0);
 
     SetSizerAndFit(m_sizer);
-
+    // bind events
     evt_man -> BindSelectVideoEvent(selected_video_event);
     evt_man -> BindDeleteVideosEvent(deleted_video_event);
 
