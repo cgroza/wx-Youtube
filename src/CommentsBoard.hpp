@@ -22,9 +22,9 @@ class CommentsBoard : public wxPanel
 public:
     CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id = wxID_ANY);
 
-    void OnFeedFetched();
-    void FetchCommentsFeed();//populates the m_comments
-
+    void AddComment(CommentInfo* comment);
+    void DeleteAllComments();
+    void RefreshCommentList(); // adds every CommentInfo from the m_comments
 
     friend class FetchCommentsCallback;
     friend class OnVideoSelect;
@@ -48,25 +48,30 @@ protected:
     static std::vector<CommentInfo*>* m_comments;
     static VideoInfo* m_current_vid;
 
+    bool thread_lock;
+
+    void OnFeedFetched(); 	// called when the comments feed has been fetched and parsed.
+    void FetchCommentsFeed();   // starts a thread that fetches the comments
+
     class FetchCommentsCallback: public FeedFetcherCallback
     {
     public:
 	FetchCommentsCallback(CommentsBoard* parent): m_parent(parent){}
 	virtual void operator()(rapidxml::xml_document<>* feed, int exit_code)
 	    {
-		// delete the old comments
-		// create iterator
-		std::vector<CommentInfo*>::iterator del = m_comments -> begin();
-		for(del; del < m_comments -> end(); ++del) 
-		{
-		    delete *del;
-		    *del = 0;	// delete comment and set pointer to NULL
-		}
+		m_parent -> DeleteAllComments();
 
-		if(exit_code) delete feed ;return; // there was an error when curl fetched the feed.
+		if(exit_code)
+		{ // there was an error when curl fetched the feed.
+		    delete feed ;
+		    return;
+		}
 		// parse and populate received feed
+
 		Parser::parseCommentsFeed(CommentsBoard::m_comments, feed);
+
 		m_parent -> OnFeedFetched(); // notify the comments board that the comments vector has been populated
+
 		delete feed;		     // free the memorry occupied by the feed
 	    }
     private:

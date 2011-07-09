@@ -45,7 +45,6 @@ public:
     // fetches the youtube xml feed
     bool fetchFeed();
 
-    //returns search video info entries.
     rapidxml::xml_document<>* getXMLFeed() const;
 
     int getErrorCode() const;
