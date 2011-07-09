@@ -69,9 +69,7 @@ protected:
 		// parse and populate received feed
 
 		Parser::parseCommentsFeed(CommentsBoard::m_comments, feed);
-
 		m_parent -> OnFeedFetched(); // notify the comments board that the comments vector has been populated
-
 		delete feed;		     // free the memorry occupied by the feed
 	    }
     private:

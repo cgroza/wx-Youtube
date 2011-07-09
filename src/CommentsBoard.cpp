@@ -39,9 +39,12 @@ void CommentsBoard::DeleteAllComments()
 void CommentsBoard::RefreshCommentList()
 {
     std::vector<CommentInfo*>::iterator it = m_comments -> begin();
+
     for(it; it < m_comments -> end(); ++it)
     {
+
 	CommentRect* comment_rect = new CommentRect(m_comments_pane, *it);
+
 	m_v_sizer -> Add(comment_rect, 0, wxEXPAND|wxALL, 0);
     }
     m_comments_pane -> Layout();
@@ -77,7 +80,9 @@ void CommentsBoard::FetchCommentsFeed()
 CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
     :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
 {
+
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
+
     m_comment_txt = new wxStaticText(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
     m_v_sizer -> Add(m_comment_txt, 3, wxALL | wxEXPAND, 0);
     SetSizerAndFit(m_v_sizer);
