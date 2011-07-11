@@ -29,7 +29,7 @@ public:
     friend class FetchCommentsCallback;
     friend class OnVideoSelect;
 
-    class CommentRect : public wxPanel
+    class CommentRect : public wxStaticBox
     {
     public:
 	/*Displays and manages controls for a single video comment.*/
