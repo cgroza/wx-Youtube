@@ -36,7 +36,7 @@ public:
 	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
 	~CommentRect();
     protected:
-	wxBoxSizer* m_v_sizer;
+//	wxBoxSizer* m_v_sizer;
 	wxStaticText* m_comment_txt;
 	CommentInfo* m_comment_info;
     };
@@ -49,7 +49,7 @@ protected:
     static VideoInfo* m_current_vid;
 
     bool thread_lock;
-
+    FeedFetcherThread* curr_thread;
     void OnFeedFetched(); 	// called when the comments feed has been fetched and parsed.
     void FetchCommentsFeed();   // starts a thread that fetches the comments
 

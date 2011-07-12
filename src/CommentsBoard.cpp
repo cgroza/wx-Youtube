@@ -1,7 +1,7 @@
 #include "CommentsBoard.hpp"
 
 CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id): wxPanel(parent), m_v_sizer(0),
-										   m_comments_pane(0), thread_lock(false)
+					      m_comments_pane(0), thread_lock(false), curr_thread(0)
 {
     // create the event handler an bind it
     on_select = new OnVideoSelect(this);
@@ -55,12 +55,14 @@ void CommentsBoard::OnFeedFetched()
 {
     // display the comments
     RefreshCommentList();
-
+    curr_thread = 0;
+    thread_lock = false;
 }
 
 void CommentsBoard::FetchCommentsFeed()
 {
-    if(thread_lock);		// kill existing running thread first
+    if(thread_lock && curr_thread) curr_thread -> Delete();		// kill existing running thread first
+
     if(m_current_vid)
     {
 	wxString* video_id = new wxString(m_current_vid -> getId().c_str(), wxConvUTF8); // get video id
@@ -73,19 +75,23 @@ void CommentsBoard::FetchCommentsFeed()
 	// create and run the fetcher thread
 	FeedFetcherThread* feed_fetch_thread = new FeedFetcherThread(xml_feed, callback);
 	feed_fetch_thread -> Create();
+
+	curr_thread = feed_fetch_thread;
+	thread_lock = true;
+
 	feed_fetch_thread -> Run();
     }
 }
 
 CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
-    :wxStaticBox(parent, id, wxT("Comment")), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
+    :wxStaticBox(parent, id, wxT("Comment")), /*m_v_sizer(0),*/ m_comment_txt(0), m_comment_info(comment)
 {
 
-    m_v_sizer = new wxBoxSizer(wxVERTICAL);
+//    m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
     m_comment_txt = new wxStaticText(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
-    m_v_sizer -> Add(m_comment_txt, 3, wxALL | wxEXPAND, 0);
-    SetSizerAndFit(m_v_sizer);
+//    m_v_sizer -> Add(m_comment_txt, 3, wxALL | wxEXPAND, 0);
+//    SetSizerAndFit(m_v_sizer);
 
 }
 
