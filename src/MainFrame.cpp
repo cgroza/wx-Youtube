@@ -236,16 +236,19 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	
 	
 	current_video.title = info->getName();
-	current_video.extension = Extract::extension();
 	current_video.id = info->getId();
 	
+	//I may take some of this and put it all into Extract.cpp to reduce clutter.
+	current_video.actual_url = Extract::resolve_real_url(current_video.id);
+	Extract::gather_formats();
+	current_video.extension = Extract::extension();
 	
 	wxString title(current_video.title.c_str(), wxConvUTF8);
 	wxString ext(current_video.extension.c_str(), wxConvUTF8);
 
 	wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
 
-	current_video.actual_url = Extract::resolve_real_url(current_video.id);
+	
 	
 	
 	path_dlg.ShowModal();
