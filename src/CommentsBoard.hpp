@@ -77,11 +77,12 @@ protected:
 
 		delete feed;		     // free the memorry occupied by the feed
 
+		// Notify the parent via an event
 		wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, CommentsBoard::ON_FEED_FETCHED);
 		event.SetInt(exit_code);
 		m_parent -> GetEventHandler() -> AddPendingEvent(event);
 		return;
-		// Notify the parent via an event
+
 	    }
     private:
 	CommentsBoard* m_parent;

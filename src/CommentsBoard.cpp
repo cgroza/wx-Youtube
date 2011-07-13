@@ -84,12 +84,11 @@ CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, 
     :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
 {
 
-//    m_v_sizer = new wxBoxSizer(wxVERTICAL);
+    m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
     m_comment_txt = new wxStaticText(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
-//    m_v_sizer -> Add(m_comment_txt, 0, wxALL | wxEXPAND, 0);
-//    SetSizerAndFit(m_v_sizer);
-
+    m_v_sizer -> Add(m_comment_txt, 0, wxALL | wxEXPAND, 0);
+    SetSizerAndFit(m_v_sizer);
 }
 
 CommentsBoard::CommentRect::~CommentRect()
