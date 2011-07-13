@@ -114,8 +114,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     CreateStatusBar();
     SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % (_WXYT_VERSION))
-
 }
+
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(MENU_Quit, MainFrame::OnQuit)

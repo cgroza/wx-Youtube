@@ -74,7 +74,7 @@ void Extract::gather_formats()
     //I used boost to split this, similar to Python
     split(tmp, fmt_map, is_any_of(","));
     
-    //For each "," we will run our validation checks and attempt to grab a url, if successful, it will be "push_back"d into the vector.
+    //For each "," we will run our validation checks and attempt to grab a url, if successful, it will be "push_back" into the vector.
     for (int num = 0; num < tmp.size(); num++)
     {
 	std::string tmp_str = tmp[num].substr(0,3);  //We only need to check the first three characters
@@ -136,8 +136,10 @@ std::string Extract::extension()
     if (mp4_url != "") { return "mp4"; }
     if (flv_url != "") { return "flv"; }
     if (three_gp_url != "") { return "3gp"; }
+	
     
-    else { return ""; }
+    
+    return "";
 }
 
 std::string Extract::return_url()

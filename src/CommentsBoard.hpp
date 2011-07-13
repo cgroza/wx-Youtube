@@ -29,28 +29,31 @@ public:
     friend class FetchCommentsCallback;
     friend class OnVideoSelect;
 
-    class CommentRect : public wxStaticBox
+    class CommentRect : public wxPanel
     {
     public:
 	/*Displays and manages controls for a single video comment.*/
 	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
 	~CommentRect();
     protected:
-//	wxBoxSizer* m_v_sizer;
+	wxBoxSizer* m_v_sizer;
 	wxStaticText* m_comment_txt;
 	CommentInfo* m_comment_info;
     };
 
 protected:
+
+    static const int ON_FEED_FETCHED = 100000;
+
     wxBoxSizer* m_v_sizer;
     wxPanel* m_comments_pane;
+    wxBoxSizer* m_comments_v_sizer;
+
     wxTextCtrl* m_comment_txt;
     static std::vector<CommentInfo*>* m_comments;
     static VideoInfo* m_current_vid;
 
-    bool thread_lock;
-    FeedFetcherThread* curr_thread;
-    void OnFeedFetched(); 	// called when the comments feed has been fetched and parsed.
+    void OnFeedFetched(wxCommandEvent& event); 	// called when the comments feed has been fetched and parsed.
     void FetchCommentsFeed();   // starts a thread that fetches the comments
 
     class FetchCommentsCallback: public FeedFetcherCallback
@@ -59,6 +62,8 @@ protected:
 	FetchCommentsCallback(CommentsBoard* parent): m_parent(parent){}
 	virtual void operator()(rapidxml::xml_document<>* feed, int exit_code)
 	    {
+		// create event and post it to parent
+
 		m_parent -> DeleteAllComments();
 
 		if(exit_code)
@@ -69,8 +74,14 @@ protected:
 		// parse and populate received feed
 
 		Parser::parseCommentsFeed(CommentsBoard::m_comments, feed);
-		m_parent -> OnFeedFetched(); // notify the comments board that the comments vector has been populated
+
 		delete feed;		     // free the memorry occupied by the feed
+
+		wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, CommentsBoard::ON_FEED_FETCHED);
+		event.SetInt(exit_code);
+		m_parent -> GetEventHandler() -> AddPendingEvent(event);
+		return;
+		// Notify the parent via an event
 	    }
     private:
 	CommentsBoard* m_parent;
@@ -93,5 +104,6 @@ protected:
 
 private:
     OnVideoSelect* on_select;
+    DECLARE_EVENT_TABLE()
 };
 #endif  // COMMENTS_BOARD_H
