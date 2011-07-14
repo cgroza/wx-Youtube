@@ -1,7 +1,7 @@
 #include "CommentsBoard.hpp"
 
 CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id): wxPanel(parent), m_v_sizer(0),
-							      m_comments_pane(0), m_comments_v_sizer(0)
+							      m_comments_pane(0)
 {
     // create the event handler an bind it
     on_select = new OnVideoSelect(this);
@@ -9,21 +9,13 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
 
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
-    m_comments_pane = new wxPanel(this);
-    m_comments_v_sizer = new wxBoxSizer(wxVERTICAL);
-    m_comments_pane -> SetSizerAndFit(m_comments_v_sizer);
+    m_comments_pane = new CommentsPane(this);
 
     m_comment_txt = new wxTextCtrl(this, wxID_ANY);
-    m_v_sizer -> Add(m_comments_pane, 3, wxEXPAND | wxALL, 0);
+    m_v_sizer -> Add(m_comments_pane, 4, wxEXPAND | wxALL, 0);
     m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
+    SetSizerAndFit(m_v_sizer);
 
-}
-
-void CommentsBoard::AddComment(CommentInfo* comment)
-{
-    CommentRect* comment_rect = new CommentRect(m_comments_pane, comment);
-    m_comments_v_sizer -> Add(comment_rect, 0, wxEXPAND|wxALL, 0);
-    m_comments_pane -> Layout();
 }
 
 void CommentsBoard::DeleteAllComments()
@@ -37,25 +29,13 @@ void CommentsBoard::DeleteAllComments()
 	delete *del;
 	*del = 0;	// delete comment and set pointer to NULL
     }
-
+    m_comments -> clear();
 }
-void CommentsBoard::RefreshCommentList()
-{
-    std::vector<CommentInfo*>::iterator it = m_comments -> begin();
-    for(it; it < m_comments -> end(); ++it)
-    {
-	CommentRect* comment_rect = new CommentRect(m_comments_pane, *it);
-	m_comments_v_sizer -> Add(comment_rect, 0, wxEXPAND|wxALL, 0);
-    }
-    m_comments_pane -> Layout();
-}
-
 
 void CommentsBoard::OnFeedFetched(wxCommandEvent& event)
 {
-    m_v_sizer -> Clear(true);	// delete the comment rects from the comments panel
     // display the comments
-    RefreshCommentList();
+    m_comments_pane -> RefreshCommentList();
 
     event.Skip();
 }
@@ -80,7 +60,7 @@ void CommentsBoard::FetchCommentsFeed()
     }
 }
 
-CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
+CommentsPane::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
     :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
 {
 
@@ -91,9 +71,38 @@ CommentsBoard::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, 
     SetSizerAndFit(m_v_sizer);
 }
 
-CommentsBoard::CommentRect::~CommentRect()
+CommentsPane::CommentRect::~CommentRect()
 {
 }
+
+CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_v_sizer(0), m_parent(parent)
+{
+    m_v_sizer = new wxBoxSizer(wxVERTICAL);
+    SetSizerAndFit(m_v_sizer);
+}
+
+
+void CommentsPane::AddComment(CommentInfo* comment)
+{
+    CommentRect* comment_rect = new CommentRect(this, comment);
+    m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
+    
+    Fit();
+}
+
+
+void CommentsPane::RefreshCommentList()
+{
+    m_v_sizer -> Clear(true);	// delete the comment rects from the comments panel
+    std::vector<CommentInfo*>::iterator it = m_parent ->  m_comments -> begin();
+    for(it; it < m_parent -> m_comments -> end(); ++it)
+    {
+	CommentRect* comment_rect = new CommentRect(this, *it);
+	m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
+    }
+    Fit();
+}
+
 std::vector<CommentInfo*>* CommentsBoard::m_comments = new std::vector<CommentInfo*>();
 VideoInfo* CommentsBoard::m_current_vid = 0;
 

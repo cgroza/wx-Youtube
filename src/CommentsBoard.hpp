@@ -14,40 +14,29 @@
 #include "CommentInfo.hpp"
 #include "FeedFetcherThread.hpp"
 #include "DownloadCallback.hpp"
+#include <wx/scrolwin.h>
 
 
+class CommentsPane ;
 class CommentsBoard : public wxPanel
 {
     /*Dispalys and manages video comments.*/
 public:
     CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID id = wxID_ANY);
 
-    void AddComment(CommentInfo* comment);
     void DeleteAllComments();
-    void RefreshCommentList(); // adds every CommentInfo from the m_comments
 
     friend class FetchCommentsCallback;
     friend class OnVideoSelect;
-
-    class CommentRect : public wxPanel
-    {
-    public:
-	/*Displays and manages controls for a single video comment.*/
-	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
-	~CommentRect();
-    protected:
-	wxBoxSizer* m_v_sizer;
-	wxStaticText* m_comment_txt;
-	CommentInfo* m_comment_info;
-    };
+    friend class CommentsPane;
 
 protected:
 
     static const int ON_FEED_FETCHED = 100000;
 
     wxBoxSizer* m_v_sizer;
-    wxPanel* m_comments_pane;
-    wxBoxSizer* m_comments_v_sizer;
+    CommentsPane* m_comments_pane;
+
 
     wxTextCtrl* m_comment_txt;
     static std::vector<CommentInfo*>* m_comments;
@@ -107,4 +96,32 @@ private:
     OnVideoSelect* on_select;
     DECLARE_EVENT_TABLE()
 };
+
+
+class CommentsPane : public wxScrolledWindow
+{
+public:
+    CommentsPane(CommentsBoard* parent);
+
+    void AddComment(CommentInfo* comment);
+    void RefreshCommentList(); // adds every CommentInfo from the m_comments
+
+    class CommentRect : public wxPanel
+    {
+    public:
+	/*Displays and manages controls for a single video comment.*/
+	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
+	~CommentRect();
+    protected:
+	wxBoxSizer* m_v_sizer;
+	wxStaticText* m_comment_txt;
+	CommentInfo* m_comment_info;
+    };
+
+private:
+    CommentsBoard* m_parent;
+    wxBoxSizer* m_v_sizer;
+
+};
 #endif  // COMMENTS_BOARD_H
+

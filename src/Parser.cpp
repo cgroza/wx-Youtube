@@ -51,15 +51,16 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
 void Parser::parseCommentsFeed(std::vector<CommentInfo*>* buffer, rapidxml::xml_document<>* feed)
 {
 
-    int counter = 0; 		// debug
+//    int counter = 0; 		// debug
     rapidxml::xml_node<>* cur_node = feed -> first_node("feed")->first_node("entry"); //Setup our initial node
-    while (cur_node != NULL && counter < 20)
+    while (cur_node != NULL /*&& counter < 20*/)
     {
 	buffer -> push_back( new CommentInfo(cur_node -> first_node("title") -> value(),
 					     cur_node -> first_node("author") -> value(),
 					     cur_node -> first_node("content") -> value()
 				 ));
-	counter ++;
+        cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
+//	counter ++;
     }
 //    delete cur_node;
 
