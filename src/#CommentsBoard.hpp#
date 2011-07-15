@@ -120,6 +120,7 @@ public:
     // 	CommentInfo* m_comment_info;
     // };
 
+
 private:
     wxTextCtrl* m_comment_txt;
     CommentsBoard* m_parent;
