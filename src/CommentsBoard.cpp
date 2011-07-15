@@ -60,52 +60,35 @@ void CommentsBoard::FetchCommentsFeed()
     }
 }
 
-// CommentsPane::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id)
-//     :wxPanel(parent, id), m_v_sizer(0), m_comment_txt(0), m_comment_info(comment)
-// {
-
-//     m_v_sizer = new wxBoxSizer(wxVERTICAL);
-
-//     m_comment_txt = new wxTextCtrl(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
-//     m_v_sizer -> Add(m_comment_txt, 0, wxALL | wxEXPAND, 0);
-//     SetSizerAndFit(m_v_sizer);
-// }
-
-// CommentsPane::CommentRect::~CommentRect()
-// {
-// }
-
 CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_v_sizer(0), m_parent(parent)
 {
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
-    //wxString(m_comment_info -> getContent().c_str(), wxConvUTF8)
-    m_comment_txt = new wxTextCtrl(this, wxID_ANY, wxT("Comments"), wxDefaultPosition, wxDefaultSize,
+
+    m_comment_display = new wxTextCtrl(this, wxID_ANY, wxT("Comments"), wxDefaultPosition, wxDefaultSize,
 				   wxTE_MULTILINE|wxTE_READONLY);
 
-    m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND|wxALL, 0);
+    m_v_sizer -> Add(m_comment_display, 1, wxEXPAND|wxALL, 0);
     SetSizerAndFit(m_v_sizer);
 }
 
 
 void CommentsPane::AddComment(CommentInfo* comment)
 {
-    //CommentRect* comment_rect = new CommentRect(this, comment);
-    //m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
-    
+    m_comment_display -> AppendText(wxString(comment -> getContent().c_str(), wxConvUTF8));    
     Layout();
 }
 
 
 void CommentsPane::RefreshCommentList()
 {
-    // m_v_sizer -> Clear(true);	// delete the comment rects from the comments panel
+
     std::vector<CommentInfo*>::iterator it = m_parent ->  m_comments -> begin();
     for(it; it < m_parent -> m_comments -> end(); ++it)
     {
-	//wxString(m_comment_info -> getContent().c_str(), wxConvUTF8)
-	m_comment_txt->AppendText(wxString((*it) -> getContent().c_str(), wxConvUTF8));
-	//CommentRect* comment_rect = new CommentRect(this, *it);
-	// m_v_sizer -> Add(m_comment_txt);
+
+	m_comment_display -> AppendText(wxString((*it) -> getContent().c_str(), wxConvUTF8));
+n
+
     }
     Layout();
 }
@@ -113,6 +96,7 @@ void CommentsPane::RefreshCommentList()
 std::vector<CommentInfo*>* CommentsBoard::m_comments = new std::vector<CommentInfo*>();
 VideoInfo* CommentsBoard::m_current_vid = 0;
 
+
 BEGIN_EVENT_TABLE(CommentsBoard, wxPanel)
-EVT_COMMAND (ON_FEED_FETCHED, wxEVT_COMMAND_TEXT_UPDATED, CommentsBoard::OnFeedFetched)
+EVT_COMMAND (ON_FEED_FETCHED, wxEVT_COMMAND_TEXT_UPDATED, CommentsBoard::OnFeedFetched) // fired when the feed fetcher is done
 END_EVENT_TABLE()

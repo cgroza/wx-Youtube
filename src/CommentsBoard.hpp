@@ -97,7 +97,7 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-
+;
 class CommentsPane : public wxScrolledWindow
 {
 public:
@@ -105,23 +105,9 @@ public:
 
     void AddComment(CommentInfo* comment);
     void RefreshCommentList(); // adds every CommentInfo from the m_comments
-    
-
-    // class CommentRect : public wxPanel
-    // {
-    // public:
-    // 	/*Displays and manages controls for a single video comment.*/
-    // 	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
-    // 	~CommentRect();
-	
-    // protected:
-    // 	wxBoxSizer* m_v_sizer;
-    // 	wxTextCtrl* m_comment_txt;
-    // 	CommentInfo* m_comment_info;
-    // };
 
 private:
-    wxTextCtrl* m_comment_txt;
+    wxTextCtrl* m_comment_display;
     CommentsBoard* m_parent;
     wxBoxSizer* m_v_sizer;
 
