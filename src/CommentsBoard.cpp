@@ -11,9 +11,9 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
 
     m_comments_pane = new CommentsPane(this);
 
-    m_comment_txt = new wxTextCtrl(this, wxID_ANY);
-    m_v_sizer -> Add(m_comments_pane, 4, wxEXPAND | wxALL, 0);
-    m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
+   // m_comment_txt = new wxTextCtrl(this, wxID_ANY);
+    //m_v_sizer -> Add(m_comments_pane, 4, wxEXPAND | wxALL, 0);
+    //m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
     SetSizerAndFit(m_v_sizer);
 
 }
@@ -66,7 +66,7 @@ CommentsPane::CommentRect::CommentRect(wxWindow* parent, CommentInfo* comment, w
 
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
-    m_comment_txt = new wxStaticText(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
+    m_comment_txt = new wxTextCtrl(this, wxID_ANY, wxString(m_comment_info -> getContent().c_str(), wxConvUTF8));
     m_v_sizer -> Add(m_comment_txt, 0, wxALL | wxEXPAND, 0);
     SetSizerAndFit(m_v_sizer);
 }
@@ -78,16 +78,18 @@ CommentsPane::CommentRect::~CommentRect()
 CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_v_sizer(0), m_parent(parent)
 {
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
+    //wxString(m_comment_info -> getContent().c_str(), wxConvUTF8)
+    m_comment_txt = new wxTextCtrl(this, wxID_ANY, wxT("Comments"));
     SetSizerAndFit(m_v_sizer);
 }
 
 
 void CommentsPane::AddComment(CommentInfo* comment)
 {
-    CommentRect* comment_rect = new CommentRect(this, comment);
-    m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
+    //CommentRect* comment_rect = new CommentRect(this, comment);
+    //m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
     
-    Fit();
+    //Fit();
 }
 
 
@@ -97,8 +99,10 @@ void CommentsPane::RefreshCommentList()
     std::vector<CommentInfo*>::iterator it = m_parent ->  m_comments -> begin();
     for(it; it < m_parent -> m_comments -> end(); ++it)
     {
-	CommentRect* comment_rect = new CommentRect(this, *it);
-	m_v_sizer -> Add(comment_rect, 1, wxEXPAND|wxALL, 0);
+	//wxString(m_comment_info -> getContent().c_str(), wxConvUTF8)
+	m_comment_txt->AppendText(wxString((*it) -> getContent().c_str(), wxConvUTF8));
+	//CommentRect* comment_rect = new CommentRect(this, *it);
+	m_v_sizer -> Add(m_comment_txt);
     }
     Fit();
 }

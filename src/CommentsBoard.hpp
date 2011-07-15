@@ -105,16 +105,18 @@ public:
 
     void AddComment(CommentInfo* comment);
     void RefreshCommentList(); // adds every CommentInfo from the m_comments
-
+    
+    wxTextCtrl* m_comment_txt;
     class CommentRect : public wxPanel
     {
     public:
 	/*Displays and manages controls for a single video comment.*/
 	CommentRect(wxWindow* parent, CommentInfo* comment, wxWindowID id = wxID_ANY);
 	~CommentRect();
+	
     protected:
 	wxBoxSizer* m_v_sizer;
-	wxStaticText* m_comment_txt;
+	wxTextCtrl* m_comment_txt;
 	CommentInfo* m_comment_info;
     };
 
