@@ -30,15 +30,15 @@ public:
     friend class OnVideoSelect;
     friend class CommentsPane;
 
-protected:
+private:
 
-    static const int ON_FEED_FETCHED = 100000;
+    static const int ON_FEED_FETCHED = 100000; // event ID used to notify this class
 
     wxBoxSizer* m_v_sizer;
-    CommentsPane* m_comments_pane;
-
+    CommentsPane* m_comments_pane; //comments are displayed in this object instance
 
     wxTextCtrl* m_comment_txt;	                  // entry for the user to comment on the video
+
     static std::vector<CommentInfo*>* m_comments; // holds the video comment objects
     static VideoInfo* m_current_vid;		  // holds the current selected video
 
@@ -64,14 +64,13 @@ protected:
 		// parse and populate received feed
 
 		Parser::parseCommentsFeed(CommentsBoard::m_comments, feed); // parse the xml feed into ComentInfo* objects
-
 		delete feed;		     // free the memorry occupied by the feed, we don't need the feed anymore,
 					     // we lready stored the information we need in the m_comments vector
 
 		// Notify the parent that we are done via an event
 		wxCommandEvent event(wxEVT_COMMAND_TEXT_UPDATED, CommentsBoard::ON_FEED_FETCHED);
 		event.SetInt(exit_code);
-		m_parent -> GetEventHandler() -> AddPendingEvent(event);
+		m_parent -> GetEventHandler() -> AddPendingEvent(event); // add the event to the event queue of m_parent
 		return;
 
 	    }
@@ -87,15 +86,16 @@ protected:
 	virtual void operator()(VideoSelectEvent* event)
 	    {
 		CommentsBoard::m_current_vid = event -> GetVideoInfo(); // get and set the current video
-		m_parent -> FetchCommentsFeed();
+		m_parent -> FetchCommentsFeed(); // start the comment feed fetching procedure
 
 	    }
     private:
 	CommentsBoard* m_parent;
     };
 
-private:
-    OnVideoSelect* on_select;
+
+    OnVideoSelect* on_select;	// callable class instance
+				// it is called when the user selects a video
     DECLARE_EVENT_TABLE()
 };
 
