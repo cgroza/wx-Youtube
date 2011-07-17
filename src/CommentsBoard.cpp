@@ -22,9 +22,8 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
 void CommentsBoard::DeleteAllComments()
 {
     // delete the old comments, free the memory and clear the vector.
-    // create iterator
 
-    std::vector<CommentInfo*>::iterator del = m_comments -> begin();
+    std::vector<CommentInfo*>::iterator del = m_comments -> begin();    // create iterator
     for(del; del < m_comments -> end(); ++del) 
     {
 	delete *del;
@@ -74,7 +73,7 @@ CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_
 }
 
 
-void CommentsPane::AddComment(CommentInfo* comment)
+void CommentsPane::AddComment(const CommentInfo* comment)
 {
     // Append the comment to the text ctrl
     m_comment_display -> AppendText(wxString(comment -> getContent().c_str(), wxConvUTF8));    
@@ -87,7 +86,7 @@ void CommentsPane::RefreshCommentList()
     // remove the old comment text from the text ctrl
     m_comment_display -> Clear();
     // loop through the comments vector and add each comment to the text ctrl
-    std::vector<CommentInfo*>::iterator it = m_parent ->  m_comments -> begin();
+    std::vector<CommentInfo*>::const_iterator it = m_parent ->  m_comments -> begin();
     for(it; it < m_parent -> m_comments -> end(); ++it)
     {
 

@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include "VideoEntry.hpp"
+#include "Enums.hpp"
+#include "VideoInfo.hpp"
+
 
 class VideoListCtrl: public wxListView {
 

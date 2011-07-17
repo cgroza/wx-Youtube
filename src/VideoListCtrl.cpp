@@ -1,6 +1,4 @@
 #include "VideoListCtrl.hpp"
-#include "Enums.hpp"
-#include "VideoInfo.hpp"
 
 VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListView(parent, LIST_Video_list, wxDefaultPosition, wxSize(600,400), wxLC_REPORT | wxLC_SINGLE_SEL){
 
@@ -33,7 +31,7 @@ VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListView(parent, LIST_Video_l
 void VideoListCtrl::AddVideo(VideoInfo* video_data){
     VideoEntry* entry = new VideoEntry(video_data);
 
-    long int item_index = InsertItem(*entry);
+    long item_index = InsertItem(*entry);
     SetItem(item_index, 0, wxString(video_data -> getName().c_str(),wxConvUTF8)); //want this for col. 0
     SetItem(item_index, 1, wxString(video_data -> getAuthor().c_str() , wxConvUTF8)); //col. 1
     SetItem(item_index, 2, wxString(video_data -> getRating().c_str(),wxConvUTF8)); //col 2
@@ -43,7 +41,12 @@ void VideoListCtrl::AddVideo(VideoInfo* video_data){
 
 VideoEntry* VideoListCtrl::GetVideoEntry(long index)
 {
-    return entries[index];
+    // we are deducing the real position of the required entry.
+    // the order of the entries vector elements is renversed relatively to the
+    // video list order, so we must do some math to get the right position
+    return entries[entries.size() - index - 1]; // we must substract 1 because size() is 1 based
+
+    // an alternative approach is to reverse the entries vector each time we are done populating it.
 }
 
 bool VideoListCtrl::DeleteAllItems()

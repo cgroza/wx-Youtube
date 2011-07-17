@@ -1,7 +1,5 @@
 #include "MainFrame.hpp"
 
-
-
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     : wxFrame(NULL, -1, title, pos, size)
 {
@@ -162,7 +160,12 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     // delete the the VideoInfo allocated on the heap
     if(listed_videos -> size()){
 	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
-	for(it; it != listed_videos -> end(); ++it) delete (*it);
+	for(it; it != listed_videos -> end(); ++it)
+	{
+	    delete (*it);
+	    *it = 0;
+	}
+
 	listed_videos -> clear();
 	VideosDeleteEvent event;
 	event_manager -> FireVideosDeleteEvent(&event);
@@ -217,7 +220,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
     // add the items one by one
     // if the vector is empty, there will be no problem
-    for(p; p != listed_videos -> end(); ++p){
+    for(p; p < listed_videos -> end(); ++p){
         video_list -> AddVideo(*p);
 
     }
@@ -327,6 +330,9 @@ void MainFrame::OnVideoWatch(wxListEvent& event)
   if (video_item_index != -1){ //if found
 
     VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
+    std::cout << item -> getVideoData() -> getName() << std::endl;
+    std::cout << item -> getVideoData() -> getLink() << std::endl;
+
     // open the browser to the video entry link
     wxLaunchDefaultBrowser(wxString(item -> getVideoData() -> getLink().c_str(), wxConvUTF8));
 

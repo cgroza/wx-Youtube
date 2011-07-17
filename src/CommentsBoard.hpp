@@ -99,13 +99,13 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-;
+
 class CommentsPane : public wxScrolledWindow
 {
 public:
     CommentsPane(CommentsBoard* parent);
 
-    void AddComment(CommentInfo* comment); // adds a the comment to the text ctrl m_comment_display
+    void AddComment(const CommentInfo* comment); // adds a the comment to the text ctrl m_comment_display
     void RefreshCommentList(); // adds every CommentInfo from the m_comments
 
 private:
