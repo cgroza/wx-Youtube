@@ -17,8 +17,6 @@ class Extract
 	static std::vector<std::string> formats;
 	static std::string return_url();
 	
-	
-	
 	struct video_struct
 	{
 	    std::string actual_url;

@@ -29,12 +29,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
-                                             wxDefaultSize, choice_string, wxCB_READONLY);
+			       wxDefaultSize, choice_string, wxCB_READONLY);
 
     combo_box -> SetSelection(0); //initially, it is set to -1
     //Search box, this is where the user types in the url, user name, or other relevant info.
     search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Search"), wxDefaultPosition, wxSize(-1,-1),
-                                    wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
+				wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
     go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
@@ -48,10 +48,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     box_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     box_sizer->Add(search_box,
-                             1,
-                             wxEXPAND |
-                             wxALL,
-                             0);
+		   1,
+		   wxEXPAND |
+		   wxALL,
+		   0);
 
     box_sizer->Add(combo_box,
 		   0,            //make vertically strechable
@@ -65,23 +65,23 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		   0);
     
     box_sizer->Add(go_button,
-                            0,
-                            wxEXPAND |
-                            wxALL,
-                            0);
+		   0,
+		   wxEXPAND |
+		   wxALL,
+		   0);
 
     topsizer = new wxBoxSizer(wxVERTICAL);
 
     topsizer->Add(box_sizer,
-                            0,
-                            wxEXPAND |
-                            wxALIGN_CENTER);
+		  0,
+		  wxEXPAND |
+		  wxALIGN_CENTER);
 
     topsizer->Add(video_list,
-                            1,
-                            wxEXPAND |
-                            wxALL,
-                            0);
+		  1,
+		  wxEXPAND |
+		  wxALL,
+		  0);
 
     upper_panel -> SetSizerAndFit(topsizer);
 
@@ -116,17 +116,17 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 }
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(MENU_Quit, MainFrame::OnQuit)
-    EVT_MENU(MENU_About, MainFrame::OnAbout)
-    EVT_MENU(MENU_Pref, MainFrame::OnPref)
-    EVT_BUTTON(BUTTON_Download, MainFrame::OnVideoDownload)
-    EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
-    EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
-    EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
-    EVT_LIST_ITEM_SELECTED(LIST_Video_list, MainFrame::OnVideoSelect)
-    EVT_LIST_ITEM_ACTIVATED(LIST_Video_list, MainFrame::OnVideoWatch)
-    EVT_TEXT_ENTER(TEXT_Search, MainFrame::OnSearch)
-    EVT_COMBOBOX(ID_COMBOBOX, MainFrame::OnComboBoxSelect)
+EVT_MENU(MENU_Quit, MainFrame::OnQuit)
+EVT_MENU(MENU_About, MainFrame::OnAbout)
+EVT_MENU(MENU_Pref, MainFrame::OnPref)
+EVT_BUTTON(BUTTON_Download, MainFrame::OnVideoDownload)
+EVT_BUTTON(BUTTON_Go, MainFrame::OnSearch)
+EVT_CHOICE(ID_COMBOBOX, MainFrame::OnSearch)
+EVT_RADIOBUTTON(ID_RADIOBUTTON1, MainFrame::OnAbout)
+EVT_LIST_ITEM_SELECTED(LIST_Video_list, MainFrame::OnVideoSelect)
+EVT_LIST_ITEM_ACTIVATED(LIST_Video_list, MainFrame::OnVideoWatch)
+EVT_TEXT_ENTER(TEXT_Search, MainFrame::OnSearch)
+EVT_COMBOBOX(ID_COMBOBOX, MainFrame::OnComboBoxSelect)
 
 END_EVENT_TABLE()
 
@@ -140,14 +140,14 @@ void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(_("Small utility to download youtube videos, based off of youtube-dl"),
-        _("About Youtube-wx"),
-        wxOK | wxICON_INFORMATION, this);
+		 _("About Youtube-wx"),
+		 wxOK | wxICON_INFORMATION, this);
 }
 
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 {
-        pref->Show(true); 	// show the preferences window
-        return;
+    pref->Show(true); 	// show the preferences window
+    return;
 }
 
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
@@ -188,30 +188,30 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     }
     else //something went wrong
     {
-      switch (feed.getErrorCode()){ // recovering the curl exit code
-                case 6:
-                        wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                case 7:
-                        wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                case 28:
-                        wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                case 52:
-                        wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                case 56:
-                        wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                case NO_SEARCH_RESULT:
-                        break;
-                default:
-                        wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
-                        break;
-                        }
-      return;    // abbort the function
-        }
+	switch (feed.getErrorCode()){ // recovering the curl exit code
+	case 6:
+	    wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 7:
+	    wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 28:
+	    wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 52:
+	    wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 56:
+	    wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case NO_SEARCH_RESULT:
+	    break;
+	default:
+	    wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	}
+	return;    // abbort the function
+    }
 
     // delete listed_videos;
     video_list -> DeleteAllItems(); //prepare list for new entry stream
@@ -244,15 +244,10 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.actual_url = Extract::resolve_real_url(current_video.id); //This needs to be called first, otherwise it won't work. I straighten it up.
 	current_video.extension = Extract::extension();
 	
-	
-	
 	wxString title(current_video.title.c_str(), wxConvUTF8);
 	wxString ext(current_video.extension.c_str(), wxConvUTF8);
 
 	wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
-
-	
-	
 	
 	path_dlg.ShowModal();
 	
@@ -263,9 +258,7 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.full_save_path = std::string(
 	    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
 
-
 	// current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
-
 
 	std::cout << current_video.full_save_path << std::endl;
 	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
@@ -293,51 +286,50 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
     
-  long video_item_index = video_list -> GetFirstSelected () ; //get selected video
-  if (video_item_index != -1) //if found
-  {
-    //wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+    long video_item_index = video_list -> GetFirstSelected () ; //get selected video
+    if (video_item_index != -1) //if found
+    {
+	//wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
     
-    
-    VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
-    VideoInfo*  info = item -> getVideoData();
-    VideoSelectEvent evt(info);
-    event_manager -> FireVideoSelectEvent(&evt);
-  }
+	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
+	VideoInfo*  info = item -> getVideoData();
+	VideoSelectEvent evt(info);
+	event_manager -> FireVideoSelectEvent(&evt);
+    }
     event.Skip();
 
 }
 
 SearchType MainFrame::getSearchType()
 {
-  int index = combo_box -> GetCurrentSelection(); //get the index from the search 
-                                                  //criteria selection box
+    int index = combo_box -> GetCurrentSelection(); //get the index from the search 
+    //criteria selection box
     switch (index)
     {
-        case 0:
-            return VIDEO_SEARCH;
-            break;
-        case 1:
-            return USER_VIDEO_SEARCH;
-            break;
-        case 2:
-	    return PLAY_LIST_SEARCH;
-            break;
+    case 0:
+	return VIDEO_SEARCH;
+	break;
+    case 1:
+	return USER_VIDEO_SEARCH;
+	break;
+    case 2:
+	return PLAY_LIST_SEARCH;
+	break;
 
     }
 }
 
 void MainFrame::OnVideoWatch(wxListEvent& event)
 {
-  long video_item_index = video_list -> GetFirstSelected () ; //get selected video
-  if (video_item_index != -1){ //if found
+    long video_item_index = video_list -> GetFirstSelected () ; //get selected video
+    if (video_item_index != -1){ //if found
 
-    VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
-    std::cout << item -> getVideoData() -> getName() << std::endl;
-    std::cout << item -> getVideoData() -> getLink() << std::endl;
+	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
+	std::cout << item -> getVideoData() -> getName() << std::endl;
+	std::cout << item -> getVideoData() -> getLink() << std::endl;
 
-    // open the browser to the video entry link
-    wxLaunchDefaultBrowser(wxString(item -> getVideoData() -> getLink().c_str(), wxConvUTF8));
+	// open the browser to the video entry link
+	wxLaunchDefaultBrowser(wxString(item -> getVideoData() -> getLink().c_str(), wxConvUTF8));
 
     }
     event.Skip();
