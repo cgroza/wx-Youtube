@@ -1,6 +1,6 @@
 #include "VideoListCtrl.hpp"
 
-VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListView(parent, LIST_Video_list, wxDefaultPosition, wxSize(600,400), wxLC_REPORT | wxLC_SINGLE_SEL){
+VideoListCtrl::VideoListCtrl(wxWindow* parent) : wxListView(parent, LIST_Video_list, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL){
 
     //setting up the columns.
 
