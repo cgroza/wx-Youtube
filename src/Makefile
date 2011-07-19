@@ -1,6 +1,6 @@
 CC=g++
-CFLAGS=-lcurl -g
-LIBS=`wx-config --cxxflags --libs`
+CFLAGS=-g `wx-config --cxxflags`
+LIBS=`wx-config --libs` -lcurl
 
 all: wxyoutube
 
@@ -18,4 +18,4 @@ clean:
 	@$(RM) wx-Youtube *.o
 
 %.o: %.cpp %.hpp
-	$(CC) -c -o $@ $< $(CFLAGS) $(LIBS)
+	$(CC) -c -o $@ $< $(CFLAGS)
