@@ -111,7 +111,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     pref = new PrefWindow(this);
 
     CreateStatusBar();
-    SetStatusText(_("youtube-wx, version 0.0.1")); //"youtube-wx version %s" % (_WXYT_VERSION))
+    SetStatusText(_("wx-Youtube, version 1.0 alpha")); //"youtube-wx version %s" % (_WXYT_VERSION))
 
 }
 
@@ -230,6 +230,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 {
     long video_item_index = video_list -> GetFirstSelected ();
+    std::map<std::string, std::string> real_url;
     if (video_item_index != -1) //if found
     {
 	Extract::video_struct current_video;
@@ -241,8 +242,16 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.title = info->getName();
 	current_video.id = info->getId();
 	
-	current_video.actual_url = Extract::resolve_real_url(current_video.id); //This needs to be called first, otherwise it won't work. I straighten it up.
-	current_video.extension = Extract::extension();
+	Extract::resolve_real_url(current_video.id); //This needs to be called first, otherwise it won't work. 
+	
+	current_video.actual_url = Extract::return_url("best"); //This one first, otherwise I have to call gather_formats() 2x
+	current_video.extension =  Extract::return_ext("best");
+	
+	
+	std::cout << "Best format: " << current_video.extension << std::endl;
+	std::cout << "Real url: " << current_video.actual_url << std::endl;
+	
+	
 	
 	wxString title(current_video.title.c_str(), wxConvUTF8);
 	wxString ext(current_video.extension.c_str(), wxConvUTF8);

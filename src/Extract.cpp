@@ -12,9 +12,7 @@
 
 std::string Extract::resolve_buffer;
 std::vector<std::string> Extract::formats;
-std::string Extract::mp4_url;
-std::string Extract::flv_url;
-std::string Extract::three_gp_url;
+
 
 
 int start;
@@ -37,20 +35,8 @@ int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_
 }
 
 std::string Extract::format_url(std::string id)
-
 {
-    
-    std::string url;
-    //using boost::format;
-    //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
-    //http://www.youtube.com/watch?v=WSeNSzJ2-Jw
-    
-    
-    url = "http://www.youtube.com/get_video_info?&video_id=" + id;
-    std::cout << "Formated url: " << url << std::endl;
-    
-    return url;
-    
+    return "http://www.youtube.com/get_video_info?&video_id=" + id;
 }
 
 
@@ -60,105 +46,133 @@ std::string Extract::format_url(std::string id)
 void Extract::gather_formats()
 {
     //This function goes through the retrieved url and grabs all the formats available.
+    
+    std::cout << "[#]Gathering formats" << std::endl;
+    
     using namespace boost;
     std::string format;
-    std::cout << "[#]Gathering formats" << std::endl;
-    //First we need index the location of "fmt_url_map" and save it to a var.
-    start = resolve_buffer.find("fmt_url_map=");
-    start = start + 12;
+    std::string real_url;
+    start = resolve_buffer.find("fmt_url_map=")+12;
     
-    //Here we initilize a vector, decode the buffer, and seperate the relative string.
     std::vector<std::string> tmp;
     std::string fmt_map = urilite::uri::decode2(resolve_buffer.substr(start, resolve_buffer.length()).c_str());
     
-    //I used boost to split this, similar to Python
-    split(tmp, fmt_map, is_any_of(","));
     
-    //For each "," we will run our validation checks and attempt to grab a url, if successful, it will be "push_back" into the vector.
-    for (int num = 0; num < tmp.size(); num++)
+    split(tmp, fmt_map, is_any_of("|"));
+    
+    //http://v18.lscache1.c.youtube.com/videoplayback?sparams=id%2Cexpire%2Cip%2Cipbits%2Citag%2Calgorithm%2Cburst%2Cfactor&algorithm=throttle-factor&itag=18&ip=71.0.0.0&burst=40&sver=3&signature=5D682A1DA6D6153D39EC8F410C4F85DEE6C701E3.60FC504071DCCC39E736C21ADC6987B65B5B2FC9&expire=1311080400&key=yt1&ipbits=8&factor=1.25&id=feb0e649666337ae,5
+    
+    
+    for (int i = 0; i < tmp.size(); i++)
     {
-	std::string tmp_str = tmp[num].substr(0,3);  //We only need to check the first three characters
 	
-	if (tmp_str.find("|") == std::string::npos)  //If "|" cannot be found, then it is invalid
+	if (tmp[i].find(",") == std::string::npos) { continue; }
+	real_url = tmp[i].substr(0, tmp[i].find(","));
+	format = tmp[i].substr(tmp[i].find(",")+1, tmp[i].length());
+	
+	
+	switch (atoi(format.c_str())) 		     
 	{
+	    case 5 :
+	    urls[format] = real_url;
 	    continue;
-	}
-	    
-	else //If a valid format/url is found, we will continue to process it.
-	{
-	    std::string real_url = tmp[num].substr(tmp[num].find_first_of("h"), tmp[num].length());
-	    
-	    
-	    real_url = real_url.substr(0, real_url.find("|"));
-	    
-	    real_url = real_url.substr(0, real_url.find(",")); 
-	    
-	    {
-		
-		switch (atoi(tmp_str.c_str())) 		     //Turns the str into a int, so we can use "switch"
-		{
-		    case 5 :  
-		    case 34: 
-		    case 35: 
-		    formats.push_back("flv"); 	
-		    flv_url = real_url;
-		    break;
-
-		    case 18:
-		    case 22:
-		    case 37:
-		    case 38:
-		    formats.push_back("mp4");
-		    mp4_url = real_url;
-		    break;
+	    case 34:
+	    urls[format] = real_url;
+	    continue;
+	    case 35: 
+	    urls[format] = real_url;	
+	    continue;
+		    
+	    case 18:
+	    urls[format] = real_url;
+	    continue;
+	    case 22:
+	    urls[format] = real_url;
+	    continue;
+	    case 37:
+	    urls[format] = real_url;
+	    continue;
+	    case 38:
+	    urls[format] = real_url;
+	    continue;
 	
-		    case 17:
-		    formats.push_back("3gp");
-		    three_gp_url = real_url;
-		    break;
+	    case 17:
+	    urls[format] = real_url;
+	    continue;
 	
-		    default: 
-		    break;
+	    default: 
+	    continue;
 		
-		}	
-	    }
-	}
+	}	
     }
+    std::cout << "Formats gathered" << std::endl;
 }
 
-
-std::string Extract::extension()
-{
-    //Here we return the best format, it goes in order, returning the first one found.
-    
-    //gather_formats();
-    
-    if (mp4_url != "") { return "mp4"; }
-    if (flv_url != "") { return "flv"; }
-    if (three_gp_url != "") { return "3gp"; }
-	
-    
-    
-    return "";
-}
-
-std::string Extract::return_url()
+std::string Extract::return_ext(std::string format)
 {
     gather_formats();
-    //extension();
-    std::string best = "[#]Best format: ";
-    std::cout << "[#]Finding highest quality" << std::endl;
     
-    if (mp4_url != "") { std::cout << best + "mp4" << std::endl; return mp4_url; }
-    if (flv_url != "") { std::cout << best + "flv" << std::endl; return flv_url; }
-    if (three_gp_url != "") { std::cout << best + "3gp" << std::endl; return three_gp_url; }
+    if (format != "best")
+    {
+	switch (atoi(format.c_str()))
+	{
+	    case 38: return "mp4";
+	    case 37: return "mp4";
+	    case 22: return "mp4";
+	    case 18: return "mp4";
 	
+	    case 35: return "flv";
+	    case 34: return "flv";
+	    case 5:  return "flv";
+	
+	    case 17: return "3gp";
+	}
+    }
+    
+
+    
+    if (urls["38"] != "") { return "mp4"; }
+    if (urls["37"] != "") { return "mp4"; }
+    if (urls["22"] != "") { return "mp4"; }
+    if (urls["18"] != "") { return "mp4"; }
+    
+    if (urls["35"] != "") { return "flv"; }
+    if (urls["34"] != "") { return "flv"; }
+    if (urls["5"]  != "") { return "flv";  }
+    
+    if (urls["17"] != "") { return "3gp"; }
     
     
     return "";
 }
 
-std::string Extract::resolve_real_url(std::string id)
+
+
+std::string Extract::return_url(std::string format)
+{
+    gather_formats();
+    
+    if (format != "best") { return urls[format]; }
+    
+    
+    if (urls["38"] != "") { return urls["38"]; }
+    if (urls["37"] != "") { return urls["37"]; }
+    if (urls["22"] != "") { return urls["22"]; }
+    if (urls["18"] != "") { return urls["18"]; }
+    
+    if (urls["35"] != "") { return urls["35"]; }
+    if (urls["34"] != "") { return urls["34"]; }
+    if (urls["5"]  != "") { return urls["5"];  }
+    
+    if (urls["17"] != "") { return urls["17"]; }
+    
+    
+    return "";
+    
+}
+
+
+void Extract::resolve_real_url(std::string id)
 {
     //This function connects to the internet, and retrieves the
     //real download url so we can pass it to our download function
@@ -186,20 +200,9 @@ std::string Extract::resolve_real_url(std::string id)
 	curl_easy_cleanup(resolve);
 	
 	//Did we succeed?
-	if (result == CURLE_OK)
-	{
-	    //All the magic happens here
-	    
-	    //std::string q_string = resolve_buffer.substr(start, resolve_buffer.length());
-	    //std::string real_url = urilite::uri::decode2(q_string.substr(0, q_string.find("%2C")));
-	    //std::cout << "Download link found!" << std::endl;
-	    
-	    return return_url();
-	}
-	else
+	if (!result == CURLE_OK)
 	{
 	    std::cout << "Error [" << result << "] - " << std::endl;
-	    return "";
 	}
     }
 }
