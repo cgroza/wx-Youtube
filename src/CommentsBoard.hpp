@@ -37,7 +37,7 @@ private:
     wxBoxSizer* m_v_sizer;
     CommentsPane* m_comments_pane; //comments are displayed in this object instance
 
-    wxTextCtrl* m_comment_txt;	                  // entry for the user to comment on the video
+//    wxTextCtrl* m_comment_txt;	                  // entry for the user to comment on the video
 
     static std::vector<CommentInfo*>* m_comments; // holds the video comment objects
     static VideoInfo* m_current_vid;		  // holds the current selected video

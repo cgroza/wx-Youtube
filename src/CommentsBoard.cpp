@@ -12,9 +12,9 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
 
     m_comments_pane = new CommentsPane(this);
 
-    m_comment_txt = new wxTextCtrl(this, wxID_ANY);
+//    m_comment_txt = new wxTextCtrl(this, wxID_ANY);
     m_v_sizer -> Add(m_comments_pane, 4, wxEXPAND | wxALL, 0);
-    m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
+//    m_v_sizer -> Add(m_comment_txt, 1, wxEXPAND | wxALL, 0);
     SetSizerAndFit(m_v_sizer);
 
 }
