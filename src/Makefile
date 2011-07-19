@@ -1,3 +1,4 @@
+.PHONY: clean all wxyoutube
 CFLAGS=-g `wx-config --cxxflags`
 LIBS=`wx-config --libs` -lcurl
 
