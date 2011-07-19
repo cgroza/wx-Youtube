@@ -2,17 +2,19 @@
 CFLAGS=-g `wx-config --cxxflags`
 LIBS=`wx-config --libs` -lcurl
 
+GLOBAL_HEADERS = Enums.hpp
+#CPPFILES = $(wildcard *.cpp)
+CPPFILES = ProgressBar.cpp Parser.cpp ImageProc.cpp ImageBox.cpp \
+	   ThumbnailFrame.cpp VideoInfo.cpp CommentInfo.cpp CommentsBoard.cpp \
+	   VideoDescription.cpp EventHandler.hpp Events.cpp EventManager.cpp \
+	   DownloadCallback.cpp SearchURL.cpp XMLFeed.cpp FeedFetcherThread.cpp \
+	   DownloadThread.cpp VideoEntry.cpp PrefWindow.cpp VideoListCtrl.cpp \
+	   MainFrame.cpp MainApp.cpp Extract.cpp
+
 all: wxyoutube
 
-wxyoutube: Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o CommentInfo.o \
-CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o \
-XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
-
-
-	$(CXX) -o  wx-Youtube Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o \
-    CommentInfo.o CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o \
-    SearchURL.o XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o \
-    Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
+wxyoutube: $(GLOBAL_HEADERS) $(CPPFILES:.cpp=.o)
+	$(CXX) -o wx-Youtube $^ $(CFLAGS) $(LIBS)
 
 clean:
 	@$(RM) wx-Youtube *.o
