@@ -14,5 +14,8 @@ XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoLi
     SearchURL.o XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o \
     Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
 
+clean:
+	@$(RM) wx-Youtube *.o
+
 %.o: %.cpp %.hpp
 	$(CC) -c -o $@ $< $(CFLAGS) $(LIBS)
