@@ -1,81 +1,23 @@
-CC=g++
-CFLAGS=-lcurl -g
-LIBS=`wx-config --cxxflags --libs`
+.PHONY: clean all wxyoutube
+CFLAGS=-g `wx-config --cxxflags`
+LIBS=`wx-config --libs` -lcurl
+
+GLOBAL_HEADERS = Enums.hpp
+#CPPFILES = $(wildcard *.cpp)
+CPPFILES = ProgressBar.cpp Parser.cpp ImageProc.cpp ImageBox.cpp \
+	   ThumbnailFrame.cpp VideoInfo.cpp CommentInfo.cpp CommentsBoard.cpp \
+	   VideoDescription.cpp EventHandler.hpp Events.cpp EventManager.cpp \
+	   DownloadCallback.cpp SearchURL.cpp XMLFeed.cpp FeedFetcherThread.cpp \
+	   DownloadThread.cpp VideoEntry.cpp PrefWindow.cpp VideoListCtrl.cpp \
+	   MainFrame.cpp MainApp.cpp Extract.cpp
 
 all: wxyoutube
 
-wxyoutube: Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o CommentInfo.o \
-CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o SearchURL.o \
-XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o
+wxyoutube: $(GLOBAL_HEADERS) $(CPPFILES:.cpp=.o)
+	$(CXX) -o wx-Youtube $^ $(CFLAGS) $(LIBS)
 
+clean:
+	@$(RM) wx-Youtube *.o
 
-	$(CC) -o  wx-Youtube Enums.hpp ProgressBar.o Parser.o ImageProc.o ImageBox.o ThumbnailFrame.o VideoInfo.o \
-    CommentInfo.o CommentsBoard.o VideoDescription.o EventHandler.hpp Events.o EventManager.o DownloadCallback.o \
-    SearchURL.o XMLFeed.o FeedFetcherThread.o DownloadThread.o VideoEntry.o PrefWindow.o VideoListCtrl.o MainFrame.o MainApp.o \
-    Extract.hpp Extract.cpp $(CFLAGS) $(LIBS)
-
-XMLFeed.o: XMLFeed.hpp XMLFeed.cpp
-	$(CC) -c -o XMLFeed.o  XMLFeed.cpp  $(CFLAGS) $(LIBS)
-
-VideoInfo.o:  VideoInfo.hpp VideoInfo.cpp
-	$(CC) -c -o VideoInfo.o  VideoInfo.cpp $(CFLAGS) $(LIBS)
-
-SearchURL.o:  SearchURL.hpp SearchURL.cpp
-	$(CC) -c -o SearchURL.o  SearchURL.cpp $(CFLAGS) $(LIBS)
-
-DownloadThread.o:  DownloadThread.hpp DownloadThread.cpp
-	$(CC) -c -o DownloadThread.o  DownloadThread.cpp $(CFLAGS) $(LIBS)
-
-VideoEntry.o:  VideoEntry.hpp VideoEntry.cpp
-	$(CC) -c -o VideoEntry.o  VideoEntry.cpp $(CFLAGS) $(LIBS)
-
-VideoListCtrl.o:   VideoListCtrl.hpp VideoListCtrl.cpp
-	$(CC) -c -o VideoListCtrl.o  VideoListCtrl.cpp $(CFLAGS) $(LIBS)
-
-PrefWindow.o:    PrefWindow.hpp PrefWindow.cpp
-	$(CC) -c -o PrefWindow.o  PrefWindow.cpp $(CFLAGS) $(LIBS)
-
-MainFrame.o:  MainFrame.hpp MainFrame.cpp
-	$(CC) -c -o MainFrame.o  MainFrame.cpp $(CFLAGS) $(LIBS)
-
-MainApp.o:  MainApp.hpp MainApp.cpp
-	$(CC) -c -o MainApp.o  MainApp.cpp $(CFLAGS) $(LIBS)
-
-ThumbnailFrame.o: ThumbnailFrame.hpp ThumbnailFrame.cpp
-	$(CC) -c -o ThumbnailFrame.o ThumbnailFrame.cpp $(CFLAGS) $(LIBS)
-
-Parser.o: Parser.hpp Parser.cpp
-	$(CC) -c -o Parser.o Parser.cpp $(CFLAGS) $(LIBS)
-
-DownloadCallback.o: DownloadCallback.hpp DownloadCallback.cpp
-	$(CC) -c -o DownloadCallback.o DownloadCallback.cpp $(CFLAGS) $(LIBS)
-
-ImageProc.o: ImageProc.hpp ImageProc.cpp
-	$(CC) -c -o ImageProc.o ImageProc.cpp $(CFLAGS) $(LIBS)
-
-ImageBox.o: ImageBox.hpp ImageBox.cpp
-	$(CC) -c -o ImageBox.o ImageBox.cpp $(CFLAGS) $(LIBS)
-
-EventManager.o : EventManager.hpp EventManager.cpp
-	$(CC) -c -o EventManager.o EventManager.cpp $(CFLAGS) $(LIBS)
-
-Events.o : Events.hpp Events.cpp
-	$(CC) -c -o Events.o Events.cpp $(CFLAGS) $(LIBS)
-
-VideoDescription.o: VideoDescription.hpp VideoDescription.cpp
-	$(CC) -c -o VideoDescription.o VideoDescription.cpp $(CFLAGS) $(LIBS)
-
-Extract.o: Extract.hpp Extract.cpp
-	$(CC) -c -o Extract.o Extract.cpp $(CFLAGS) $(LIBS)
-
-ProgressBar.o : ProgressBar.hpp ProgressBar.cpp
-	$(CC) -c -o ProgressBar.o ProgressBar.cpp $(CFLAGS) $(LIBS)
-
-CommentsBoard.o : CommentsBoard.hpp CommentsBoard.cpp
-	$(CC) -c -o CommentsBoard.o CommentsBoard.cpp $(CFLAGS) $(LIBS)
-
-CommentInfo.o : CommentInfo.hpp CommentInfo.cpp
-	$(CC) -c -o CommentInfo.o CommentInfo.cpp $(CFLAGS) $(LIBS)
-
-FeedFetcherThread.o : FeedFetcherThread.hpp FeedFetcherThread.cpp
-	$(CC) -c -o FeedFetcherThread.o FeedFetcherThread.cpp $(CFLAGS) $(LIBS)
+%.o: %.cpp %.hpp
+	$(CXX) -c -o $@ $< $(CFLAGS)
