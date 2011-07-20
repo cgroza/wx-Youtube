@@ -8,6 +8,7 @@
 
 class MainApp: public wxApp
 {
+    MainFrame *frame;
     virtual bool OnInit();
 };
 
