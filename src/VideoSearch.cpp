@@ -59,10 +59,10 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     {
         case VIDEO_SEARCH:
         case USER_VIDEO_SEARCH:
-	    Parser::parseVideoFeed(m_search_results, doc);
+	    Parser::parseVideoFeed(m_search_results, &doc);
 	    break;
         case PLAY_LIST_SEARCH:
-	    Parser::parsePlaylistFeed(m_search_results, doc);
+	    Parser::parsePlaylistFeed(m_search_results, &doc);
 	    break;
     }
 

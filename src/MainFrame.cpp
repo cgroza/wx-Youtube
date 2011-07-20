@@ -89,7 +89,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     lower_sizer -> Add(lower_notebook, 1, wxEXPAND | wxALL, 0);
     lower_panel -> SetSizerAndFit(lower_sizer);
 
-    splitter_win -> SplitHorizontally(upper_panel, lower_panel, 1); // split the window in 2
+    splitter_win -> SplitHorizontally(upper_panel, lower_panel, -1); // split the window in 2
 
     //Menu Bar
     MainMenu = new wxMenuBar();

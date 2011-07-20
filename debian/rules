@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+.PHONY: build clean build-arch build-indep binary-indep binary-arch binary install
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE) -C src
+	touch $@
+
+build-arch: build
+build-indep: build
+
+clean:
+	dh_testdir
+	dh_testroot
+	$(RM) build-stamp configure-stamp
+	$(MAKE) -C src clean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	install -D src/wx-Youtube $(CURDIR)/debian/wx-youtube/usr/bin/wx-youtube
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs changes
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch

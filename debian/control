@@ -1,0 +1,13 @@
+Source: wx-youtube
+Section: net
+Priority: extra
+Maintainer: aszlig <aszlig@redmoonstudios.org>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: http://github.com/cgroza/wx-Youtube/
+
+Package: wx-youtube
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A small utility to download youtube videos.
+ TODO
