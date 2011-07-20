@@ -126,6 +126,7 @@ std::string Extract::return_ext(std::string format)
 	    case 5:  return "flv";
 	
 	    case 17: return "3gp";
+	    default: return "";
 	}
     }
     

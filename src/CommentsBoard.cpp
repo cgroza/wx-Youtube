@@ -76,8 +76,10 @@ CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_
 void CommentsPane::AddComment(const CommentInfo* comment)
 {
     // Append the comment to the text ctrl
-    m_comment_display -> AppendText(wxString(comment -> getContent().c_str(), wxConvUTF8));    
+    
+    m_comment_display -> WriteText(wxString(comment -> getContent().c_str(), wxConvUTF8));
     Layout();
+    
 }
 
 
@@ -89,9 +91,12 @@ void CommentsPane::RefreshCommentList()
     std::vector<CommentInfo*>::const_iterator it = m_parent ->  m_comments -> begin();
     for(it; it < m_parent -> m_comments -> end(); ++it)
     {
-
-	m_comment_display -> AppendText(wxString((*it) -> getContent().c_str(), wxConvUTF8));
-
+	wxString author = wxString((*it) -> getAuthor().c_str(), wxConvUTF8);
+	wxString content = wxString((*it) -> getContent().c_str(), wxConvUTF8);
+	wxString newline = wxString("\n\n", wxConvUTF8);
+	m_comment_display ->Freeze();
+	m_comment_display -> AppendText(newline+wxT("[")+author+wxT("]")+content);
+	m_comment_display -> Thaw();  
 
     }
     Layout();
