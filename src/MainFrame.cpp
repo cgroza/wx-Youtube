@@ -33,7 +33,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     combo_box -> SetSelection(0); //initially, it is set to -1
     //Search box, this is where the user types in the url, user name, or other relevant info.
-    search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT("Search"), wxDefaultPosition, wxSize(-1,-1),
+    search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT(""), wxDefaultPosition, wxSize(-1,-1),
 				wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
