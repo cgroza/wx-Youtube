@@ -216,6 +216,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     // delete listed_videos;
     video_list -> DeleteAllItems(); //prepare list for new entry stream
 
+    VideoSearchEvent event(listed_videos);
+    event_manager -> FireVideoSearchEvent(&event);    
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
     // add the items one by one

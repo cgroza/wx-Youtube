@@ -17,7 +17,7 @@
 #include <wx/scrolwin.h>
 
 
-class CommentsPane ;
+class CommentsPane;
 class CommentsBoard : public wxPanel
 {
     /*Dispalys and manages video comments.*/
@@ -26,8 +26,24 @@ public:
 
     void DeleteAllComments();	// clears the comment vector
 
+    class CommentsPane : public wxScrolledWindow
+    {
+    public:
+	CommentsPane(CommentsBoard* parent);
+
+	void AddComment(const CommentInfo* comment); // adds a the comment to the text ctrl m_comment_display
+	void RefreshCommentList(); // adds every CommentInfo from the m_comments
+	void ClearCommentDisplay(); // clears the comment text ctrl
+    private:
+	wxTextCtrl* m_comment_display; // displays the video comment text
+	CommentsBoard* m_parent;
+	wxBoxSizer* m_v_sizer;
+    };
+
+
     friend class FetchCommentsCallback;
     friend class OnVideoSelect;
+    friend class OnVideoSearch;
     friend class CommentsPane;
 
 private:
@@ -93,26 +109,28 @@ private:
 	CommentsBoard* m_parent;
     };
 
+    // This callback class  is called when the user gets a new set of vides.
+    // Then, we clear the comment display and buffer because they are no longer releveant.
+    class OnVideoSearch : public SearchObjectFunction
+    {
+    public:
+	OnVideoSearch(CommentsBoard* parent) : m_parent(parent) {}
+	void operator()(VideoSearchEvent*)
+	    {
+		m_parent -> DeleteAllComments();
+		m_parent -> m_comments_pane -> ClearCommentDisplay();
+
+	    }
+    private:
+	CommentsBoard* m_parent;
+    };
 
     OnVideoSelect* on_select;	// callable class instance
 				// it is called when the user selects a video
+    OnVideoSearch* on_search;
     DECLARE_EVENT_TABLE()
 };
 
 
-class CommentsPane : public wxScrolledWindow
-{
-public:
-    CommentsPane(CommentsBoard* parent);
-
-    void AddComment(const CommentInfo* comment); // adds a the comment to the text ctrl m_comment_display
-    void RefreshCommentList(); // adds every CommentInfo from the m_comments
-
-private:
-    wxTextCtrl* m_comment_display; // displays the video comment text
-    CommentsBoard* m_parent;
-    wxBoxSizer* m_v_sizer;
-
-};
 #endif  // COMMENTS_BOARD_H
 

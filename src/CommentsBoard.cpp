@@ -5,7 +5,9 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
 {
     // create the event handler an bind it
     on_select = new OnVideoSelect(this);
+    on_search = new OnVideoSearch(this);
     evt_man -> BindSelectVideoEvent(on_select);
+    evt_man -> BindSearchEvent(on_search);
 
     // create the layout
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
@@ -60,7 +62,7 @@ void CommentsBoard::FetchCommentsFeed()
     }
 }
 
-CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_v_sizer(0), m_parent(parent)
+CommentsBoard::CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_v_sizer(0), m_parent(parent)
 {
     // create the layout 
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
@@ -73,7 +75,7 @@ CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWindow(parent), m_
 }
 
 
-void CommentsPane::AddComment(const CommentInfo* comment)
+void CommentsBoard::CommentsPane::AddComment(const CommentInfo* comment)
 {
     // Append the comment to the text ctrl
     
@@ -83,7 +85,7 @@ void CommentsPane::AddComment(const CommentInfo* comment)
 }
 
 
-void CommentsPane::RefreshCommentList()
+void CommentsBoard::CommentsPane::RefreshCommentList()
 {
     // remove the old comment text from the text ctrl
     m_comment_display -> Clear();
@@ -100,6 +102,11 @@ void CommentsPane::RefreshCommentList()
 
     }
     Layout();
+}
+
+void CommentsBoard::CommentsPane::ClearCommentDisplay()
+{
+    m_comment_display -> SetValue(wxT(""));
 }
 
 std::vector<CommentInfo*>* CommentsBoard::m_comments = new std::vector<CommentInfo*>();
