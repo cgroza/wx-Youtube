@@ -139,9 +139,13 @@ void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-    wxMessageBox(_("Small utility to download youtube videos, based off of youtube-dl"),
-		 _("About Youtube-wx"),
-		 wxOK | wxICON_INFORMATION, this);
+    // wxMessageBox(_("Small utility to download youtube videos, based off of youtube-dl"),
+    // 		 _("About Youtube-wx"),
+    // 		 wxOK | wxICON_INFORMATION, this);
+
+    AboutInfo info;
+    wxAboutBox(info);
+
 }
 
 void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))

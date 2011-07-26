@@ -18,6 +18,7 @@
 #include "Extract.hpp"
 #include "ProgressBar.hpp"
 #include "CommentsBoard.hpp"
+#include "AboutInfo.hpp"
 
 
 
