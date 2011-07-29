@@ -55,6 +55,7 @@ void Extract::gather_formats()
     start = resolve_buffer.find("fmt_url_map=")+12;
     
     std::vector<std::string> tmp;
+    std::vector<std::string> tmp_args;
     std::string fmt_map = urilite::uri::decode2(resolve_buffer.substr(start, resolve_buffer.length()).c_str());
     
     
@@ -66,7 +67,15 @@ void Extract::gather_formats()
     for (int i = 0; i < tmp.size(); i++)
     {
 	
-	if (tmp[i].find(",") == std::string::npos) { continue; }
+	
+	
+	split(tmp_args, tmp[i], is_any_of("&"));
+	
+	for (int a = 0; a < tmp_args.size(); a++)
+	{
+	    std::cout << a << std::endl;
+	}
+	
 	real_url = tmp[i].substr(0, tmp[i].find(","));
 	format = tmp[i].substr(tmp[i].find(",")+1, tmp[i].length());
 	

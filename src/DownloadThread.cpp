@@ -46,6 +46,7 @@ bool DownloadThread::doDownload()
 	}
 	curl_easy_setopt(easyhandle, CURLOPT_VERBOSE, 1L);
 	curl_easy_setopt( easyhandle, CURLOPT_WRITEDATA, file) ;
+	curl_easy_setopt(easyhandle, CURLOPT_FOLLOWLOCATION, 1);
 	curl_easy_perform( easyhandle );
 	curl_easy_cleanup( easyhandle );
 	fclose(file); //make sure to close file
