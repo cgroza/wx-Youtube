@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <wx/wx.h>
 //I have not read too much about making .hpp files, so correct this as you see fit. 
 
 static std::map <std::string, std::string> urls;
