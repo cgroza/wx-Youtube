@@ -250,7 +250,7 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	
 	Extract::resolve_real_url(current_video.id); //This needs to be called first, otherwise it won't work. 
 	
-	current_video.actual_url = Extract::return_url("best"); //This one first, otherwise I have to call gather_formats() 2x
+	current_video.actual_url = Extract::return_url("best"); //This no longer needs to be called first.
 	current_video.extension =  Extract::return_ext("best");
 	
 	
@@ -261,20 +261,22 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	
 	wxString title(current_video.title.c_str(), wxConvUTF8);
 	wxString ext(current_video.extension.c_str(), wxConvUTF8);
-
+	
+	if (current_video.extension == "") { return; }
+	
 	wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
 	
 	path_dlg.ShowModal();
 	
 	current_video.save_dir = path_dlg.GetDirectory().mb_str();
 	
-	if (current_video.extension == "") {  wxMessageBox(_("We could not retrieve the download link for this video, this can be caused by the video being 18+ (requires login) or the video is not available in your country. We are implementing this feature, hang tight."), _("Our apologies"), wxOK | wxICON_INFORMATION); return;}
+	
 
 	current_video.full_save_path = std::string(
 	    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
 
 	// current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
-
+	
 	std::cout << current_video.full_save_path << std::endl;
 	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
 	std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;

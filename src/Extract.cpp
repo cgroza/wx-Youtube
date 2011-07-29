@@ -52,6 +52,7 @@ void Extract::gather_formats()
     using namespace boost;
     std::string format;
     std::string real_url;
+    std::map<std::string, std::string> info;
     start = resolve_buffer.find("fmt_url_map=")+12;
     
     std::vector<std::string> tmp;
@@ -73,7 +74,16 @@ void Extract::gather_formats()
 	
 	for (int a = 0; a < tmp_args.size(); a++)
 	{
-	    std::cout << a << std::endl;
+	    if (tmp_args[a].find("=") == std::string::npos) { continue; }
+	    info[tmp_args[a].substr(0, tmp_args[a].find("="))] = tmp_args[a].substr(tmp_args[a].find("=")+1, tmp_args[a].length());
+	    
+	    
+	}
+	
+	if (info.find("errorcode") != info.end())
+	{ 
+	    wxString errorcode_reason(info["reason"].c_str(), wxConvUTF8); //This needs to be displayed
+	    wxMessageBox(errorcode_reason, wxT("Error"), wxOK | wxICON_ERROR ); 
 	}
 	
 	real_url = tmp[i].substr(0, tmp[i].find(","));
@@ -119,7 +129,7 @@ void Extract::gather_formats()
 
 std::string Extract::return_ext(std::string format)
 {
-    gather_formats();
+    
     
     if (format != "best")
     {
@@ -160,7 +170,7 @@ std::string Extract::return_ext(std::string format)
 
 std::string Extract::return_url(std::string format)
 {
-    gather_formats();
+    
     
     if (format != "best") { return urls[format]; }
     
@@ -215,6 +225,7 @@ void Extract::resolve_real_url(std::string id)
 	    std::cout << "Error [" << result << "] - " << std::endl;
 	}
     }
+    gather_formats();
 }
 
 
