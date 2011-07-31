@@ -2,7 +2,7 @@
 #define CFG_MANAGER_H
 
 #include <string>
-#include <iostream>
+#include <fstream>
 #include <vector>
 
 
@@ -12,14 +12,14 @@ public:
 
     struct CfgOption
     {
-	CfgOption(std::string& n, std::string& v);
+	CfgOption(std::string n, std::string v);
 
 	std::string name;
 	std::string value;
     };
 
     CfgManager(std::string& cfg_file);
-    CfgOption* GetOption(std::string& name) const; // returns a CfgOption
+    CfgOption* GetOption(std::string& name) const; // returns a CfgOption, returns 0 if not found
     void SetOption(std::string& name, std::string& new_val); // sets the option name to new_val
 
 private:
