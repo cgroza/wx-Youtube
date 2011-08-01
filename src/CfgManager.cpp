@@ -1,15 +1,19 @@
 #include "CfgManager.hpp"
 
-CfgManager::CfgManager(std::string& cfg_file) : m_cfg_file(cfg_file), m_cfg_entries(0)
+
+CfgManager::CfgManager(std::string cfg_file) : m_cfg_file(cfg_file), m_cfg_entries(0)
 {
     m_cfg_entries = new std::vector<CfgOption*> ();
-    if ( ParseCfgFile()){}		// we should add some error handling here, in case config parsing fails
-					// this error can occur because there is no config file, in this case we should
-					// check for it and create a default configuration file
-
+    if ( ! ParseCfgFile())	// check if config parsing was OK
+    {
+	if (WriteDefaultCfg())	// if not, write default config
+	    ParseCfgFile();     // re-parse the file if config was written successfully
+	else
+	    std::cerr << "ERROR: Could not create default configuration file. Expect trouble." << std::endl;
+    }
 }
 
-CfgManager::CfgOption* CfgManager::GetOption(std::string& name) const
+CfgManager::CfgOption* CfgManager::GetOption(std::string name) const
 {
     std::vector<CfgOption*>::const_iterator it = m_cfg_entries -> begin();
     for(it; it < m_cfg_entries -> end(); ++it)
@@ -19,7 +23,7 @@ CfgManager::CfgOption* CfgManager::GetOption(std::string& name) const
     return 0;
 }
 
-void CfgManager::SetOption(std::string& name, std::string& new_val)
+void CfgManager::SetOption(std::string name, std::string new_val)
 {
     std::vector<CfgOption*>::iterator it = m_cfg_entries -> begin();
     for(it; it < m_cfg_entries -> end(); ++it)
@@ -57,11 +61,30 @@ bool CfgManager::ParseCfgFile()
 	opt_val.erase(0 , opt_val.find_first_not_of(" ") );   // strip leading whitespace
 
 	m_cfg_entries -> push_back(new CfgOption(opt_name, opt_val));
-
+	//std::cout << opt_name << std::endl << opt_val << std::endl;
     }
+    conf_file.close();
     return true;		// return success
+}
+
+bool CfgManager::WriteDefaultCfg()
+{
+    std::ofstream conf_file(m_cfg_file.c_str());
+    if(conf_file.is_open())
+    {
+	conf_file.write(m_default_cfg.c_str(), m_default_cfg.size());
+	conf_file.close();
+	return true;
+    }
+    return false;
 }
 
 CfgManager::CfgOption::CfgOption(std::string n, std::string v) : name(n), value(v)
 {
 }
+
+std::string CfgManager::m_default_cfg = (
+    "video_save_dir = \n"
+    "ask_save_path_on_download = True\n"
+    "\n"
+    );

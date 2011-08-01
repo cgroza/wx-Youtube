@@ -9,6 +9,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     listed_videos = new std::vector<VideoInfo*>();
     event_manager = new EventManager();
 
+    cfg_manager = new CfgManager(std::string(wxStandardPaths::Get().GetDocumentsDir().mb_str()) + "/.wxyoutube" );
+
+    // std::cout << cfg_manager -> GetOption("save_dir") -> value << std::endl;
+
     //Combo box options
     wxArrayString choice_string;
     choice_string.Add(wxT("Videos"));
