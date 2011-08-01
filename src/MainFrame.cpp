@@ -248,7 +248,6 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	VideoInfo*  info = item -> getVideoData();
 	// put config check later here, user may have a default directory
 	
-	
 	current_video.title = info->getName();
 	current_video.id = info->getId();
 	
@@ -257,52 +256,60 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	current_video.actual_url = Extract::return_url("best"); //This no longer needs to be called first.
 	current_video.extension =  Extract::return_ext("best");
 	
-	
 	std::cout << "Best format: " << current_video.extension << std::endl;
 	std::cout << "Real url: " << current_video.actual_url << std::endl;
-	
-	
 	
 	wxString title(current_video.title.c_str(), wxConvUTF8);
 	wxString ext(current_video.extension.c_str(), wxConvUTF8);
 	
 	if (current_video.extension == "") { return; }
-	
-	wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
-	
-	path_dlg.ShowModal();
-	
-	current_video.save_dir = path_dlg.GetDirectory().mb_str();
-	
-	
 
-	current_video.full_save_path = std::string(
-	    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
+	CfgManager::CfgOption* option = cfg_manager -> GetOption("ask_save_path_on_download"); // get config option
+	if(option)			// check if successfull
+	{	
+	    if(option -> value == "True")
+	    {
 
-	// current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
+		wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
 	
-	std::cout << current_video.full_save_path << std::endl;
-	std::cout << "[#]Video id is: " << info -> getId() << std::endl;
-	std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;
-	std::cout << "[#]Format is: " << current_video.extension << std::endl;
-	std::cout << "[#]Full save path: " << current_video.full_save_path << std::endl;
+		if (path_dlg.ShowModal() == wxID_CANCEL) return;
+	
+		current_video.save_dir = path_dlg.GetDirectory().mb_str();
+	
+		current_video.full_save_path = std::string(
+		    path_dlg.GetPath().mb_str()).append(".").append(current_video.extension);
+	    }
+	    else
+	    {
+		current_video.save_dir = cfg_manager -> GetOption("video_save_dir") -> value;
+		current_video.full_save_path = current_video.save_dir+"/"+current_video.title+"."+current_video.extension;
+	    }	
+	}
+    
+    // current_video.full_save_path = current_video.save_dir+current_video.title+"."+current_video.extension;
+	
+    std::cout << current_video.full_save_path << std::endl;
+    std::cout << "[#]Video id is: " << info -> getId() << std::endl;
+    std::cout << "[#]Real url is: " << current_video.actual_url << std::endl;
+    std::cout << "[#]Format is: " << current_video.extension << std::endl;
+    std::cout << "[#]Full save path: " << current_video.full_save_path << std::endl;
 
-	// create progress bar dialog
-	ProgressBar* progress =  new ProgressBar(GetStatusBar(), wxID_ANY, 100,
-						 wxT("Downloading, please wait"));
-	// disable the download button
-	download_button -> Disable();
-	// create a callback to reactivate the button after the download is done
-	EnableWidgetCallback* callback = new EnableWidgetCallback(download_button);
-	//you should atach the ext here, after getting the path
-	DownloadThread* video_dl = new DownloadThread(info, current_video.actual_url,current_video.full_save_path,
-						      callback, &ProgressBar::CurlProgressCallback);
-	progress -> Show();
-	video_dl -> Create();
-	video_dl -> Run();
-
+    // create progress bar dialog
+    ProgressBar* progress =  new ProgressBar(GetStatusBar(), wxID_ANY, 100,
+					     wxT("Downloading, please wait"));
+    // disable the download button
+    download_button -> Disable();
+    // create a callback to reactivate the button after the download is done
+    EnableWidgetCallback* callback = new EnableWidgetCallback(download_button);
+    //you should atach the ext here, after getting the path
+    DownloadThread* video_dl = new DownloadThread(info, current_video.actual_url,current_video.full_save_path,
+						  callback, &ProgressBar::CurlProgressCallback);
+    progress -> Show();
+    video_dl -> Create();
+    video_dl -> Run();
     }
 }
+
 
 void MainFrame::OnVideoSelect(wxListEvent& event)
 {
