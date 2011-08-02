@@ -13,7 +13,6 @@ enum
     ID_COMBOBOX,
     LIST_Video_list,
     ID_RADIOBUTTON1,
-    TEXT_save_directory,
 };
 
 enum SearchType

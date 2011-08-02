@@ -112,7 +112,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
     SetMenuBar(MainMenu);
     // create preferences window
-    pref = new PrefWindow(this);
+    pref = new PrefWindow(this, cfg_manager);
 
     CreateStatusBar();
     SetStatusText(_("wx-Youtube, version 1.0 alpha")); //"youtube-wx version %s" % (_WXYT_VERSION))
