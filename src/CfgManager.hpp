@@ -25,9 +25,11 @@ public:
 private:
     std::vector<CfgOption*> * m_cfg_entries; // holds the cfg entries
     std::string m_cfg_file;	// contains the cfg file path
-    bool ParseCfgFile();	// parses the config file. If it fails, returns false
-    bool WriteDefaultCfg();	// writes a default configuration file at m_cfg_file
-    static std::string m_default_cfg;
+    bool ParseCfgFile();	        // parses the config file. If it fails, returns false
+    bool WriteDefaultCfg() const;	// writes a default configuration file at m_cfg_file
+    void SaveCfg() const;		// Saves the configuration to the m_cfg_file
+
+    static std::string m_default_cfg; // stores th default config string
 };
 
 #endif     //CFG_MANAGER_H

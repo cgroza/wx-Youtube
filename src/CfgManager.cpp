@@ -30,7 +30,7 @@ void CfgManager::SetOption(std::string name, std::string new_val)
     {
 	if ((*it) -> name == name) (*it) -> value = new_val;
     }
-    
+    SaveCfg();
 }
 
 bool CfgManager::ParseCfgFile()
@@ -67,7 +67,7 @@ bool CfgManager::ParseCfgFile()
     return true;		// return success
 }
 
-bool CfgManager::WriteDefaultCfg()
+bool CfgManager::WriteDefaultCfg() const
 {
     std::ofstream conf_file(m_cfg_file.c_str());
     if(conf_file.is_open())
@@ -77,6 +77,22 @@ bool CfgManager::WriteDefaultCfg()
 	return true;
     }
     return false;
+}
+
+void CfgManager::SaveCfg() const
+{
+    std::ofstream conf_file(m_cfg_file.c_str());
+    if(conf_file.is_open())
+    {
+	std::vector<CfgOption*>::const_iterator it = m_cfg_entries -> begin();
+	std::string conf;
+	for(it; it < m_cfg_entries -> end(); ++it)
+	{
+	    conf.append((*it) -> name).append(" = ").append((*it) -> value).append("\n");
+	}
+
+	conf_file.write(conf.c_str(), conf.size());
+    }
 }
 
 CfgManager::CfgOption::CfgOption(std::string n, std::string v) : name(n), value(v)
