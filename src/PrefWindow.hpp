@@ -4,13 +4,16 @@
 #include <wx/wx.h>
 #include <wx/stattext.h>
 #include "CfgManager.hpp"
-
+#include <string>
 
 class PrefWindow: public wxFrame
 {
 public:
-    PrefWindow(wxWindow* parent, const CfgManager* cfg_man);
+    PrefWindow(wxWindow* parent,  CfgManager* cfg_man);
 
+
+
+private:
         
     wxBoxSizer* pref_sizer;
 
@@ -18,12 +21,14 @@ public:
     wxRadioButton* rd_ask_on_dl;
 
     wxTextCtrl *save_directory;
-    wxString save_dir();
     wxStaticText *save_directory_label;
-    wxButton* save_dir_bt;
+    wxButton* bt_save_dir;
+    CfgManager* m_cfg_man;
+    void OnRdSaveDir(wxCommandEvent& event);
+    void OnRdAskOnDl(wxCommandEvent& event);
+    void OnBtSaveDir(wxCommandEvent& event);
+    
 
-protected:
-private:
     enum
     {
 	TEXT_save_directory,
@@ -32,6 +37,7 @@ private:
 	BUTTON_save_dir,
 	
     };
+    DECLARE_EVENT_TABLE();
 };
 
 #endif // PREFWINDOW_H
