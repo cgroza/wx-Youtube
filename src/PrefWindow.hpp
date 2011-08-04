@@ -5,6 +5,9 @@
 #include <wx/stattext.h>
 #include "CfgManager.hpp"
 #include <string>
+#include <wx/filepicker.h>
+#include <wx/checkbox.h>
+
 
 class PrefWindow: public wxFrame
 {
@@ -20,21 +23,26 @@ private:
     wxRadioButton* rd_save_dir;
     wxRadioButton* rd_ask_on_dl;
 
-    wxTextCtrl *save_directory;
     wxStaticText *save_directory_label;
-    wxButton* bt_save_dir;
+    wxDirPickerCtrl* dir_picker;
+
+    wxCheckBox* chk_comments_brd;
+    wxCheckBox* chk_vid_descr;
     CfgManager* m_cfg_man;
+
     void OnRdSaveDir(wxCommandEvent& event);
     void OnRdAskOnDl(wxCommandEvent& event);
-    void OnBtSaveDir(wxCommandEvent& event);
-    
+    void OnFPChangeFile(wxFileDirPickerEvent& event);
+    void OnChkBxCommentsBrd(wxCommandEvent& event);
+    void OnChkBxVidDescr(wxCommandEvent& event);
 
     enum
     {
-	TEXT_save_directory,
+	DIRPICKER_save_dir,
 	RADIO_save_dir,
 	RADIO_ask_on_dl,
-	BUTTON_save_dir,
+	CHKBOX_comments_brd,
+	CHKBOX_vid_descr,
 	
     };
     DECLARE_EVENT_TABLE();

@@ -102,5 +102,7 @@ CfgManager::CfgOption::CfgOption(std::string n, std::string v) : name(n), value(
 std::string CfgManager::m_default_cfg = (
     "video_save_dir = \n"
     "ask_save_path_on_download = True\n"
+    "comments_board = True\n"
+    "video_description = True\n"
     "\n"
     );

@@ -12,21 +12,24 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
     rd_ask_on_dl = new wxRadioButton(this, RADIO_ask_on_dl, wxT("Ask On Download"));
 
     wxString cfg_save_dir = wxString(m_cfg_man -> GetOption("video_save_dir") -> value.c_str(), wxConvUTF8);
-    save_directory = new wxTextCtrl(this, TEXT_save_directory, cfg_save_dir, wxPoint(1,1), wxSize(250,-1),
-                                    wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
-
+    dir_picker = new wxDirPickerCtrl(this, DIRPICKER_save_dir, cfg_save_dir);
 	
     save_directory_label = new wxStaticText(this, wxID_ANY, wxT("Directory to save videos"), wxDefaultPosition, wxDefaultSize);
-    bt_save_dir = new wxButton(this, BUTTON_save_dir, wxT("Save Directory"));
-	
-	
+
+    chk_comments_brd = new wxCheckBox(this, CHKBOX_comments_brd, wxT("Enable Comments Board"));
+    chk_comments_brd -> SetValue(m_cfg_man -> GetOption("comments_board") -> value == "True");
+
+    chk_vid_descr = new wxCheckBox(this, CHKBOX_vid_descr, wxT("Enable Video Description"));
+    chk_vid_descr -> SetValue(m_cfg_man -> GetOption("video_description") -> value == "True");
+
     pref_sizer = new wxBoxSizer(wxVERTICAL);
     pref_sizer->Add(rd_save_dir, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     pref_sizer->Add(save_directory_label, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-    pref_sizer->Add(save_directory, 0 ,wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-    pref_sizer->Add(bt_save_dir, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+    pref_sizer->Add(dir_picker, 0 ,wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
     pref_sizer->Add(rd_ask_on_dl, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);	
+    pref_sizer->Add(chk_comments_brd, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);	
+    pref_sizer->Add(chk_vid_descr, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
     SetSizer(pref_sizer);
     pref_sizer->Fit(this);
@@ -36,26 +39,25 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
 void PrefWindow::OnRdSaveDir(wxCommandEvent& event)
 {
     m_cfg_man -> SetOption("ask_save_path_on_download", "False");
-    save_directory -> Enable();
-    bt_save_dir -> Enable();
+    dir_picker -> Enable();
+
 
 }
 
 void PrefWindow::OnRdAskOnDl(wxCommandEvent& event)
 {
     m_cfg_man -> SetOption("ask_save_path_on_download", "True");
-    save_directory -> Disable();
-    bt_save_dir -> Disable();
+    dir_picker -> Disable();
 
 }
 
-void PrefWindow::OnBtSaveDir(wxCommandEvent& event)
+void PrefWindow::OnFPChangeFile(wxFileDirPickerEvent& event)
 {
-    m_cfg_man -> SetOption("video_save_dir", std::string(save_directory -> GetValue().mb_str()));
+    m_cfg_man -> SetOption("video_save_dir", std::string(dir_picker -> GetPath().mb_str()));
 }
 
 BEGIN_EVENT_TABLE(PrefWindow, wxFrame)
 EVT_RADIOBUTTON(RADIO_save_dir, PrefWindow::OnRdSaveDir)
 EVT_RADIOBUTTON(RADIO_ask_on_dl, PrefWindow::OnRdAskOnDl)
-EVT_BUTTON(BUTTON_save_dir, PrefWindow::OnBtSaveDir)
+EVT_DIRPICKER_CHANGED(DIRPICKER_save_dir, PrefWindow::OnFPChangeFile)
 END_EVENT_TABLE()
