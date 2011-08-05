@@ -25,11 +25,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel = new wxPanel(splitter_win);
     lower_panel = new wxPanel(splitter_win);
     lower_notebook = new wxNotebook(lower_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-    description = new VideoDescription(lower_notebook, event_manager, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-    comments_board = new CommentsBoard(lower_notebook, event_manager, wxID_ANY);
-
-    lower_notebook -> AddPage(description, wxT("Description"));
-    lower_notebook -> AddPage(comments_board, wxT("Comments Board"));    
 
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
@@ -90,10 +85,23 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel -> SetSizerAndFit(topsizer);
 
     lower_sizer = new wxBoxSizer(wxHORIZONTAL);
-    lower_sizer -> Add(lower_notebook, 1, wxEXPAND | wxALL, 0);
-    lower_panel -> SetSizerAndFit(lower_sizer);
+    // create and add video description and comments board
+    // check config first
+    if(cfg_manager -> GetOption("video_description") -> value == "True")
+    {
+	description = new VideoDescription(lower_notebook, event_manager, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	lower_notebook -> AddPage(description, wxT("Description"));
+    }
+
+    if(cfg_manager -> GetOption("comments_board") -> value  == "True")
+    {
+	comments_board = new CommentsBoard(lower_notebook, event_manager, wxID_ANY);
+	lower_notebook -> AddPage(comments_board, wxT("Comments Board"));    
+    }
 
     splitter_win -> SplitHorizontally(upper_panel, lower_panel, -1); // split the window in 2
+    if(!lower_notebook -> GetPageCount()) splitter_win -> Unsplit(); // unsplit the window if notebook is empty
+
 
     //Menu Bar
     MainMenu = new wxMenuBar();

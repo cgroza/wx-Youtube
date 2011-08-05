@@ -56,8 +56,28 @@ void PrefWindow::OnFPChangeFile(wxFileDirPickerEvent& event)
     m_cfg_man -> SetOption("video_save_dir", std::string(dir_picker -> GetPath().mb_str()));
 }
 
+void PrefWindow::OnChkBxCommentsBrd(wxCommandEvent& event)
+{
+    std::string opt_value;
+    if(chk_comments_brd -> GetValue()) opt_value = "True";
+    else opt_value = "False";
+
+    m_cfg_man -> SetOption("comments_board", opt_value);
+}
+
+void PrefWindow::OnChkBxVidDescr(wxCommandEvent& event)
+{
+    std::string opt_value;
+    if(chk_comments_brd -> GetValue()) opt_value = "True";
+    else opt_value = "False";
+
+    m_cfg_man -> SetOption("video_description", opt_value);
+}
+
 BEGIN_EVENT_TABLE(PrefWindow, wxFrame)
 EVT_RADIOBUTTON(RADIO_save_dir, PrefWindow::OnRdSaveDir)
 EVT_RADIOBUTTON(RADIO_ask_on_dl, PrefWindow::OnRdAskOnDl)
 EVT_DIRPICKER_CHANGED(DIRPICKER_save_dir, PrefWindow::OnFPChangeFile)
+EVT_CHECKBOX(CHKBOX_comments_brd, PrefWindow::OnChkBxCommentsBrd)
+EVT_CHECKBOX(CHKBOX_vid_descr, PrefWindow::OnChkBxVidDescr)
 END_EVENT_TABLE()
