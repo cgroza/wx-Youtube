@@ -74,10 +74,16 @@ void PrefWindow::OnChkBxVidDescr(wxCommandEvent& event)
     m_cfg_man -> SetOption("video_description", opt_value);
 }
 
+void PrefWindow::OnClose(wxCloseEvent& event)
+{
+    Hide();			// do not destoy window on close, hide it instead.
+}
+
 BEGIN_EVENT_TABLE(PrefWindow, wxFrame)
 EVT_RADIOBUTTON(RADIO_save_dir, PrefWindow::OnRdSaveDir)
 EVT_RADIOBUTTON(RADIO_ask_on_dl, PrefWindow::OnRdAskOnDl)
 EVT_DIRPICKER_CHANGED(DIRPICKER_save_dir, PrefWindow::OnFPChangeFile)
 EVT_CHECKBOX(CHKBOX_comments_brd, PrefWindow::OnChkBxCommentsBrd)
 EVT_CHECKBOX(CHKBOX_vid_descr, PrefWindow::OnChkBxVidDescr)
+EVT_CLOSE(PrefWindow::OnClose)
 END_EVENT_TABLE()

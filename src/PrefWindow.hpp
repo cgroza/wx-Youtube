@@ -35,7 +35,7 @@ private:
     void OnFPChangeFile(wxFileDirPickerEvent& event);
     void OnChkBxCommentsBrd(wxCommandEvent& event);
     void OnChkBxVidDescr(wxCommandEvent& event);
-
+    void OnClose(wxCloseEvent& event); // prevents this window to be destroyed
     enum
     {
 	DIRPICKER_save_dir,
