@@ -52,17 +52,22 @@ void Extract::gather_formats()
     using namespace boost;
     std::string format;
     std::string real_url;
-    std::map<std::string, std::string> info;
-    start = resolve_buffer.find("fmt_url_map=")+12;
+    std::string key;
+    std::string value;
+    std::string tmp_url;
+    std::map<std::string, std::string> params;
     
     std::vector<std::string> tmp;
     std::vector<std::string> tmp_args;
-    std::string fmt_map = urilite::uri::decode2(resolve_buffer.substr(start, resolve_buffer.length()).c_str());
+    std::vector<std::string> stream_map;
+    std::string fmt_map = resolve_buffer;
     
-    
+    std::cout << "Complete response decoded: " << fmt_map << std::endl;
     split(tmp, fmt_map, is_any_of("|"));
     
     //http://v18.lscache1.c.youtube.com/videoplayback?sparams=id%2Cexpire%2Cip%2Cipbits%2Citag%2Calgorithm%2Cburst%2Cfactor&algorithm=throttle-factor&itag=18&ip=71.0.0.0&burst=40&sver=3&signature=5D682A1DA6D6153D39EC8F410C4F85DEE6C701E3.60FC504071DCCC39E736C21ADC6987B65B5B2FC9&expire=1311080400&key=yt1&ipbits=8&factor=1.25&id=feb0e649666337ae,5
+    
+    
     
     
     for (int i = 0; i < tmp.size(); i++)
@@ -75,54 +80,105 @@ void Extract::gather_formats()
 	for (int a = 0; a < tmp_args.size(); a++)
 	{
 	    if (tmp_args[a].find("=") == std::string::npos) { continue; }
-	    info[tmp_args[a].substr(0, tmp_args[a].find("="))] = tmp_args[a].substr(tmp_args[a].find("=")+1, tmp_args[a].length());
 	    
+	    key = urilite::uri::decode2(tmp_args[a].substr(0, tmp_args[a].find("=", 1)).c_str());
+	    value =  urilite::uri::decode2(tmp_args[a].substr(tmp_args[a].find("=", 1)+1, tmp_args[a].length()).c_str());
 	    
+	    params[key] = value;
+	   
+	    std::cout << "[" << key << "]" << " = " << value << std::endl;
+	
+	
 	}
 	
-	if (info.find("errorcode") != info.end())
+	if (params.find("errorcode") != params.end())
 	{ 
-	    wxString errorcode_reason(info["reason"].c_str(), wxConvUTF8); //This needs to be displayed
+	    wxString errorcode_reason(params["reason"].c_str(), wxConvUTF8); //This needs to be displayed
 	    wxMessageBox(errorcode_reason, wxT("Error"), wxOK | wxICON_ERROR ); 
 	}
 	
-	real_url = tmp[i].substr(0, tmp[i].find(","));
-	format = tmp[i].substr(tmp[i].find(",")+1, tmp[i].length());
+	
+	//real_url = tmp[i].substr(0, tmp[i].find(","));
 	
 	
-	switch (atoi(format.c_str())) 		     
+	
+	
+	if (params.find("url_encoded_fmt_stream_map") != params.end())
 	{
-	    case 5 :
-	    urls[format] = real_url;
-	    continue;
-	    case 34:
-	    urls[format] = real_url;
-	    continue;
-	    case 35: 
-	    urls[format] = real_url;	
-	    continue;
-		    
-	    case 18:
-	    urls[format] = real_url;
-	    continue;
-	    case 22:
-	    urls[format] = real_url;
-	    continue;
-	    case 37:
-	    urls[format] = real_url;
-	    continue;
-	    case 38:
-	    urls[format] = real_url;
-	    continue;
-	
-	    case 17:
-	    urls[format] = real_url;
-	    continue;
-	
-	    default: 
-	    continue;
+	    split(stream_map, params["url_encoded_fmt_stream_map"], is_any_of("&"));
+	    
+	    for (int s = 0; s < stream_map.size(); s++)
+	    {
 		
-	}	
+		if (urilite::uri::decode2(stream_map[s].substr(0, stream_map[s].find("=", 1)).c_str()) == "itag")
+		{
+		    
+		    tmp_url = urilite::uri::decode2(stream_map[s].substr(stream_map[s].find("=", 1)+1, stream_map[s].length()).c_str());
+		    if (tmp_url.find("url=") == std::string::npos) { continue; }
+		    
+		    //18,url
+		    format = tmp_url.substr(0, tmp_url.find(",",1));
+		    real_url = tmp_url.substr(tmp_url.find("url=",1)+4, tmp_url.length());
+		    
+		    
+		    
+		    //std::cout << "FORMAT: " << format << std::endl;
+		    //std::cout << "REAL_URL: " << real_url << std::endl;
+		    
+		    switch (atoi(format.c_str()))
+		    {
+			case 5 :
+			urls[format] = real_url;
+			break;
+			
+			case 34:
+			urls[format] = real_url;
+			break;
+			
+			case 35: 
+			urls[format] = real_url;	
+			break;
+		    
+			case 18:
+			urls[format] = real_url;
+			break;
+	    
+			case 22:
+			urls[format] = real_url;
+			break;
+	    
+			case 37:
+			urls[format] = real_url;
+			break;
+	    
+			case 38:
+			urls[format] = real_url;
+			break;
+	
+			case 17:
+			urls[format] = real_url;
+			break;
+	
+			default: 
+			break;
+			
+		    }	
+		}
+	    }
+	}
+		
+	
+	
+	
+	else
+	{
+		std::cout << "Could not find the stream map" << std::endl;
+	}
+	
+	
+	
+	
+	
     }
     std::cout << "Formats gathered" << std::endl;
 }
