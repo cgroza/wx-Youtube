@@ -262,7 +262,7 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	Extract::resolve_real_url(current_video.id); //This needs to be called first, otherwise it won't work. 
 	
 	current_video.actual_url = Extract::return_url("best"); //This no longer needs to be called first.
-	current_video.extension =  Extract::return_ext("best");
+	current_video.extension =  Extract::return_ext(current_video.actual_url);
 	
 	std::cout << "Best format: " << current_video.extension << std::endl;
 	std::cout << "Real url: " << current_video.actual_url << std::endl;

@@ -4,6 +4,8 @@
 #include <wx/wx.h>
 //I have not read too much about making .hpp files, so correct this as you see fit. 
 
+
+
 static std::map <std::string, std::string> urls;
 
 class Extract
@@ -15,7 +17,7 @@ class Extract
 	static void gather_formats();
 	static std::vector<std::string> formats;
 	static std::string return_url(std::string format);
-	static std::string return_ext(std::string format);
+	static std::string return_ext(std::string url);
 	
 	
 	
@@ -33,4 +35,5 @@ class Extract
     protected:
 	
 	static int writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer);
+	
 };

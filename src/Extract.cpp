@@ -61,8 +61,8 @@ void Extract::gather_formats()
     std::vector<std::string> tmp_args;
     std::vector<std::string> stream_map;
     std::string fmt_map = resolve_buffer;
-    
-    std::cout << "Complete response decoded: " << fmt_map << std::endl;
+
+
     split(tmp, fmt_map, is_any_of("|"));
     
     //http://v18.lscache1.c.youtube.com/videoplayback?sparams=id%2Cexpire%2Cip%2Cipbits%2Citag%2Calgorithm%2Cburst%2Cfactor&algorithm=throttle-factor&itag=18&ip=71.0.0.0&burst=40&sver=3&signature=5D682A1DA6D6153D39EC8F410C4F85DEE6C701E3.60FC504071DCCC39E736C21ADC6987B65B5B2FC9&expire=1311080400&key=yt1&ipbits=8&factor=1.25&id=feb0e649666337ae,5
@@ -86,7 +86,7 @@ void Extract::gather_formats()
 	    
 	    params[key] = value;
 	   
-	    std::cout << "[" << key << "]" << " = " << value << std::endl;
+	    //std::cout << "[" << key << "]" << " = " << value << std::endl;
 	
 	
 	}
@@ -96,11 +96,6 @@ void Extract::gather_formats()
 	    wxString errorcode_reason(params["reason"].c_str(), wxConvUTF8); //This needs to be displayed
 	    wxMessageBox(errorcode_reason, wxT("Error"), wxOK | wxICON_ERROR ); 
 	}
-	
-	
-	//real_url = tmp[i].substr(0, tmp[i].find(","));
-	
-	
 	
 	
 	if (params.find("url_encoded_fmt_stream_map") != params.end())
@@ -121,105 +116,115 @@ void Extract::gather_formats()
 		    real_url = tmp_url.substr(tmp_url.find("url=",1)+4, tmp_url.length());
 		    
 		    
-		    
-		    //std::cout << "FORMAT: " << format << std::endl;
-		    //std::cout << "REAL_URL: " << real_url << std::endl;
-		    
+				
 		    switch (atoi(format.c_str()))
 		    {
 			case 5 :
 			urls[format] = real_url;
-			break;
+			continue;
 			
 			case 34:
 			urls[format] = real_url;
-			break;
+			continue;
 			
 			case 35: 
 			urls[format] = real_url;	
-			break;
+			continue;
 		    
 			case 18:
 			urls[format] = real_url;
-			break;
+			continue;
 	    
 			case 22:
 			urls[format] = real_url;
-			break;
+			continue;
 	    
 			case 37:
 			urls[format] = real_url;
-			break;
+			continue;
 	    
 			case 38:
 			urls[format] = real_url;
-			break;
-	
+			continue;
+			
+			case 43:
+			urls[format] = real_url;
+			continue;
+			
+			case 44:
+			urls[format] = real_url;
+			continue;
+			
+			case 45:
+			urls[format] = real_url;
+			continue;
+			
 			case 17:
 			urls[format] = real_url;
-			break;
+			continue;
 	
 			default: 
-			break;
+			continue;
 			
 		    }	
 		}
 	    }
 	}
-		
-	
-	
-	
-	else
-	{
-		std::cout << "Could not find the stream map" << std::endl;
-	}
-	
-	
-	
-	
-	
     }
+    
     std::cout << "Formats gathered" << std::endl;
 }
 
-std::string Extract::return_ext(std::string format)
+std::string Extract::return_ext(std::string url)
 {
+    using namespace boost;
+    std::vector<std::string> itag_map;
+    std::string itag_key;
+    std::string itag_value;
+    split(itag_map, url, is_any_of("&"));
     
-    
-    if (format != "best")
+    for (int n = 0; n < itag_map.size(); n++)
     {
-	switch (atoi(format.c_str()))
+	if (itag_map[n].find("=") == std::string::npos) { continue; }
+	
+	itag_key = itag_map[n].substr(0, itag_map[n].find("=", 1)).c_str();
+	itag_value = itag_map[n].substr(itag_map[n].find("=", 1)+1, itag_map[n].length()).c_str();
+	
+	std::cout << "Key: " << itag_key << " Value: " << itag_value << std::endl;
+	
+	if (itag_key == "itag")
 	{
-	    case 38: return "mp4";
-	    case 37: return "mp4";
-	    case 22: return "mp4";
-	    case 18: return "mp4";
-	
-	    case 35: return "flv";
-	    case 34: return "flv";
-	    case 5:  return "flv";
-	
-	    case 17: return "3gp";
-	    default: return "";
-	}
-    }
+	    std::cout << "Format found, " << itag_value << std::endl;
+	    
+	    switch (atoi(itag_value.c_str()))
+	    {
+		case 38: 
+		case 37: 
+		case 22: 
+		case 18: return "mp4";
+
+		case 35: 
+		case 34: 
+		case 5: return "flv";
+		
+		case 43:
+		case 44:
+		case 45: return "webm";
+
+		case 17: return "3gp";
+		
+		default: return "";
+
+	    }
     
 
+
+	}
+	
+    }
+	
     
-    if (urls["38"] != "") { return "mp4"; }
-    if (urls["37"] != "") { return "mp4"; }
-    if (urls["22"] != "") { return "mp4"; }
-    if (urls["18"] != "") { return "mp4"; }
-    
-    if (urls["35"] != "") { return "flv"; }
-    if (urls["34"] != "") { return "flv"; }
-    if (urls["5"]  != "") { return "flv";  }
-    
-    if (urls["17"] != "") { return "3gp"; }
-    
-    
-    return "";
+
 }
 
 
@@ -235,6 +240,10 @@ std::string Extract::return_url(std::string format)
     if (urls["37"] != "") { return urls["37"]; }
     if (urls["22"] != "") { return urls["22"]; }
     if (urls["18"] != "") { return urls["18"]; }
+    
+    if (urls["43"] != "") { return urls["43"]; }
+    if (urls["44"] != "") { return urls["44"]; }
+    if (urls["45"] != "") { return urls["45"]; }
     
     if (urls["35"] != "") { return urls["35"]; }
     if (urls["34"] != "") { return urls["34"]; }
