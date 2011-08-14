@@ -1,19 +1,5 @@
-#include <iostream>
-#include <cstdlib>
-#include "curl/curl.h"
-#include <boost/format.hpp>
-#include <boost/algorithm/string/split.hpp>
-#include <sstream>
-#include <string>
-#include "urilite.h"
 #include "Extract.hpp"
-
-    
-
-
-
-
-
+#include "urilite.h"
 
 
 int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer)
@@ -39,14 +25,15 @@ std::string Extract::format_url(std::string id)
 }
 
 
-
+std::string Extract::encode_search(std::string search)
+{
+    return urilite::uri::encode2(search);
+}
 
 
 void Extract::gather_formats()
 {
     //This function goes through the retrieved url and grabs all the formats available.
-    
-    
     
     std::string fmt_map = resolve_buffer;
 

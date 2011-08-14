@@ -2,6 +2,15 @@
 #include <vector>
 #include <map>
 #include <wx/wx.h>
+#include <iostream>
+#include <cstdlib>
+#include "curl/curl.h"
+#include <boost/format.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <sstream>
+#include <string>
+
+
 
 
 #ifndef EXTRACT_H
@@ -34,7 +43,7 @@ class Extract
 	static void gather_formats();
 	static std::string return_url(std::string format);
 	static std::string return_ext(std::string url);
-	
+	static std::string encode_search(std::string search);
 	
 	
 	struct video_struct
