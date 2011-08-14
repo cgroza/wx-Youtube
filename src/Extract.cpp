@@ -259,6 +259,7 @@ void Extract::resolve_real_url(std::string id)
     CURL *resolve;
     CURLcode result;
     resolve_buffer.clear();
+    urls.clear();
     resolve = curl_easy_init();
     if(resolve)
     {
