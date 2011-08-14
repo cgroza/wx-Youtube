@@ -10,12 +10,11 @@
 
     
 
-std::string Extract::resolve_buffer;
-std::vector<std::string> Extract::formats;
 
 
 
-int start;
+
+
 
 int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer)
 {
@@ -47,35 +46,21 @@ void Extract::gather_formats()
 {
     //This function goes through the retrieved url and grabs all the formats available.
     
-    std::cout << "[#]Gathering formats" << std::endl;
     
-    using namespace boost;
-    std::string format;
-    std::string real_url;
-    std::string key;
-    std::string value;
-    std::string tmp_url;
-    std::map<std::string, std::string> params;
     
-    std::vector<std::string> tmp;
-    std::vector<std::string> tmp_args;
-    std::vector<std::string> stream_map;
     std::string fmt_map = resolve_buffer;
 
-
-    split(tmp, fmt_map, is_any_of("|"));
+    boost::split(tmp, fmt_map, boost::is_any_of("|"));
     
     //http://v18.lscache1.c.youtube.com/videoplayback?sparams=id%2Cexpire%2Cip%2Cipbits%2Citag%2Calgorithm%2Cburst%2Cfactor&algorithm=throttle-factor&itag=18&ip=71.0.0.0&burst=40&sver=3&signature=5D682A1DA6D6153D39EC8F410C4F85DEE6C701E3.60FC504071DCCC39E736C21ADC6987B65B5B2FC9&expire=1311080400&key=yt1&ipbits=8&factor=1.25&id=feb0e649666337ae,5
-    
-    
-    
+
     
     for (int i = 0; i < tmp.size(); i++)
     {
 	
 	
 	
-	split(tmp_args, tmp[i], is_any_of("&"));
+	boost::split(tmp_args, tmp[i], boost::is_any_of("&"));
 	
 	for (int a = 0; a < tmp_args.size(); a++)
 	{
@@ -100,7 +85,7 @@ void Extract::gather_formats()
 	
 	if (params.find("url_encoded_fmt_stream_map") != params.end())
 	{
-	    split(stream_map, params["url_encoded_fmt_stream_map"], is_any_of("&"));
+	    boost::split(stream_map, params["url_encoded_fmt_stream_map"], boost::is_any_of("&"));
 	    
 	    for (int s = 0; s < stream_map.size(); s++)
 	    {
@@ -109,6 +94,7 @@ void Extract::gather_formats()
 		{
 		    
 		    tmp_url = urilite::uri::decode2(stream_map[s].substr(stream_map[s].find("=", 1)+1, stream_map[s].length()).c_str());
+		    
 		    if (tmp_url.find("url=") == std::string::npos) { continue; }
 		    
 		    //18,url
@@ -119,68 +105,34 @@ void Extract::gather_formats()
 				
 		    switch (atoi(format.c_str()))
 		    {
-			case 5 :
-			urls[format] = real_url;
-			continue;
-			
+			case 5:
 			case 34:
-			urls[format] = real_url;
-			continue;
-			
-			case 35: 
-			urls[format] = real_url;	
-			continue;
-		    
+			case 35:
 			case 18:
-			urls[format] = real_url;
-			continue;
-	    
 			case 22:
-			urls[format] = real_url;
-			continue;
-	    
 			case 37:
-			urls[format] = real_url;
-			continue;
-	    
 			case 38:
-			urls[format] = real_url;
-			continue;
-			
 			case 43:
-			urls[format] = real_url;
-			continue;
-			
 			case 44:
-			urls[format] = real_url;
-			continue;
-			
 			case 45:
-			urls[format] = real_url;
-			continue;
-			
 			case 17:
 			urls[format] = real_url;
-			continue;
+			break;
 	
 			default: 
-			continue;
+			break;
 			
 		    }	
 		}
 	    }
 	}
     }
-    
-    std::cout << "Formats gathered" << std::endl;
 }
 
 std::string Extract::return_ext(std::string url)
 {
     using namespace boost;
-    std::vector<std::string> itag_map;
-    std::string itag_key;
-    std::string itag_value;
+    
     split(itag_map, url, is_any_of("&"));
     
     for (int n = 0; n < itag_map.size(); n++)
@@ -190,7 +142,7 @@ std::string Extract::return_ext(std::string url)
 	itag_key = itag_map[n].substr(0, itag_map[n].find("=", 1)).c_str();
 	itag_value = itag_map[n].substr(itag_map[n].find("=", 1)+1, itag_map[n].length()).c_str();
 	
-	std::cout << "Key: " << itag_key << " Value: " << itag_value << std::endl;
+	//std::cout << "Key: " << itag_key << " Value: " << itag_value << std::endl;
 	
 	if (itag_key == "itag")
 	{
@@ -217,13 +169,13 @@ std::string Extract::return_ext(std::string url)
 
 	    }
     
-
+	
 
 	}
 	
     }
 	
-    
+    return "";
 
 }
 
@@ -264,12 +216,15 @@ void Extract::resolve_real_url(std::string id)
     //AFAIK videos can only be downloaded once from the given url (each url has a unique signature), and can only be downloaded from that IP address.
     
     id = format_url(id);
-    std::cout << "[#]Resolving real url for " << id << std::endl;
     CURL *resolve;
     CURLcode result;
+    resolve = curl_easy_init();
+    
     resolve_buffer.clear();
     urls.clear();
-    resolve = curl_easy_init();
+    params.clear();
+    
+    
     if(resolve)
     {
 	//Curl options
