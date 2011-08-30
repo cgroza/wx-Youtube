@@ -85,6 +85,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel -> SetSizerAndFit(topsizer);
 
     lower_sizer = new wxBoxSizer(wxHORIZONTAL);
+    lower_sizer -> Add(lower_notebook, 1, wxEXPAND | wxALL, 0);
+    lower_panel -> SetSizerAndFit(lower_sizer);
     // create and add video description and comments board
     // check config first
     if(cfg_manager -> GetOption("video_description") -> value == "True")
@@ -168,7 +170,9 @@ void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
-    wxString search_value  = search_box->GetValue(); //get search string
+    wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
+    
+    
     SearchURL search_url(getSearchType(), search_value); //make URL with search string
     //get the search results
     XMLFeed feed(&search_url);

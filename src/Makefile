@@ -1,6 +1,7 @@
 .PHONY: clean all wxyoutube
 CFLAGS=-g `wx-config --cxxflags`
 LIBS=`wx-config --libs` -lcurl
+RM=rm
 
 GLOBAL_HEADERS = Enums.hpp
 CPPFILES = $(wildcard *.cpp)
@@ -21,3 +22,4 @@ clean:
 
 %.o: %.cpp %.hpp
 	$(CXX) -c -o $@ $< $(CFLAGS)
+
