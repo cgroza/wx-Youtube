@@ -85,6 +85,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel -> SetSizerAndFit(topsizer);
 
     lower_sizer = new wxBoxSizer(wxHORIZONTAL);
+    lower_sizer -> Add(lower_notebook, 1, wxEXPAND | wxALL, 0);
+    lower_panel -> SetSizerAndFit(lower_sizer);
     // create and add video description and comments board
     // check config first
     if(cfg_manager -> GetOption("video_description") -> value == "True")
