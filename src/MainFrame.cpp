@@ -114,7 +114,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     EditMenu->Append(MENU_Pref, wxT("&Preferences\tCTRL+P"), wxT("Edit your preferences"));
 
     //File Menu functions
-    FileMenu->Append(MENU_About, wxT("&About"), wxT("About youtube-wx"));
+    FileMenu->Append(MENU_About, wxT("&About"), wxT("About wx-Youtube"));
     FileMenu->Append(MENU_Quit, wxT("&Quit\tCTRL+Q"), wxT("Quit the program"));
 
     MainMenu->Append(FileMenu, wxT("&File"));
@@ -125,7 +125,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     pref = new PrefWindow(this, cfg_manager);
 
     CreateStatusBar();
-    SetStatusText(_("wx-Youtube, version 1.0 alpha")); //"youtube-wx version %s" % (_WXYT_VERSION))
+    SetStatusText(_("wx-Youtube, version 1")); //"youtube-wx version %s" % (_WXYT_VERSION))
 
 }
 
@@ -188,7 +188,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
 	listed_videos -> clear();
 	VideosDeleteEvent event;
-	event_manager -> FireVideosDeleteEvent(&event);
+	event_manager -> FireEvent(&event);
 
     }
 
@@ -237,7 +237,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     video_list -> DeleteAllItems(); //prepare list for new entry stream
 
     VideoSearchEvent event(listed_videos);
-    event_manager -> FireVideoSearchEvent(&event);    
+    event_manager -> FireEvent(&event);    
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
     // add the items one by one
@@ -334,7 +334,7 @@ void MainFrame::OnVideoSelect(wxListEvent& event)
 	VideoEntry* item = video_list -> GetVideoEntry(video_item_index); //get it's video entry object
 	VideoInfo*  info = item -> getVideoData();
 	VideoSelectEvent evt(info);
-	event_manager -> FireVideoSelectEvent(&evt);
+	event_manager -> FireEvent(&evt);
     }
     event.Skip();
 

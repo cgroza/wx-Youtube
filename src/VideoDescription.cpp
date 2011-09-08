@@ -20,8 +20,8 @@ VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, con
 
     SetSizerAndFit(m_sizer);
     // bind events
-    evt_man -> BindSelectVideoEvent(selected_video_event);
-    evt_man -> BindDeleteVideosEvent(deleted_video_event);
+    evt_man -> BindEvent(selected_video_event);
+    evt_man -> BindEvent(deleted_video_event);
 
 }
 

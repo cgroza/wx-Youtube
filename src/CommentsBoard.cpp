@@ -6,8 +6,8 @@ CommentsBoard::CommentsBoard(wxWindow* parent, EventManager* evt_man, wxWindowID
     // create the event handler an bind it
     on_select = new OnVideoSelect(this);
     on_search = new OnVideoSearch(this);
-    evt_man -> BindSelectVideoEvent(on_select);
-    evt_man -> BindSearchEvent(on_search);
+    evt_man -> BindEvent(on_select);
+    evt_man -> BindEvent(on_search);
 
     // create the layout
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
