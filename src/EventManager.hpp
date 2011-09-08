@@ -49,22 +49,22 @@ public:
       This method binds an event which is fired upon selecting a
       video in the list.
      */
-    void BindSelectVideoEvent(VideoSelect);
+    void BindEvent(VideoSelect);
 
     /*
       This method binds an event which is fired upon searching
       videos.
      */
-    void BindSearchEvent(Search);
+    void BindEvent(Search);
     /*
       This method binds an event which is fired upon
       clearing of the video list.
     */
-    void BindDeleteVideosEvent(DeleteVideos); 
+    void BindEvent(DeleteVideos); 
 
-    void FireVideoSearchEvent(VideoSearchEvent* event) const;
-    void FireVideoSelectEvent(VideoSelectEvent* event) const;
-    void FireVideosDeleteEvent(VideosDeleteEvent* event) const;
+    void FireEvent(VideoSearchEvent* event) const;
+    void FireEvent(VideoSelectEvent* event) const;
+    void FireEvent(VideosDeleteEvent* event) const;
 
 protected:
     std::vector<Search> search_listeners;
