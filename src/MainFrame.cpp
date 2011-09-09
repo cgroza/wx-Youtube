@@ -21,7 +21,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 
     splitter_win = new wxSplitterWindow(this);
-    splitter_win -> SetMinimumPaneSize(1);
+    splitter_win -> SetMinimumPaneSize(200);
     upper_panel = new wxPanel(splitter_win);
     lower_panel = new wxPanel(splitter_win);
     lower_notebook = new wxNotebook(lower_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
@@ -102,7 +102,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     }
 
     splitter_win -> SplitHorizontally(upper_panel, lower_panel, -1); // split the window in 2
-    if(!lower_notebook -> GetPageCount()) splitter_win -> Unsplit(); // unsplit the window if notebook is empty
+    if(lower_notebook -> GetPageCount() == 0) splitter_win -> Unsplit(); // unsplit the window if notebook is empty
 
 
     //Menu Bar
