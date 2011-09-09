@@ -1,6 +1,7 @@
 #ifndef PARSER_H
     #define PARSER_H
 
+#include <iostream>
 #include <vector>
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_print.hpp"
