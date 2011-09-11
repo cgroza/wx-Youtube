@@ -97,7 +97,7 @@ void CommentsBoard::CommentsPane::RefreshCommentList()
 	wxString content = wxString((*it) -> getContent().c_str(), wxConvUTF8);
 	wxString newline = wxString("\n\n", wxConvUTF8);
 	m_comment_display ->Freeze();
-	m_comment_display -> AppendText(newline+wxT("[")+author+wxT("]")+content);
+	m_comment_display -> WriteText(newline+wxT("[")+author+wxT("]")+content);
 	m_comment_display -> Thaw();  
 
     }
