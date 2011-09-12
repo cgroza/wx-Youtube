@@ -55,7 +55,7 @@ private:
     wxTextCtrl* m_descr;
     std::vector<std::string>* dled_thumbnails; // contains video IDs
 
-    class OnSelectedVideoCall : public VideoSelectObjectFunction
+    class OnSelectedVideoCall : public VideoSelectListener
     {
     public:
  	OnSelectedVideoCall(VideoDescription* parent): m_parent(parent){}
@@ -64,7 +64,7 @@ private:
 	VideoDescription* m_parent;
     };
 
-    class OnDeletedVideoCall: public VideosDeleteObjectFunction
+    class OnDeletedVideoCall: public VideosDeleteListener
     {
     public:
 	OnDeletedVideoCall(VideoDescription* parent): m_parent(parent){}

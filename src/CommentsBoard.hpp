@@ -112,7 +112,7 @@ private:
     };
 
     // this callback class is called when the user selects a video, it starts the video comment fetching procedure
-    class OnVideoSelect: public VideoSelectObjectFunction
+    class OnVideoSelect: public VideoSelectListener
     {
     public:
 	OnVideoSelect(CommentsBoard* parent) : m_parent(parent) {}
@@ -128,7 +128,7 @@ private:
 
     // This callback class  is called when the user gets a new set of vides.
     // Then, we clear the comment display and buffer because they are no longer releveant.
-    class OnVideoSearch : public SearchObjectFunction
+    class OnVideoSearch : public SearchListener
     {
     public:
 	OnVideoSearch(CommentsBoard* parent) : m_parent(parent) {}

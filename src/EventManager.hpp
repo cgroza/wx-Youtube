@@ -21,26 +21,26 @@
 #include "Events.hpp"
 #include <vector>
 
-class FunctionObject
+class Listener
 {
 public:
     virtual void operator()(EventBase* event){};
 };
 
-class SearchObjectFunction : public FunctionObject
+class SearchListener : public Listener
 {
 public:
     virtual void operator()(VideoSearchEvent* event){};
 };
 
 
-class VideoSelectObjectFunction : public FunctionObject
+class VideoSelectListener : public Listener
 {
 public:
     virtual void operator()(VideoSelectEvent* event){};
 };
 
-class VideosDeleteObjectFunction : public FunctionObject
+class VideosDeleteListener : public Listener
 {
 public:
     virtual void operator()(VideosDeleteEvent* event){};
@@ -57,9 +57,9 @@ upon firing an event.
 
 {
 public:
-    typedef SearchObjectFunction* Search;
-    typedef VideoSelectObjectFunction* VideoSelect;
-    typedef  VideosDeleteObjectFunction*  DeleteVideos;
+    typedef SearchListener* Search;
+    typedef VideoSelectListener* VideoSelect;
+    typedef  VideosDeleteListener*  DeleteVideos;
 
     EventManager();
     /*
