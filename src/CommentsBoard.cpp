@@ -78,10 +78,13 @@ CommentsBoard::CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWin
 void CommentsBoard::CommentsPane::AddComment(const CommentInfo* comment)
 {
     // Append the comment to the text ctrl
-    
-    m_comment_display -> WriteText(wxString(comment -> getContent().c_str(), wxConvUTF8));
-    Layout();
-    
+    wxString author = wxString(comment -> getAuthor().c_str(), wxConvUTF8);
+    wxString content = wxString(comment -> getContent().c_str(), wxConvUTF8);
+    wxString newline = wxString("\n\n", wxConvUTF8);
+
+    m_comment_display -> Freeze();
+    m_comment_display -> WriteText(newline+wxT("[")+author+wxT("] ")+content);
+    m_comment_display -> Thaw();
 }
 
 
@@ -91,17 +94,16 @@ void CommentsBoard::CommentsPane::RefreshCommentList()
     m_comment_display -> Clear();
     // loop through the comments vector and add each comment to the text ctrl
     std::vector<CommentInfo*>::const_iterator it = m_parent ->  m_comments -> begin();
+    m_comment_display ->Freeze();
     for(it; it < m_parent -> m_comments -> end(); ++it)
     {
 	wxString author = wxString((*it) -> getAuthor().c_str(), wxConvUTF8);
 	wxString content = wxString((*it) -> getContent().c_str(), wxConvUTF8);
 	wxString newline = wxString("\n\n", wxConvUTF8);
-	m_comment_display ->Freeze();
-	m_comment_display -> WriteText(newline+wxT("[")+author+wxT("]")+content);
-	m_comment_display -> Thaw();  
 
+	m_comment_display -> WriteText(newline+wxT("[")+author+wxT("] ")+content);
     }
-    Layout();
+    m_comment_display -> Thaw();  
 }
 
 void CommentsBoard::CommentsPane::ClearCommentDisplay()
