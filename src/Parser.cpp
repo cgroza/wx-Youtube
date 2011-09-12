@@ -95,10 +95,11 @@ void Parser::parseCommentsFeed(std::vector<CommentInfo*>* buffer, rapidxml::xml_
 	
     }
     rapidxml::xml_node<>* cur_node = feed_node -> first_node("entry"); //Setup our initial node
+
     while (cur_node != 0)
     {
 	buffer -> push_back( new CommentInfo(cur_node -> first_node("title") -> value(),
-					     cur_node -> first_node("author") -> value(),
+					     cur_node -> first_node("author") -> first_node("name") -> value(),
 					     cur_node -> first_node("content") -> value()
 				 ));
         cur_node = cur_node->next_sibling("entry"); // Iterate to the next entry sibling
