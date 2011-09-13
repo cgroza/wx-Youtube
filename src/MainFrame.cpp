@@ -51,6 +51,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     //Search box, this is where the user types in the url, user name, or other relevant info.
     search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT(""), wxDefaultPosition, wxSize(-1,-1),
 				wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
+				
+    num_vids = new wxTextCtrl(upper_panel, TEXT_num_vids, wxT("25"), wxDefaultPosition, wxSize(-1,-1),
+				wxTE_RICH , wxDefaultValidator, wxTextCtrlNameStr);
 
     //Go Button, this initiates the search
     go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
@@ -68,7 +71,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		   wxEXPAND |
 		   wxALL,
 		   0);
-
+    
+    box_sizer->Add(num_vids,
+		   1,
+		   wxEXPAND |
+		   wxALL,
+		   0);
+    
     box_sizer->Add(combo_box,
 		   0,            //make vertically strechable
 		   wxEXPAND  |   //make horizontally stretchable

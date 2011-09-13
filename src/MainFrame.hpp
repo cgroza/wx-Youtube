@@ -73,6 +73,7 @@ public:
     wxButton *go_button;
     wxButton *download_button;
     wxTextCtrl *search_box;
+    wxTextCtrl *num_vids;
     wxMenuBar *MainMenu;
     wxComboBox *combo_box;
     wxNotebook *lower_notebook;

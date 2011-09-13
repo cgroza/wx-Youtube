@@ -22,6 +22,7 @@
 enum
 {
     TEXT_Search =  1,
+    TEXT_num_vids,
     MENU_Quit  ,
     MENU_About,
     MENU_Pref,

@@ -64,7 +64,7 @@ bool XMLFeed::parseFeed() //Needed some help with this one
     }
     catch(rapidxml::parse_error e) {
 
-      std::cout << "Could not parse youtube xml feed!" << std::endl;
+      std::cout << "Could not parse youtube xml feed: " << e.what() << std::endl;
       m_error_code = NO_SEARCH_RESULT; //no videos found, we do this to prevent a segfault
       return false;
     }
