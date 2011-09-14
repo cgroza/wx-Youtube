@@ -47,26 +47,22 @@ int XMLFeed::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
     return result;
 }
 
-bool XMLFeed::parseFeed() //Needed some help with this one
+bool XMLFeed::parseFeed() 
 {   
-    // request_information *page_information;
-    // page_information = new request_information;
 
 
-//    std::vector<char> xml_copy(XMLFeed::buffer.begin(), XMLFeed::buffer.end());
-//    xml_copy.push_back('\0');
-
-
-
-    try{                        // in the case of an invalid xml document sent by curl
-                                // an invalid user search may throw an exception
+    /* in the case of an invalid xml document sent by curl
+    /* an invalid user search may throw an exception */
+    try
+    {                        
 	m_xml_feed -> parse<parse_declaration_node | parse_no_data_nodes>(&XMLFeed::buffer[0]);
     }
-    catch(rapidxml::parse_error e) {
-
-      std::cout << "Could not parse youtube xml feed: " << e.what() << std::endl;
-      m_error_code = NO_SEARCH_RESULT; //no videos found, we do this to prevent a segfault
-      return false;
+    
+    catch(rapidxml::parse_error e) 
+    {
+	std::cout << "Could not parse youtube xml feed: " << e.what() << std::endl;
+	m_error_code = NO_SEARCH_RESULT; //no videos found, we do this to prevent a segfault
+	return false;
     }
 
 
@@ -79,9 +75,9 @@ bool XMLFeed::parseFeed() //Needed some help with this one
 
 
 
-bool XMLFeed::fetchFeed()
+bool XMLFeed::fetchFeed(int start, int end)
 {
-    //using boost::format;
+    using boost::format;
     //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
 
     CURL *curl;
@@ -94,7 +90,7 @@ bool XMLFeed::fetchFeed()
     if(curl)
     {
         //Now set up all of the curl options
-        curl_easy_setopt(curl, CURLOPT_URL, m_search_url -> getUrl().c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, str(format(m_search_url -> getUrl()) % start % end ).c_str());
         curl_easy_setopt(curl, CURLOPT_HEADER, 0);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &XMLFeed::writer);

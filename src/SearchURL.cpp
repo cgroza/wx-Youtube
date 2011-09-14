@@ -54,12 +54,14 @@ std::string SearchURL::getUrl() const
     return m_url;
 }
 
+
+
 SearchType SearchURL::getSearchType () const
 {
     return m_search_type;
 }
 // initialize the static URL strings
-const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%s&max-results=%s";
-const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploads";
-const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&v=2&max-results=%s";
+const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%s&max-results=%s&start-index=%s";
+const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploads&max-results=%s&start-index=%s";
+const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&v=2&max-results=%s&start-index=%s";
 const std::string SearchURL::VIDEO_COMMENTS_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos/%s/comments";

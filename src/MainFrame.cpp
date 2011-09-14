@@ -171,6 +171,34 @@ EVT_COMBOBOX(ID_COMBOBOX, MainFrame::OnComboBoxSelect)
 END_EVENT_TABLE()
 
 
+void MainFrame::Error(int error_code)
+{
+    switch(error_code)
+    {
+	
+	case 6:
+	    wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 7:
+	    wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 28:
+	    wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 52:
+	    wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 56:
+	    wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case NO_SEARCH_RESULT:
+	    break;
+	    
+	default:
+	    wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+    }
+}
 
 void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
@@ -219,46 +247,54 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 
     }
 
-    if (feed.fetchFeed()) //fetch youtube xml feed
+    
+    
+    
+    for (int n_vids = atoi(num_vids->GetValue().mb_str()); n_vids != 0;)
     {
-	switch(search_url.getSearchType())
+	int start = 1;
+	int end = 50;
+	
+	if (n_vids <= 50) 
+	{ 
+	    end += n_vids; 
+	    n_vids = 0;
+	}
+	
+	else
 	{
-        case VIDEO_SEARCH:
-        case USER_VIDEO_SEARCH:
-	    Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
-	    break;
+	    n_vids -= 50;
+	}
+	
+	 
+	if (feed.fetchFeed(start, end)) //fetch youtube xml feed
+	{
+	    switch(search_url.getSearchType())
+	    {
+		case VIDEO_SEARCH:
+		case USER_VIDEO_SEARCH:
+		    Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
+		    break;
 
-        case PLAY_LIST_SEARCH:
-	    Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
-	    break;
+		case PLAY_LIST_SEARCH:
+		    Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
+		    break;
+	    }
 	}
-    }
-    else //something went wrong
-    {
-	switch (feed.getErrorCode()){ // recovering the curl exit code
-	case 6:
-	    wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 7:
-	    wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 28:
-	    wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 52:
-	    wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 56:
-	    wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case NO_SEARCH_RESULT:
-	    break;
-	default:
-	    wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
+	else //something went wrong
+	{
+	    Error(feed.getErrorCode());
+	    return;
+	    
 	}
-	return;    // abbort the function
+    start += 50;
+    end += 50;
+    
     }
+    
+    
+    
+    
 
     // delete listed_videos;
     video_list -> DeleteAllItems(); //prepare list for new entry stream

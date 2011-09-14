@@ -60,7 +60,7 @@ public:
     ~XMLFeed();
 
     // fetches the youtube xml feed
-    bool fetchFeed();
+    bool fetchFeed(int start, int end);
 
     rapidxml::xml_document<>* getXMLFeed() const;
 
