@@ -73,7 +73,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		   0);
     
     box_sizer->Add(num_vids,
-		   1,
+		   0,
 		   wxEXPAND |
 		   wxALL,
 		   0);
@@ -174,6 +174,7 @@ END_EVENT_TABLE()
 
 void MainFrame::OnQuit(wxCommandEvent& WXUNUSED(event))
 {
+
     Close(true);
 }
 
@@ -199,7 +200,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     
     
-    SearchURL search_url(getSearchType(), search_value); //make URL with search string
+    SearchURL search_url(getSearchType(), search_value, num_vids -> GetValue()); //make URL with search string
     //get the search results
     XMLFeed feed(&search_url);
 
@@ -404,8 +405,19 @@ void MainFrame::OnVideoWatch(wxListEvent& event)
 void MainFrame::OnComboBoxSelect(wxCommandEvent& event)
 {
 
-    if(combo_box -> GetCurrentSelection() == 2) download_button -> Disable();
-    else download_button -> Enable();
+    switch(combo_box -> GetCurrentSelection())
+    {
+    case 1:
+	num_vids -> Disable();
+	break;
+    case 2:
+	download_button -> Disable();
+	num_vids -> Enable();
+	break;
+    default:
+	download_button -> Enable();
+	num_vids -> Enable();
     event.Skip();
 
+    }
 }
