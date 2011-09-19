@@ -250,20 +250,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     //get the search results
     XMLFeed feed(&search_url);
 
-    // delete the the VideoInfo allocated on the heap
-    if(listed_videos -> size()){
-	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
-	for(it; it != listed_videos -> end(); ++it)
-	{
-	    delete (*it);
-	    *it = 0;
-	}
-
-	listed_videos -> clear();
-	VideosDeleteEvent event;
-	event_manager -> FireEvent(&event);
-
-    }
+    
 
     if (feed.fetchFeed()) //fetch youtube xml feed
     {
@@ -280,10 +267,48 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	}
     }
     
-    else { MainFrame::Error(feed.getErrorCode()); };
+    else
+    {
+	MainFrame::Error(feed.getErrorCode()); 
+	return;
+    };
     
-    return;
+    FillList();
+    
 
+}
+
+void MainFrame::FillList()
+{
+    video_list -> DeleteAllItems(); //prepare list for new entry stream
+
+    //vector iterator
+    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
+    // add the items one by one
+    // if the vector is empty, there will be no problem
+    for(p; p < listed_videos -> end(); ++p)
+    {
+	video_list -> AddVideo(*p);
+    }
+}
+
+void MainFrame::DeleteList()
+{
+    // delete the the VideoInfo allocated on the heap
+    if(listed_videos -> size()){
+	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
+	for(it; it != listed_videos -> end(); ++it)
+	{
+	    delete (*it);
+	    *it = 0;
+	}
+
+	listed_videos -> clear();
+	VideosDeleteEvent event;
+	event_manager -> FireEvent(&event);
+
+    }
+    
 }
 
 void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))

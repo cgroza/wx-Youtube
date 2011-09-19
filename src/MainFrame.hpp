@@ -55,6 +55,8 @@ public:
     void OnVideoWatch(wxListEvent& event);
     void OnVideoDownload(wxCommandEvent& event);
     void Error(int error_code);
+    void FillList();
+    void DeleteList();
     void OnComboBoxSelect(wxCommandEvent& event);
 
     SearchType getSearchType();
