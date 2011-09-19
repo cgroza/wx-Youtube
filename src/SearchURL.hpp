@@ -39,7 +39,7 @@ private:
     const SearchType m_search_type;
 
 public:
-    SearchURL(SearchType search_t, wxString& search_str, const wxString& nr_videos = "50");
+    SearchURL(SearchType search_t, wxString& search_str);
     std::string getUrl() const; // returns the URL as a string
     SearchType getSearchType() const;//returns the search type
 };

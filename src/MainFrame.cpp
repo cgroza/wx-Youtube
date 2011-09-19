@@ -195,12 +195,58 @@ void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
     return;
 }
 
+void MainFrame::ClearList()
+{
+        // delete listed_videos;
+    video_list -> DeleteAllItems(); //prepare list for new entry stream
+
+    VideoSearchEvent event(listed_videos);
+    event_manager -> FireEvent(&event);    
+    //vector iterator
+    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
+    // add the items one by one
+    // if the vector is empty, there will be no problem
+    for(p; p < listed_videos -> end(); ++p){
+        video_list -> AddVideo(*p);
+
+    }
+
+}
+
+void MainFrame::Error(int error_code)
+{
+    switch (error_code)
+    {
+	case 6:
+	    wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 7:
+	    wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 28:
+	    wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 52:
+	    wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case 56:
+	    wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+	case NO_SEARCH_RESULT:
+	    break;
+	default:
+	    wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
+	    break;
+    }
+    
+}
+
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     
     
-    SearchURL search_url(getSearchType(), search_value, num_vids -> GetValue()); //make URL with search string
+    SearchURL search_url(getSearchType(), search_value); //make URL with search string
     //get the search results
     XMLFeed feed(&search_url);
 
@@ -223,56 +269,20 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     {
 	switch(search_url.getSearchType())
 	{
-        case VIDEO_SEARCH:
-        case USER_VIDEO_SEARCH:
-	    Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
-	    break;
+	    case VIDEO_SEARCH:
+	    case USER_VIDEO_SEARCH:
+		Parser::parseVideoFeed(listed_videos, feed.getXMLFeed());
+		break;
 
-        case PLAY_LIST_SEARCH:
-	    Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
-	    break;
+	    case PLAY_LIST_SEARCH:
+		Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
+		break;
 	}
     }
-    else //something went wrong
-    {
-	switch (feed.getErrorCode()){ // recovering the curl exit code
-	case 6:
-	    wxMessageBox(_("Could not resolve host"), _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 7:
-	    wxMessageBox(_("Could not connect"),      _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 28:
-	    wxMessageBox(_("Operation timed out"),    _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 52:
-	    wxMessageBox(_("Got nothing"),            _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case 56:
-	    wxMessageBox(_("Receive error"),          _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	case NO_SEARCH_RESULT:
-	    break;
-	default:
-	    wxMessageBox(_("Undocumented error"),     _("Error"), wxOK | wxICON_INFORMATION);
-	    break;
-	}
-	return;    // abbort the function
-    }
-
-    // delete listed_videos;
-    video_list -> DeleteAllItems(); //prepare list for new entry stream
-
-    VideoSearchEvent event(listed_videos);
-    event_manager -> FireEvent(&event);    
-    //vector iterator
-    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
-    // add the items one by one
-    // if the vector is empty, there will be no problem
-    for(p; p < listed_videos -> end(); ++p){
-        video_list -> AddVideo(*p);
-
-    }
+    
+    else { MainFrame::Error(feed.getErrorCode()); };
+    
+    return;
 
 }
 

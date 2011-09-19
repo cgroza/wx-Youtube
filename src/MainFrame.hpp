@@ -54,7 +54,7 @@ public:
     void OnVideoSelect(wxListEvent& event);
     void OnVideoWatch(wxListEvent& event);
     void OnVideoDownload(wxCommandEvent& event);
-
+    void Error(int error_code);
     void OnComboBoxSelect(wxCommandEvent& event);
 
     SearchType getSearchType();
@@ -85,6 +85,9 @@ public:
 
     PrefWindow* pref;
     DECLARE_EVENT_TABLE()
+    
+private:
+    void ClearList();
 };
 
 
