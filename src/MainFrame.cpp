@@ -259,26 +259,22 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	if (vid_num <= 50) //If there are less than 50 (maximum we can search for)
 	{
 	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
-	    SearchURL s(getSearchType(), search_value, start_index, vid_num);
-	    Parse(s);
+	    Parse(SearchURL(getSearchType(), search_value, start_index, vid_num));
 	    vid_num = 0;
-	    
 	    
 	}
 	
 	else
 	{
 	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
-	    SearchURL s(getSearchType(), search_value, start_index, 50);
-	    Parse(s);
+	    Parse(SearchURL(getSearchType(), search_value, start_index, 50));
 	    start_index += 50;
 	    vid_num -= 50;
-	    
 	    
     
 	}
 	
-	FillList();
+	
 	
     }
     
@@ -288,7 +284,6 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 void MainFrame::Parse(SearchURL search_url)
 {
     XMLFeed feed(&search_url);
-    
     
     if (feed.fetchFeed())
     {
@@ -304,7 +299,7 @@ void MainFrame::Parse(SearchURL search_url)
 		break;
 	}
 	
-    
+    FillList();
     
     }
     
@@ -319,18 +314,16 @@ void MainFrame::Parse(SearchURL search_url)
 
 void MainFrame::FillList()
 {
-    std::cout << "Adding videos to list" << std::endl;
+    
     video_list -> DeleteAllItems(); //prepare list for new entry stream
-    std::cout << "wat" << std::endl;
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos->begin();
-    std::cout << "hur" << std::endl;
-    // add the items one by one
-    // if the vector is empty, there will be no problem
+    
+    /* add the items one by one
+    /* if the vector is empty, there will be no problem */
     
     for(p; p < listed_videos -> end(); ++p)
     {
-	std::cout << "herp" << std::endl;
 	video_list -> AddVideo(*p);
     }
 }
