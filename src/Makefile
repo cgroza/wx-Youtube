@@ -12,11 +12,14 @@ CPPFILES = $(wildcard *.cpp)
 # 	   DownloadThread.cpp VideoEntry.cpp PrefWindow.cpp VideoListCtrl.cpp \
 # 	   MainFrame.cpp MainApp.cpp Extract.cpp
 
-all: wxyoutube
+all: wxyoutube desktop_file
 
 wxyoutube: $(GLOBAL_HEADERS) $(CPPFILES:.cpp=.o)
 	$(CXX) -o wx-Youtube $^ $(CFLAGS) $(LIBS)
 
+desktop_file:
+	cp ../wx-youtube.desktop ${HOME}/.local/share/applications
+	
 clean:
 	@$(RM) wx-Youtube *.o
 
