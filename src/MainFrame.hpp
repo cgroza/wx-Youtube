@@ -57,6 +57,7 @@ public:
     void Error(int error_code);
     void FillList();
     void DeleteList();
+    void Parse(XMLFeed feed, SearchURL search_url);
     void OnComboBoxSelect(wxCommandEvent& event);
 
     SearchType getSearchType();

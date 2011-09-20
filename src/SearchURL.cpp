@@ -20,21 +20,21 @@
 
 
 
-SearchURL::SearchURL(SearchType search_t, wxString& search_str) : m_search_type(search_t) 
+SearchURL::SearchURL(SearchType search_t, wxString& search_str, int start_index = 1, int max_results = 50) : m_search_type(search_t) 
 {
     using boost::format;
     switch (search_t)
     {
         case VIDEO_SEARCH:
 	    //% nr_videos.mb_str()
-            m_url = (str(boost::format(VIDEO_SEARCH_URL) % search_str.mb_str()));
+            m_url = (str(boost::format(VIDEO_SEARCH_URL) % search_str.mb_str() % start_index % max_results));
             break;
         case USER_VIDEO_SEARCH:
-            m_url = (str(boost::format(USER_VIDEO_SEARCH_URL) % search_str.mb_str()));
+            m_url = (str(boost::format(USER_VIDEO_SEARCH_URL) % search_str.mb_str() % start_index % max_results));
             break;
 
         case PLAY_LIST_SEARCH:
-	    m_url = (str(boost::format(PLAYLIST_SEARCH_URL) % search_str.mb_str()));
+	    m_url = (str(boost::format(PLAYLIST_SEARCH_URL) % search_str.mb_str() % start_index % max_results));
 	    break;
 
         case VIDEO_COMMENTS_SEARCH:
@@ -60,7 +60,7 @@ SearchType SearchURL::getSearchType () const
     return m_search_type;
 }
 // initialize the static URL strings
-const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%s";
-const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploads";
-const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s";
+const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%smax-results=%s&start-index=%s";
+const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploadsmax-results=%s&start-index=%s";
+const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%smax-results=%s&start-index=%s";
 const std::string SearchURL::VIDEO_COMMENTS_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos/%s/comments";

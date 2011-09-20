@@ -244,15 +244,52 @@ void MainFrame::Error(int error_code)
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
+    DeleteList();
     
+    int vid_num = atoi(std::string(num_vids -> GetValue().mb_str()).c_str());
+    int start_index = 1;
+    int max_results = 50;
     
-    SearchURL search_url(getSearchType(), search_value); //make URL with search string
-    //get the search results
-    XMLFeed feed(&search_url);
+    DeleteList();
+    
+    std::cout << "Getting a total of: " << vid_num << " videos" << std::endl;
+    while (vid_num)
+    {
+	
+	SearchURL search_url(getSearchType(), search_value, start_index, max_results); //make URL with search string 
+	XMLFeed feed(&search_url);
+	
+	if (vid_num <= 50) //If there are less than 50 (maximum we can search for)
+	{
+	    Parse(XMLFeed(&search_url), SearchURL(getSearchType(), search_value, start_index, vid_num));
+	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
+	    vid_num = 0;
+	    
+	}
+	
+	else
+	{
+	    Parse(XMLFeed(&search_url), SearchURL(getSearchType(), search_value, start_index, 50));
+	    start_index += 50;
+	    vid_num -= 50;
+	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
+	    
+	
+	}
+	
+	FillList();
+	
+    }
+    
+   
+    
 
-    
+}
 
-    if (feed.fetchFeed()) //fetch youtube xml feed
+
+void MainFrame::Parse(XMLFeed feed, SearchURL search_url)
+{
+    if (feed.fetchFeed())
     {
 	switch(search_url.getSearchType())
 	{
@@ -272,11 +309,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	MainFrame::Error(feed.getErrorCode()); 
 	return;
     };
-    
-    FillList();
-    
-
 }
+    
 
 void MainFrame::FillList()
 {
@@ -310,6 +344,8 @@ void MainFrame::DeleteList()
     }
     
 }
+
+
 
 void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 {

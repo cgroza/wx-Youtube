@@ -66,7 +66,7 @@ void CommentsBoard::FetchCommentsFeed()
     {
 	wxString* video_id = new wxString(m_current_vid -> getId().c_str(), wxConvUTF8); // get video id
 	// we must create the wxString on the heap because it must still exist during the thread execution.
-	SearchURL* comment_url = new SearchURL(VIDEO_COMMENTS_SEARCH, *video_id);
+	SearchURL* comment_url = new SearchURL(VIDEO_COMMENTS_SEARCH, *video_id, 0, 0);
 	XMLFeed* xml_feed = new XMLFeed(comment_url);
 
 	// create callback object
