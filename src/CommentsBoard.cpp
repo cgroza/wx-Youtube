@@ -85,7 +85,7 @@ CommentsBoard::CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWin
     m_v_sizer = new wxBoxSizer(wxVERTICAL);
 
     m_comment_display = new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize,
-				   wxTE_MULTILINE|wxTE_READONLY);
+				   wxTE_AUTO_URL | wxTE_MULTILINE | wxTE_READONLY);
 
     m_v_sizer -> Add(m_comment_display, 1, wxEXPAND|wxALL, 0);
     SetSizerAndFit(m_v_sizer);
@@ -100,7 +100,8 @@ void CommentsBoard::CommentsPane::AddComment(const CommentInfo* comment)
     wxString newline = wxString("\n\n", wxConvUTF8);
 
     m_comment_display -> Freeze();
-    m_comment_display -> WriteText(newline+wxT("[")+author+wxT("] ")+content);
+    m_comment_display -> WriteText(newline+wxT("(")+author+wxT(") "));
+    m_comment_display -> WriteText(newline+content);
     m_comment_display -> Thaw();
 }
 

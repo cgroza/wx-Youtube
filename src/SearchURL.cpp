@@ -46,7 +46,7 @@ SearchURL::SearchURL(SearchType search_t, wxString& search_str, int start_index,
     // replacing spaces with encoded space " " with -
     // if we do not do this, the search will fail.
     // youtube treats spaces and "-" the same way
-    boost::replace_all(m_url, " ","-");
+    //boost::replace_all(m_url, " ","-");
 
 
 }

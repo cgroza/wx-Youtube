@@ -42,23 +42,42 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     upper_panel = new wxPanel(splitter_win);
     lower_panel = new wxPanel(splitter_win);
     lower_notebook = new wxNotebook(lower_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-
+    
+    
+    
     //Combo box, (option box), to give the user a more specific search
     combo_box = new wxComboBox(upper_panel, ID_COMBOBOX, wxT("Videos"), wxDefaultPosition,
 			       wxDefaultSize, choice_string, wxCB_READONLY);
 
     combo_box -> SetSelection(0); //initially, it is set to -1
+    
+    combo_box->SetToolTip(wxT("Change the type of search"));
+    
+    
     //Search box, this is where the user types in the url, user name, or other relevant info.
     search_box = new wxTextCtrl(upper_panel, TEXT_Search, wxT(""), wxDefaultPosition, wxSize(-1,-1),
 				wxTE_RICH | wxTE_PROCESS_ENTER , wxDefaultValidator, wxTextCtrlNameStr);
-				
+    
+    search_box->SetToolTip(wxT("Search entry"));
+    
+    				
     num_vids = new wxTextCtrl(upper_panel, TEXT_num_vids, wxT("25"), wxDefaultPosition, wxSize(-1,-1),
 				wxTE_RICH , wxDefaultValidator, wxTextCtrlNameStr);
-
+				
+    num_vids->SetToolTip(wxT("Number of videos to search for"));
+    
+    
+    
     //Go Button, this initiates the search
     go_button = new wxButton(upper_panel, BUTTON_Go, _T("Go"), wxDefaultPosition, wxDefaultSize);
     
+    go_button->SetToolTip(wxT("Search for the videos"));
+    
+    
+    
     download_button = new wxButton(upper_panel, BUTTON_Download, _T("Download"), wxDefaultPosition, wxDefaultSize);
+    
+    download_button->SetToolTip(wxT("Download the selected video(s)"));
 
     //List control, this contains the video information
     video_list = new VideoListCtrl(upper_panel);
@@ -243,13 +262,11 @@ void MainFrame::Error(int error_code)
 
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
-    wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     DeleteList();
+    wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     
     int vid_num = atoi(num_vids -> GetValue().mb_str());
     int start_index = 1;
-    
-    DeleteList();
     
     std::cout << "Getting a total of: " << vid_num << " videos" << std::endl;
     while (vid_num)
@@ -261,7 +278,6 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
 	    Parse(SearchURL(getSearchType(), search_value, start_index, vid_num));
 	    vid_num = 0;
-	    
 	}
 	
 	else
@@ -277,6 +293,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	
 	
     }
+    FillList();
     
 }
 
@@ -299,7 +316,7 @@ void MainFrame::Parse(SearchURL search_url)
 		break;
 	}
 	
-    FillList();
+    
     
     }
     
@@ -315,7 +332,7 @@ void MainFrame::Parse(SearchURL search_url)
 void MainFrame::FillList()
 {
     
-    video_list -> DeleteAllItems(); //prepare list for new entry stream
+    //prepare list for new entry stream
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos->begin();
     
@@ -330,6 +347,7 @@ void MainFrame::FillList()
 
 void MainFrame::DeleteList()
 {
+    video_list -> DeleteAllItems();
     // delete the the VideoInfo allocated on the heap
     if(listed_videos -> size()){
 	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
@@ -480,16 +498,11 @@ void MainFrame::OnComboBoxSelect(wxCommandEvent& event)
 
     switch(combo_box -> GetCurrentSelection())
     {
-    case 1:
-	num_vids -> Disable();
-	break;
     case 2:
 	download_button -> Disable();
-	num_vids -> Enable();
 	break;
     default:
 	download_button -> Enable();
-	num_vids -> Enable();
     event.Skip();
 
     }
