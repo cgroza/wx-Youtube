@@ -246,9 +246,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     DeleteList();
     
-    int vid_num = atoi(std::string(num_vids -> GetValue().mb_str()).c_str());
+    int vid_num = atoi(num_vids -> GetValue().mb_str());
     int start_index = 1;
-    int max_results = 50;
     
     DeleteList();
     
@@ -256,39 +255,41 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     while (vid_num)
     {
 	
-	SearchURL search_url(getSearchType(), search_value, start_index, max_results); //make URL with search string 
-	XMLFeed feed(&search_url);
 	
 	if (vid_num <= 50) //If there are less than 50 (maximum we can search for)
 	{
-	    Parse(XMLFeed(&search_url), SearchURL(getSearchType(), search_value, start_index, vid_num));
 	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
+	    SearchURL s(getSearchType(), search_value, start_index, vid_num);
+	    Parse(s);
 	    vid_num = 0;
+	    
 	    
 	}
 	
 	else
 	{
-	    Parse(XMLFeed(&search_url), SearchURL(getSearchType(), search_value, start_index, 50));
+	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
+	    SearchURL s(getSearchType(), search_value, start_index, 50);
+	    Parse(s);
 	    start_index += 50;
 	    vid_num -= 50;
-	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
 	    
-	
+	    
+    
 	}
 	
 	FillList();
 	
     }
     
-   
-    
-
 }
 
 
-void MainFrame::Parse(XMLFeed feed, SearchURL search_url)
+void MainFrame::Parse(SearchURL search_url)
 {
+    XMLFeed feed(&search_url);
+    
+    
     if (feed.fetchFeed())
     {
 	switch(search_url.getSearchType())
@@ -302,26 +303,34 @@ void MainFrame::Parse(XMLFeed feed, SearchURL search_url)
 		Parser::parsePlaylistFeed(listed_videos, feed.getXMLFeed());
 		break;
 	}
+	
+    
+    
     }
     
     else
     {
+	std::cout << "Error with XMLFeed" << std::endl;
 	MainFrame::Error(feed.getErrorCode()); 
-	return;
     };
+    
 }
     
 
 void MainFrame::FillList()
 {
+    std::cout << "Adding videos to list" << std::endl;
     video_list -> DeleteAllItems(); //prepare list for new entry stream
-
+    std::cout << "wat" << std::endl;
     //vector iterator
-    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
+    std::vector<VideoInfo*>::iterator p = listed_videos->begin();
+    std::cout << "hur" << std::endl;
     // add the items one by one
     // if the vector is empty, there will be no problem
+    
     for(p; p < listed_videos -> end(); ++p)
     {
+	std::cout << "herp" << std::endl;
 	video_list -> AddVideo(*p);
     }
 }

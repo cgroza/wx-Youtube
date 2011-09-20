@@ -57,9 +57,11 @@ public:
     void Error(int error_code);
     void FillList();
     void DeleteList();
-    void Parse(XMLFeed feed, SearchURL search_url);
+    void Parse(SearchURL search_url);
     void OnComboBoxSelect(wxCommandEvent& event);
-
+    void ClearList();
+    
+    
     SearchType getSearchType();
 
     std::vector<VideoInfo*>* listed_videos;
@@ -89,8 +91,7 @@ public:
     PrefWindow* pref;
     DECLARE_EVENT_TABLE()
     
-private:
-    void ClearList();
+
 };
 
 
