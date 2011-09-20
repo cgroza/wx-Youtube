@@ -269,36 +269,43 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     int start_index = 1;
     
     std::cout << "Getting a total of: " << vid_num << " videos" << std::endl;
-    while (vid_num)
+    
+    do 
     {
-	
-	
 	if (vid_num <= 50) //If there are less than 50 (maximum we can search for)
 	{
 	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
-	    Parse(SearchURL(getSearchType(), search_value, start_index, vid_num));
-	    vid_num = 0;
+	    if (Parse(SearchURL(getSearchType(), search_value, start_index, vid_num)))
+	    {
+		vid_num = 0;
+		if (FillList())
+		{
+		    continue;
+		}
+	    }
 	}
 	
 	else
 	{
 	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
-	    Parse(SearchURL(getSearchType(), search_value, start_index, 50));
-	    start_index += 50;
-	    vid_num -= 50;
-	    
-    
+	    if (Parse(SearchURL(getSearchType(), search_value, start_index, 50)))
+	    {
+		start_index += 50;
+		vid_num -= 50;
+		if (FillList())
+		{
+		    continue;
+		}
+	    }
 	}
-	
-	
-	
     }
-    FillList();
+    
+    while (vid_num);
     
 }
 
 
-void MainFrame::Parse(SearchURL search_url)
+int MainFrame::Parse(SearchURL search_url)
 {
     XMLFeed feed(&search_url);
     
@@ -316,7 +323,7 @@ void MainFrame::Parse(SearchURL search_url)
 		break;
 	}
 	
-    
+    return 1;
     
     }
     
@@ -324,14 +331,15 @@ void MainFrame::Parse(SearchURL search_url)
     {
 	std::cout << "Error with XMLFeed" << std::endl;
 	MainFrame::Error(feed.getErrorCode()); 
+	return 0;
     };
     
 }
     
 
-void MainFrame::FillList()
+int MainFrame::FillList()
 {
-    
+    std::cout << "Filling list" << std::endl;
     //prepare list for new entry stream
     //vector iterator
     std::vector<VideoInfo*>::iterator p = listed_videos->begin();
@@ -341,8 +349,13 @@ void MainFrame::FillList()
     
     for(p; p < listed_videos -> end(); ++p)
     {
+	std::cout << "herp" << std::endl;
 	video_list -> AddVideo(*p);
+	video_list -> Update();
     }
+    
+    return 1;
+    
 }
 
 void MainFrame::DeleteList()
