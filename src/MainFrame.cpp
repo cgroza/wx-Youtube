@@ -272,19 +272,18 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     
     do 
     {
-	if (vid_num <= 50) //If there are less than 50 (maximum we can search for)
+	/* If there are less than 50 (maximum we can search for) */
+	if (vid_num <= 50) 
 	{
 	    std::cout << "Getting " << start_index << "-" << vid_num << std::endl; 
 	    if (Parse(SearchURL(getSearchType(), search_value, start_index, vid_num)))
 	    {
 		vid_num = 0;
-		if (FillList())
-		{
-		    continue;
-		}
+		FillList();
 	    }
 	}
 	
+	/* The video number is still over 50, going back for more */
 	else
 	{
 	    std::cout << "Getting " << start_index << "-" << 50 << " Left: " << vid_num << std::endl;
@@ -292,11 +291,10 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 	    {
 		start_index += 50;
 		vid_num -= 50;
-		if (FillList())
-		{
-		    continue;
-		}
+		FillList();
 	    }
+	
+	
 	}
     }
     
@@ -349,7 +347,6 @@ int MainFrame::FillList()
     
     for(p; p < listed_videos -> end(); ++p)
     {
-	std::cout << "herp" << std::endl;
 	video_list -> AddVideo(*p);
 	video_list -> Update();
     }
@@ -373,7 +370,7 @@ void MainFrame::DeleteList()
 	listed_videos -> clear();
 	VideosDeleteEvent event;
 	event_manager -> FireEvent(&event);
-
+	video_list->Update();
     }
     
 }
