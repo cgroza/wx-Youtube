@@ -262,10 +262,12 @@ void MainFrame::Error(int error_code)
 
 void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
-    DeleteList();
+    
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
     if (search_value.IsEmpty())  return; // search string empty, nothing to search
-
+    
+    DeleteList();
+    
     int vid_num = atoi(num_vids -> GetValue().mb_str());
     int start_index = 1;
     
@@ -282,6 +284,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 		vid_num = 0;
 		FillList();
 	    }
+	    else { break; }
 	}
 	
 	/* The video number is still over 50, going back for more */
@@ -294,7 +297,7 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 		vid_num -= 50;
 		FillList();
 	    }
-	
+	    else { break; }
 	
 	}
     }
