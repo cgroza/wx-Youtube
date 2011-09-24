@@ -264,7 +264,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
 {
     DeleteList();
     wxString search_value(Extract::encode_search(std::string(search_box->GetValue().mb_str())).c_str(), wxConvUTF8); //get search string [FIXED]
-    
+    if (search_value.IsEmpty())  return; // search string empty, nothing to search
+
     int vid_num = atoi(num_vids -> GetValue().mb_str());
     int start_index = 1;
     
