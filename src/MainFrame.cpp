@@ -273,6 +273,8 @@ void MainFrame::OnSearch(wxCommandEvent& WXUNUSED(event))
     
     std::cout << "Getting a total of: " << vid_num << " videos" << std::endl;
     
+    std::cout << *search_value << std::endl;
+    
     do 
     {
 	/* If there are less than 50 (maximum we can search for) */

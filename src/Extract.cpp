@@ -74,15 +74,13 @@ void Extract::gather_formats()
 	    value =  urilite::uri::decode2(tmp_args[a].substr(tmp_args[a].find("=", 1)+1, tmp_args[a].length()).c_str());
 	    
 	    params[key] = value;
-	   
-	    //std::cout << "[" << key << "]" << " = " << value << std::endl;
 	
 	
 	}
 	
 	if (params.find("errorcode") != params.end())
 	{ 
-	    wxString errorcode_reason(params["reason"].c_str(), wxConvUTF8); //This needs to be displayed
+	    wxString errorcode_reason(params["reason"].c_str(), wxConvUTF8); 
 	    wxMessageBox(errorcode_reason, wxT("Error"), wxOK | wxICON_ERROR ); 
 	}
 	
@@ -161,7 +159,7 @@ std::string Extract::return_ext(std::string url)
 
 		case 35: 
 		case 34: 
-		case 5: return "flv";
+		case 5:  return "flv";
 		
 		case 43:
 		case 44:
@@ -172,15 +170,11 @@ std::string Extract::return_ext(std::string url)
 		default: return "";
 
 	    }
-    
-	
 
 	}
-	
     }
 	
     return "";
-
 }
 
 
@@ -215,9 +209,9 @@ std::string Extract::return_url(std::string format)
 
 void Extract::resolve_real_url(std::string id)
 {
-    //This function connects to the internet, and retrieves the
-    //real download url so we can pass it to our download function
-    //AFAIK videos can only be downloaded once from the given url (each url has a unique signature), and can only be downloaded from that IP address.
+    /* This function connects to the internet, and retrieves the
+    /* real download url so we can pass it to our download function
+    /* AFAIK videos can only be downloaded once from the given url (each url has a unique signature), and can only be downloaded from that IP address. */ 
     
     id = format_url(id);
     CURL *resolve;
@@ -231,23 +225,22 @@ void Extract::resolve_real_url(std::string id)
     
     if(resolve)
     {
-	//Curl options
+	
 	curl_easy_setopt(resolve, CURLOPT_URL, id.c_str());
 	curl_easy_setopt(resolve, CURLOPT_HEADER, 0);
 	curl_easy_setopt(resolve, CURLOPT_FOLLOWLOCATION, 1);
 	curl_easy_setopt(resolve, CURLOPT_WRITEFUNCTION, writer);
 	curl_easy_setopt(resolve, CURLOPT_WRITEDATA, &resolve_buffer);
 	
-	//Attempt to retrive the remote page
+	
 	result = curl_easy_perform(resolve);
 
-	//Always cleanup
+    
 	curl_easy_cleanup(resolve);
 	
-	//Did we succeed?
 	if (!result == CURLE_OK)
 	{
-	    std::cout << "Error [" << result << "] - " << std::endl;
+	    std::cout << "Curl extract error [" << result << "] - " << std::endl;
 	}
     }
     gather_formats();

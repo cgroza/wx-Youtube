@@ -32,14 +32,17 @@ SearchURL::SearchURL(SearchType search_t, wxString& search_str, int start_index,
             break;
         case USER_VIDEO_SEARCH:
             m_url = (str(boost::format(USER_VIDEO_SEARCH_URL) % search_str.mb_str() % max_results % start_index));
+	    std::cout << m_url << std::endl;
             break;
 
         case PLAY_LIST_SEARCH:
 	    m_url = (str(boost::format(PLAYLIST_SEARCH_URL) % search_str.mb_str() % max_results % start_index));
+	    std::cout << m_url << std::endl;
 	    break;
 
         case VIDEO_COMMENTS_SEARCH:
 	    m_url = (str(boost::format(VIDEO_COMMENTS_SEARCH_URL) % search_str.mb_str()));
+	    std::cout << m_url << std::endl;
 	    break;
 
     }
@@ -63,5 +66,5 @@ SearchType SearchURL::getSearchType () const
 // initialize the static URL strings
 const std::string SearchURL::VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos?q=%s&max-results=%s&start-index=%s";
 const std::string SearchURL::USER_VIDEO_SEARCH_URL = "http://gdata.youtube.com/feeds/api/users/%s/uploads?max-results=%s&start-index=%s";
-const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&max-results=%s&start-index=%s";
+const std::string SearchURL::PLAYLIST_SEARCH_URL = "http://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&max-results=%s&start-index=%s&v=2";
 const std::string SearchURL::VIDEO_COMMENTS_SEARCH_URL = "http://gdata.youtube.com/feeds/api/videos/%s/comments";
