@@ -20,6 +20,9 @@
 #include "EventHandler.hpp"
 #include "Events.hpp"
 #include <vector>
+#include <algorithm>
+#include <functional>
+
 
 class Listener
 {
@@ -53,7 +56,6 @@ This class takes care of managing the function pointers called
 upon firing an event.
 
 */
-
 
 {
 public:

@@ -29,6 +29,7 @@
 #include "PrefWindow.hpp"
 #include "DownloadThread.hpp"
 #include <algorithm>
+#include <functional>
 #include "DownloadCallback.hpp"
 #include "VideoDescription.hpp"
 #include "EventManager.hpp"
@@ -55,12 +56,11 @@ public:
     void OnVideoWatch(wxListEvent& event);
     void OnVideoDownload(wxCommandEvent& event);
     void Error(int error_code);
-    int FillList();
+    void FillList();
     void DeleteList();
     int Parse(SearchURL search_url);
     void OnComboBoxSelect(wxCommandEvent& event);
     void ClearList();
-    
     
     SearchType getSearchType();
 

@@ -214,24 +214,6 @@ void MainFrame::OnPref(wxCommandEvent& WXUNUSED(event))
     return;
 }
 
-void MainFrame::ClearList()
-{
-        // delete listed_videos;
-    video_list -> DeleteAllItems(); //prepare list for new entry stream
-
-    VideoSearchEvent event(listed_videos);
-    event_manager -> FireEvent(&event);    
-    //vector iterator
-    std::vector<VideoInfo*>::iterator p = listed_videos -> begin();
-    // add the items one by one
-    // if the vector is empty, there will be no problem
-    for(p; p < listed_videos -> end(); ++p){
-        video_list -> AddVideo(*p);
-
-    }
-
-}
-
 void MainFrame::Error(int error_code)
 {
     switch (error_code)
@@ -341,44 +323,26 @@ int MainFrame::Parse(SearchURL search_url)
 }
     
 
-int MainFrame::FillList()
+void MainFrame::FillList()
 {
-    std::cout << "Filling list" << std::endl;
-    //prepare list for new entry stream
-    //vector iterator
-    std::vector<VideoInfo*>::iterator p = listed_videos->begin();
-    
-    /* add the items one by one
-    /* if the vector is empty, there will be no problem */
-    
-    for(p; p < listed_videos -> end(); ++p)
-    {
-	video_list -> AddVideo(*p);
-	video_list -> Update();
-    }
-    
-    return 1;
-    
+    VideoSearchEvent event(listed_videos);
+    event_manager -> FireEvent(&event);    
+    // add items one by one
+    std::cout << listed_videos -> size();
+    std::for_each(listed_videos -> begin(), listed_videos -> end(), std::bind1st(std::mem_fun(&VideoListCtrl::AddVideo), video_list));
+    video_list -> Update();    
 }
 
 void MainFrame::DeleteList()
 {
     video_list -> DeleteAllItems();
     // delete the the VideoInfo allocated on the heap
-    if(listed_videos -> size()){
-	std::vector<VideoInfo*>::iterator it = listed_videos -> begin();
-	for(it; it != listed_videos -> end(); ++it)
-	{
-	    delete (*it);
-	    *it = 0;
-	}
-
-	listed_videos -> clear();
-	VideosDeleteEvent event;
-	event_manager -> FireEvent(&event);
-	video_list->Update();
-    }
-    
+    if(listed_videos -> empty()) return;
+    std::for_each(listed_videos -> begin(), listed_videos -> end(), std::ptr_fun(operator delete));
+    listed_videos -> clear();
+    VideosDeleteEvent event;
+    event_manager -> FireEvent(&event);
+    video_list->Update();
 }
 
 

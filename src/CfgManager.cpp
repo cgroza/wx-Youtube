@@ -20,7 +20,7 @@
 
 CfgManager::CfgManager(std::string cfg_file) : m_cfg_file(cfg_file), m_cfg_entries(0)
 {
-    m_cfg_entries = new std::vector<CfgOption*> ();
+    m_cfg_entries = new std::vector<CfgOption*>();
     if ( ! ParseCfgFile())	// check if config parsing was OK
     {
 	if (WriteDefaultCfg())	// if not, write default config
@@ -60,8 +60,8 @@ bool CfgManager::ParseCfgFile()
     {
 	std::string line;
 	std::getline(conf_file, line);
-	line.erase( line.find_last_not_of(" ") + 1); // strip trailing whitespace
-	line.erase(0 , line.find_first_not_of(" ") ); // strip leading whitespace
+	line.erase(line.find_last_not_of(" ") + 1); // strip trailing whitespace
+	line.erase(0, line.find_first_not_of(" ")); // strip leading whitespace
 
 	if(line.empty()) continue;
 
@@ -107,7 +107,6 @@ void CfgManager::SaveCfg() const
 	{
 	    conf.append((*it) -> name).append(" = ").append((*it) -> value).append("\n");
 	}
-
 	conf_file.write(conf.c_str(), conf.size());
     }
 }
