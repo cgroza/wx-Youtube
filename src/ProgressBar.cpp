@@ -16,17 +16,17 @@
 
 
 #include "ProgressBar.hpp"
-#include <iostream>
 
-ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxString& name, const wxPoint& pos ,
+ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxString& name, wxButton* dlbt, const wxPoint& pos ,
 			 const wxSize& size , long style,  const wxValidator& validator):
 
-    wxPanel(parent), h_sizer(0), cancel_bt(0), gauge(0)
+    wxPanel(parent), h_sizer(0), cancel_bt(0), gauge(0), dlbutton(dlbt)
 {
     self = this;
     h_sizer = new wxBoxSizer(wxHORIZONTAL);
     cancel_bt = new wxButton(this, ID_CANCEL_BUTTON, wxT("Cancel"));
     gauge = new wxGauge(this, id, range, pos, size, style, validator, name );
+    curl_callback_code = 0;
 
     h_sizer -> Add(gauge, 2, wxEXPAND | wxALL, 0);
     h_sizer -> Add(cancel_bt, 1, wxEXPAND | wxALL, 0);
@@ -41,6 +41,7 @@ void ProgressBar::Update(int val)
     wxWakeUpIdle();
 }
 
+
 int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_now , double total_upl  , double upled_now)
 {
     if(self){
@@ -48,14 +49,6 @@ int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_no
 	{
 	    int percentage = (dled_now / total_dl) * 100; // calculate %
 	    self -> Update(percentage);
-	    if(total_dl == dled_now)
-	    {
-		self -> Destroy();
-		self = 0;
-		curl_callback_code = 0; // reset the curl callback code
-		return 1;		// stop the curl download
-	    }
-	    // we should notify the user here that the download is complete.
 	}
     }
     if(curl_callback_code != 0)	// check if the user has clicked the cancel button
@@ -63,15 +56,13 @@ int ProgressBar::CurlProgressCallback(void* ptr, double total_dl, double dled_no
 	curl_callback_code = 0;	// reset the curl callback code
 	return 1;		// this return value will make curl abort the download
     }
-
     return 0;
 }
 
 void ProgressBar::OnCancel(wxCommandEvent& event)
 {
     curl_callback_code = 1; 	// abort curl download
-    self -> Destroy();		// destroy progress bar and remove it from status bar
-    self = 0;			// self has been destroyed
+    self = 0;
 }
 
 ProgressBar* ProgressBar::self = 0; // default

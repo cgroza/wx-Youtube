@@ -16,6 +16,7 @@
 
 
 #include "DownloadCallback.hpp"
+#include "ProgressBar.hpp"
 
 
 ThumbnailDownloadCallback::ThumbnailDownloadCallback(ThumbnailFrame* thumb_obj): m_thumb_obj(thumb_obj)
@@ -29,11 +30,12 @@ void ThumbnailDownloadCallback::operator()(VideoInfo* video_data, std::string& p
     m_thumb_obj -> ProcessNewThumbnail(video_data, path);
 }
 
-EnableWidgetCallback::EnableWidgetCallback(wxWindow* widget): m_widget(widget)
+ResetWidgetCallback::ResetWidgetCallback(wxWindow* dl_button, wxWindow* progress_bar): m_dlbutton(dl_button), m_progress_bar(progress_bar)
 {
 }
 
-void EnableWidgetCallback::operator()(VideoInfo* , std::string&)
+void ResetWidgetCallback::operator()(VideoInfo* , std::string&)
 {
-  m_widget -> Enable();
+  m_dlbutton -> Enable();
+  m_progress_bar -> Destroy();
 }

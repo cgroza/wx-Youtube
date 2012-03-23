@@ -23,6 +23,9 @@
 #include <wx/panel.h>
 #include <wx/button.h>
 #include <wx/app.h>
+#include "MainFrame.hpp"
+
+
 
 class ProgressBar : public wxPanel
 {
@@ -30,7 +33,7 @@ class ProgressBar : public wxPanel
 
 
 public:
-    ProgressBar( wxWindow* parent, wxWindowID id, int range, const wxString& name, const wxPoint& pos = wxDefaultPosition,
+    ProgressBar( wxWindow* parent, wxWindowID id, int range, const wxString& name, wxButton* dlbt, const wxPoint& pos = wxDefaultPosition,
 		 const wxSize& size = wxDefaultSize, long style = wxGA_HORIZONTAL, 
 		 const wxValidator& validator = wxDefaultValidator);
 
@@ -40,6 +43,7 @@ public:
 protected:
     wxGauge* gauge;
     wxButton* cancel_bt;
+    wxButton* dlbutton;
     wxBoxSizer* h_sizer;
     static int curl_callback_code;
     DECLARE_EVENT_TABLE()

@@ -41,13 +41,14 @@ private:
     ThumbnailFrame* m_thumb_obj;
 };
 
-class EnableWidgetCallback: public DownloadCallback
+class ResetWidgetCallback: public DownloadCallback
 {
 public:
-  EnableWidgetCallback(wxWindow* widget);
+    ResetWidgetCallback(wxWindow* dl_button, wxWindow* progress_bar);
   virtual void operator()(VideoInfo* , std::string& ); // dummy prototype
 protected:
-  wxWindow* m_widget;
+    wxWindow* m_dlbutton;
+    wxWindow* m_progress_bar;
 };
 
 

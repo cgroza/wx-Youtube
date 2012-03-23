@@ -1,3 +1,4 @@
+
 //Copyright (C) 2011  Groza Cristian, N3
 //
 // This program is free software: you can redistribute it and/or modify
@@ -12,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 
 #include "Parser.hpp"
@@ -78,9 +78,21 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
     //creating video info object for each found video.
     while (cur_node != 0)
     {
+	// these attributes seem to not exist sometimes, treat them specially.
+	rapidxml::xml_node<>* rating_node = cur_node -> first_node("gd:rating");
+	const char* rating_score;
+	if(!rating_node) rating_score = "N/A";
+	else rating_score = rating_node -> first_attribute("average") -> value();
+
+	rapidxml::xml_node<>* view_node = cur_node -> first_node("yt:statistics");
+	const char* view_score;
+	if(!view_node) view_score = "N/A";
+	else view_score = view_node -> first_attribute("viewCount") -> value();
+
+	
 	buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
-					   cur_node -> first_node("gd:rating")-> first_attribute("average") -> value(),
-					   cur_node -> first_node("yt:statistics")-> first_attribute("viewCount") -> value(),
+					   rating_score,
+					   view_score,
 					   cur_node -> first_node("link") -> first_attribute("href") -> value(),
 					   cur_node-> first_node("media:group") -> first_node("media:description") -> value(),
 					   cur_node -> first_node("author") -> first_node("name") -> value(),

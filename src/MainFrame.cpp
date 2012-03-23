@@ -379,7 +379,6 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 	{	
 	    if(option -> value == "True")
 	    {
-
 		wxFileDialog path_dlg(this, wxT("Chose a download folder"), wxT(""), title, ext, wxFD_SAVE);
 	
 		if (path_dlg.ShowModal() == wxID_CANCEL) return;
@@ -406,11 +405,11 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 
     // create progress bar dialog
     ProgressBar* progress =  new ProgressBar(GetStatusBar(), wxID_ANY, 100,
-					     wxT("Downloading, please wait"));
+					     wxT("Downloading, please wait"), download_button);
     // disable the download button
     download_button -> Disable();
     // create a callback to reactivate the button after the download is done
-    EnableWidgetCallback* callback = new EnableWidgetCallback(download_button);
+    ResetWidgetCallback* callback = new ResetWidgetCallback(download_button, progress);
     //you should atach the ext here, after getting the path
     DownloadThread* video_dl = new DownloadThread(info, current_video.actual_url,current_video.full_save_path,
 						  callback, &ProgressBar::CurlProgressCallback);
