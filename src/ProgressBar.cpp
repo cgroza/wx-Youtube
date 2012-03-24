@@ -17,10 +17,10 @@
 
 #include "ProgressBar.hpp"
 
-ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxString& name, wxButton* dlbt, const wxPoint& pos ,
+ProgressBar::ProgressBar(wxWindow* parent, wxWindowID id, int range, const wxString& name, const wxPoint& pos ,
 			 const wxSize& size , long style,  const wxValidator& validator):
 
-    wxPanel(parent), h_sizer(0), cancel_bt(0), gauge(0), dlbutton(dlbt)
+    wxPanel(parent), h_sizer(0), cancel_bt(0), gauge(0)
 {
     self = this;
     h_sizer = new wxBoxSizer(wxHORIZONTAL);

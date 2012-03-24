@@ -405,7 +405,7 @@ void MainFrame::OnVideoDownload(wxCommandEvent& WXUNUSED(event))
 
     // create progress bar dialog
     ProgressBar* progress =  new ProgressBar(GetStatusBar(), wxID_ANY, 100,
-					     wxT("Downloading, please wait"), download_button);
+					     wxT("Downloading, please wait"));
     // disable the download button
     download_button -> Disable();
     // create a callback to reactivate the button after the download is done
