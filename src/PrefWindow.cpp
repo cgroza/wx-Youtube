@@ -27,6 +27,11 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
 
     rd_save_dir = new wxRadioButton(this, RADIO_save_dir, wxT("Save In Predefined Folder:"));
     rd_ask_on_dl = new wxRadioButton(this, RADIO_ask_on_dl, wxT("Ask On Download"));
+    if(m_cfg_man -> GetOption("ask_save_path_on_download") -> value == "True") 
+    {
+	rd_save_dir -> SetValue(false);
+	rd_ask_on_dl -> SetValue(true);
+    }
 
     wxString cfg_save_dir = wxString(m_cfg_man -> GetOption("video_save_dir") -> value.c_str(), wxConvUTF8);
     dir_picker = new wxDirPickerCtrl(this, DIRPICKER_save_dir, cfg_save_dir);
@@ -56,6 +61,7 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
 void PrefWindow::OnRdSaveDir(wxCommandEvent& event)
 {
     m_cfg_man -> SetOption("ask_save_path_on_download", "False");
+    m_cfg_man -> SetOption("video_save_dir", std::string(dir_picker -> GetPath().mb_str()));
     dir_picker -> Enable();
 
 
