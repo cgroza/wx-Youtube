@@ -13,11 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include "Extract.hpp"
 #include "urilite.h"
-
 
 int Extract::writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer)
 {
@@ -41,12 +38,10 @@ std::string Extract::format_url(std::string id)
     return "http://www.youtube.com/get_video_info?&video_id=" + id;
 }
 
-
 std::string Extract::encode_search(std::string search)
 {
     return urilite::uri::encode2(search);
 }
-
 
 void Extract::gather_formats()
 {
@@ -61,11 +56,7 @@ void Extract::gather_formats()
 
     for (int i = 0; i < tmp.size(); i++)
     {
-
-
-
         boost::split(tmp_args, tmp[i], boost::is_any_of("&"));
-
         for (int a = 0; a < tmp_args.size(); a++)
         {
             if (tmp_args[a].find("=") == std::string::npos)
@@ -77,29 +68,22 @@ void Extract::gather_formats()
             value =  urilite::uri::decode2(tmp_args[a].substr(tmp_args[a].find("=", 1)+1, tmp_args[a].length()).c_str());
 
             params[key] = value;
-
-
         }
 
         if (params.find("errorcode") != params.end())
         {
             wxString errorcode_reason(params["reason"].c_str(), wxConvUTF8);
-            wxMessageBox(errorcode_reason, wxT("Error"), wxOK | wxICON_ERROR );
+            wxMessageBox(errorcode_reason.BeforeFirst(wxT('<')), wxT("Error"), wxOK | wxICON_ERROR );
         }
-
 
         if (params.find("url_encoded_fmt_stream_map") != params.end())
         {
             boost::split(stream_map, params["url_encoded_fmt_stream_map"], boost::is_any_of("&"));
-
             for (int s = 0; s < stream_map.size(); s++)
             {
-
                 if (urilite::uri::decode2(stream_map[s].substr(0, stream_map[s].find("=", 1)).c_str()) == "itag")
                 {
-
                     tmp_url = urilite::uri::decode2(stream_map[s].substr(stream_map[s].find("=", 1)+1, stream_map[s].length()).c_str());
-
                     if (tmp_url.find("url=") == std::string::npos)
                     {
                         continue;
@@ -108,8 +92,6 @@ void Extract::gather_formats()
                     //18,url
                     format = tmp_url.substr(0, tmp_url.find(",",1));
                     real_url = tmp_url.substr(tmp_url.find("url=",1)+4, tmp_url.length());
-
-
 
                     switch (atoi(format.c_str()))
                     {
@@ -126,10 +108,8 @@ void Extract::gather_formats()
                     case 17:
                         urls[format] = real_url;
                         break;
-
                     default:
                         break;
-
                     }
                 }
             }
@@ -140,15 +120,10 @@ void Extract::gather_formats()
 std::string Extract::return_ext(std::string url)
 {
     using namespace boost;
-
     split(itag_map, url, is_any_of("&"));
-
     for (int n = 0; n < itag_map.size(); n++)
     {
-        if (itag_map[n].find("=") == std::string::npos)
-        {
-            continue;
-        }
+        if (itag_map[n].find("=") == std::string::npos) continue;
 
         itag_key = itag_map[n].substr(0, itag_map[n].find("=", 1)).c_str();
         itag_value = itag_map[n].substr(itag_map[n].find("=", 1)+1, itag_map[n].length()).c_str();
@@ -158,7 +133,6 @@ std::string Extract::return_ext(std::string url)
         if (itag_key == "itag")
         {
             std::cout << "Format found, " << itag_value << std::endl;
-
             switch (atoi(itag_value.c_str()))
             {
             case 38:
@@ -182,26 +156,18 @@ std::string Extract::return_ext(std::string url)
 
             default:
                 return "";
-
             }
-
         }
     }
-
     return "";
 }
 
-
-
 std::string Extract::return_url(std::string format)
 {
-
-
     if (format != "best")
     {
         return urls[format];
     }
-
 
     if (urls["38"] != "")
     {
@@ -250,10 +216,7 @@ std::string Extract::return_url(std::string format)
     {
         return urls["17"];
     }
-
-
     return "";
-
 }
 
 
@@ -272,20 +235,14 @@ void Extract::resolve_real_url(std::string id)
     urls.clear();
     params.clear();
 
-
     if(resolve)
     {
-
         curl_easy_setopt(resolve, CURLOPT_URL, id.c_str());
         curl_easy_setopt(resolve, CURLOPT_HEADER, 0);
         curl_easy_setopt(resolve, CURLOPT_FOLLOWLOCATION, 1);
         curl_easy_setopt(resolve, CURLOPT_WRITEFUNCTION, writer);
         curl_easy_setopt(resolve, CURLOPT_WRITEDATA, &resolve_buffer);
-
-
         result = curl_easy_perform(resolve);
-
-
         curl_easy_cleanup(resolve);
 
         if (!result == CURLE_OK)
@@ -295,7 +252,3 @@ void Extract::resolve_real_url(std::string id)
     }
     gather_formats();
 }
-
-
-
-

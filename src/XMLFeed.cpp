@@ -57,7 +57,6 @@ bool XMLFeed::parseFeed() //Needed some help with this one
 //    xml_copy.push_back('\0');
 
 
-
     try                         // in the case of an invalid xml document sent by curl
     {
         // an invalid user search may throw an exception
@@ -65,18 +64,15 @@ bool XMLFeed::parseFeed() //Needed some help with this one
     }
     catch(rapidxml::parse_error e)
     {
-
         std::cout << "Could not parse youtube xml feed: " << e.what() << std::endl;
         m_error_code = NO_SEARCH_RESULT; //no videos found, we do this to prevent a segfault
         return false;
     }
 
-
     // page_information->version = m_xml_feed -> first_node()->first_attribute("version")->value();
     // page_information->encoding = m_xml_feed -> first_node()->first_attribute("encoding")->value();
 
     return true;
-
 }
 
 
@@ -117,15 +113,12 @@ bool XMLFeed::fetchFeed()
         default:
             m_error_code = result;
             return false;
-
-
         }
     }
 }
 
 rapidxml::xml_document<>* XMLFeed::getXMLFeed() const
 {
-
     return m_xml_feed;
 }
 
@@ -136,4 +129,3 @@ int XMLFeed::getErrorCode() const
 
 // initializing static strings
 std::string XMLFeed::buffer = "";
-

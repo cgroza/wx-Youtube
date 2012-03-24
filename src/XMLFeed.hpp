@@ -52,20 +52,13 @@ private:
     const SearchURL* m_search_url;
     int m_error_code;
     rapidxml::xml_document<>*  m_xml_feed;
-
-
 public:
-
     XMLFeed(const SearchURL* search_url);
     ~XMLFeed();
-
     // fetches the youtube xml feed
     bool fetchFeed();
-
     rapidxml::xml_document<>* getXMLFeed() const;
-
     int getErrorCode() const;
 };
-
 
 #endif

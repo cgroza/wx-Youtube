@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include <iostream>
 #include <vector>
 #include <map>
@@ -26,13 +24,10 @@
 #include <boost/algorithm/string/split.hpp>
 #include <sstream>
 #include <string>
-
-
-
+#include "rapidxml/rapidxml.hpp"
 
 #ifndef EXTRACT_H
 #define EXTRACT_H
-
 	static std::map <std::string, std::string> urls;
 	static std::vector<std::string> tmp;
 	static std::vector<std::string> tmp_args;
@@ -48,11 +43,8 @@
 	static std::string itag_value;
 	static std::string resolve_buffer;
 
-
-
 class Extract
 {
-    
     public:
 	std::vector<std::string> formats;
 	static std::string format_url(std::string id);
@@ -61,7 +53,6 @@ class Extract
 	static std::string return_url(std::string format);
 	static std::string return_ext(std::string url);
 	static std::string encode_search(std::string search);
-	
 	
 	struct video_struct
 	{
@@ -73,25 +64,8 @@ class Extract
 	    std::string extension;
 	    std::string full_save_path;
 	};
-	
     protected:
-	
 	static int writer(char *data, size_t size, size_t nmemb, std::string *resolve_buffer);
-	
-	
-	
-	
-	
-	
-	
-	
-    
-	
-	
-	
-	
-	
 };
-
 
 #endif
