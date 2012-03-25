@@ -13,9 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-
 #ifndef VIDEOENTRY_H
 #define VIDEOENTRY_H
 
@@ -23,7 +20,6 @@
 #include "VideoInfo.hpp"
 
 class VideoEntry : public  wxListItem{
-
 public:
     /*Basic constructor.*/
     VideoEntry(VideoInfo* video_data);
@@ -33,10 +29,8 @@ public:
 
     /*Video data setter function.*/
     virtual void setVideoData(VideoInfo* video_data);
-
 private:
     VideoInfo* video;
 };
-
 
 #endif

@@ -82,7 +82,6 @@ CommentsBoard::CommentsPane::CommentsPane(CommentsBoard* parent) : wxScrolledWin
     SetSizerAndFit(m_v_sizer);
 }
 
-
 void CommentsBoard::CommentsPane::AddComment(const CommentInfo* comment)
 {
     // Append the comment to the text ctrl

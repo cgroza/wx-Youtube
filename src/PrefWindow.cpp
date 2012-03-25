@@ -21,10 +21,7 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
 {
     wxPoint(100,100), wxSize(200,200);
 
-
     //wxRadioButton* radioButton1 = new wxRadioButton(this, ID_RADIOBUTTON1, wxT("&I'm still thinking of a preference option"), wxDefaultPosition, wxDefaultSize);
-
-
     rd_save_dir = new wxRadioButton(this, RADIO_save_dir, wxT("Save In Predefined Folder:"));
     rd_ask_on_dl = new wxRadioButton(this, RADIO_ask_on_dl, wxT("Ask On Download"));
     if(m_cfg_man -> GetOption("ask_save_path_on_download") -> value == "True")
@@ -55,7 +52,6 @@ PrefWindow::PrefWindow(wxWindow* parent,  CfgManager* cfg_man): wxFrame(parent, 
 
     SetSizer(pref_sizer);
     pref_sizer->Fit(this);
-
 }
 
 void PrefWindow::OnRdSaveDir(wxCommandEvent& event)
@@ -63,15 +59,12 @@ void PrefWindow::OnRdSaveDir(wxCommandEvent& event)
     m_cfg_man -> SetOption("ask_save_path_on_download", "False");
     m_cfg_man -> SetOption("video_save_dir", std::string(dir_picker -> GetPath().mb_str()));
     dir_picker -> Enable();
-
-
 }
 
 void PrefWindow::OnRdAskOnDl(wxCommandEvent& event)
 {
     m_cfg_man -> SetOption("ask_save_path_on_download", "True");
     dir_picker -> Disable();
-
 }
 
 void PrefWindow::OnFPChangeFile(wxFileDirPickerEvent& event)

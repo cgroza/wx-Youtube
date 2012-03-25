@@ -36,7 +36,6 @@ public:
     virtual void operator()(VideoSearchEvent* event){};
 };
 
-
 class VideoSelectListener : public Listener
 {
 public:
@@ -48,7 +47,6 @@ class VideosDeleteListener : public Listener
 public:
     virtual void operator()(VideosDeleteEvent* event){};
 };
-
 
 class EventManager
 /*
@@ -89,13 +87,6 @@ protected:
     std::vector<Search> search_listeners;
     std::vector<VideoSelect> select_listeners;
     std::vector<DeleteVideos> delete_listeners;
-
 };
-
-
-
-
-
-
 
 #endif // EVENT_MANAGER_H

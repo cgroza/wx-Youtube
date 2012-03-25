@@ -29,12 +29,9 @@ void* FeedFetcherThread::Entry()
     {
         if(m_callback)
         {
-
             m_callback -> operator()(m_feed ->getXMLFeed(), m_feed -> getErrorCode());
-
         }
     }
-
 }
 
 FeedFetcherThread::~FeedFetcherThread()

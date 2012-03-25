@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include "VideoSearch.hpp"
 using namespace rapidxml;
 
@@ -32,14 +30,11 @@ int VideoSearch::writer(char *data, size_t size, size_t nmemb, std::string *buff
 {
     //What we will return
     int result = 0;
-
     //Is there anything in the buffer?
     if (buffer != NULL)
     {
-
         //Append the data to the buffer
         buffer->append(data, size * nmemb);
-
         //How much did we write?
         result = size * nmemb;
     }
@@ -51,13 +46,9 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     request_information *page_information;
     page_information = new request_information;
 
-
     std::vector<char> xml_copy(VideoSearch::buffer.begin(), VideoSearch::buffer.end());
     xml_copy.push_back('\0');
     rapidxml::xml_document<> doc;
-
-
-
     try                         // in the case of an invalid xml document sent by curl
     {
         // an invalid user search may throw an exception
@@ -65,12 +56,10 @@ void VideoSearch::dealWithResult() //Needed some help with this one
     }
     catch(rapidxml::parse_error e)
     {
-
         std::cout << "Could not parse youtube xml feed!";
         return;
     }
     //std::cout << doc << std::endl; //for debugging, usefull to have it.
-
     page_information->version = doc.first_node()->first_attribute("version")->value();
     page_information->encoding = doc.first_node()->first_attribute("encoding")->value();
 
@@ -84,7 +73,6 @@ void VideoSearch::dealWithResult() //Needed some help with this one
         Parser::parsePlaylistFeed(m_search_results, &doc);
         break;
     }
-
 }
 
 
@@ -93,14 +81,12 @@ bool VideoSearch::doSearch()  //had help with this
 {
     //using boost::format;
     //std::string search_url = str(format("http://gdata.youtube.com/feeds/api/videos?q=%s") % search.mb_str());
-
     CURL *curl;
     CURLcode result;
 
     //Create our curl handle
     buffer.clear();
     curl = curl_easy_init();
-
     if(curl)
     {
         //Now set up all of the curl options
@@ -125,8 +111,6 @@ bool VideoSearch::doSearch()  //had help with this
         default:
             m_curl_result = result;
             return false;
-
-
         }
     }
 }

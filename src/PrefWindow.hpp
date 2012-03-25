@@ -31,18 +31,12 @@ class PrefWindow: public wxFrame
 public:
     PrefWindow(wxWindow* parent,  CfgManager* cfg_man);
 
-
-
 private:
-        
     wxBoxSizer* pref_sizer;
-
     wxRadioButton* rd_save_dir;
     wxRadioButton* rd_ask_on_dl;
-
     wxStaticText *save_directory_label;
     wxDirPickerCtrl* dir_picker;
-
     wxCheckBox* chk_comments_brd;
     wxCheckBox* chk_vid_descr;
     CfgManager* m_cfg_man;
@@ -60,7 +54,6 @@ private:
 	RADIO_ask_on_dl,
 	CHKBOX_comments_brd,
 	CHKBOX_vid_descr,
-	
     };
     DECLARE_EVENT_TABLE();
 };

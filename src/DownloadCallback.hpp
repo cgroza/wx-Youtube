@@ -25,12 +25,8 @@
 class DownloadCallback
 {
 public:
-
     virtual void operator()(VideoInfo* video_data, std::string& path) = 0;
-
 };
-
-
 
 class ThumbnailDownloadCallback: public DownloadCallback
 {
@@ -50,7 +46,6 @@ protected:
     wxWindow* m_dlbutton;
     wxWindow* m_progress_bar;
 };
-
 
 class FeedFetcherCallback
 {

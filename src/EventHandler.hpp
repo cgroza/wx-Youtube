@@ -29,6 +29,5 @@ public:
     virtual void OnSearch(VideoSearchEvent& event) = 0;
     virtual void OnVideoSelect(VideoSelectEvent& event) = 0;
     virtual void OnDeleteVideos(VideosDeleteEvent& event) = 0;
-
 };
 #endif //EVENT_HANDLER_H

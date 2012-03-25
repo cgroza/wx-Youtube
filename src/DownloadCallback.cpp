@@ -13,20 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include "DownloadCallback.hpp"
-#include "ProgressBar.hpp"
 
 
 ThumbnailDownloadCallback::ThumbnailDownloadCallback(ThumbnailFrame* thumb_obj): m_thumb_obj(thumb_obj)
 {
-
 }
 
 void ThumbnailDownloadCallback::operator()(VideoInfo* video_data, std::string& path)
 {
-
     m_thumb_obj -> ProcessNewThumbnail(video_data, path);
 }
 

@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #ifndef VIDEO_SEARCH_H
 #define VIDEO_SEARCH_H
 
@@ -28,7 +26,6 @@
 #include "VideoInfo.hpp"
 #include "SearchURL.hpp"
 #include "Parser.hpp"
-
 
 class VideoSearch
 {
@@ -47,26 +44,19 @@ private:
 
 //creates the video info vector
     void dealWithResult();
-
 //search URL used by the youtube API
     const SearchURL* m_search_url;
     int m_curl_result;
     std::vector<VideoInfo*>* m_search_results;
 
-
 public:
-
     VideoSearch(const SearchURL* search_url);
     ~VideoSearch();
-
     // fetches the youtube xml feed
     bool doSearch();
-
     //returns search video info entries.
     std::vector<VideoInfo*>* getSearchResults();
-
     int getCurlCode() const;
 };
-
 
 #endif

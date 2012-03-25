@@ -13,11 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #ifndef ENUMS_H
 #define ENUMS_H
-
 
 enum
 {
@@ -41,12 +38,9 @@ enum SearchType
     VIDEO_COMMENTS_SEARCH
 };
 
-
 enum
 {
     NO_SEARCH_RESULT=1000
 
 };
 #endif
-
-

@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #ifndef VIDEO_DESCRIPTION_H
      #define VIDEO_DESCRIPTION_H
 
@@ -32,7 +30,6 @@
 #include "VideoInfo.hpp"
 #include <algorithm>
 
-
 class VideoDescription : public wxPanel, public EventHandler
 /* This class offers the video description and thumbnail display.*/
 {
@@ -45,9 +42,6 @@ public:
     void OnSearch(VideoSearchEvent& event);
     void OnVideoSelect(VideoSelectEvent& event);
     void OnDeleteVideos(VideosDeleteEvent& event);
-
-
-
 
 private:
     wxBoxSizer* m_sizer;

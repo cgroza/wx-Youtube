@@ -34,10 +34,8 @@ void Parser::parsePlaylistFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_do
     {
         std::cerr << "Bad feed_node pointer in parsePlaylistFeed.";
         return;
-
     }
     rapidxml::xml_node<>* cur_node = feed_node -> first_node("entry"); //Setup our initial node
-
     while (cur_node != 0)
     {
         buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
@@ -66,15 +64,12 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
         return;
     }
     rapidxml::xml_node<>* feed_node = feed -> first_node("feed");
-
     if(feed_node == 0)
     {
         std::cerr << "Bad feed_node pointer in parseVideoFeed.";
         return;
-
     }
     rapidxml::xml_node<>* cur_node = feed_node -> first_node("entry"); //Setup our initial node
-
     //creating video info object for each found video.
     while (cur_node != 0)
     {
@@ -88,7 +83,6 @@ void Parser::parseVideoFeed(std::vector<VideoInfo*>* buffer, rapidxml::xml_docum
         const char* view_score;
         if(!view_node) view_score = "N/A";
         else view_score = view_node -> first_attribute("viewCount") -> value();
-
 
         buffer -> push_back( new VideoInfo(cur_node -> first_node("title") -> value(),
                                            rating_score,
@@ -121,10 +115,8 @@ void Parser::parseCommentsFeed(std::vector<CommentInfo*>* buffer, rapidxml::xml_
     {
         std::cerr << "Bad feed_node pointer in parseCommentFeed.";
         return;
-
     }
     rapidxml::xml_node<>* cur_node = feed_node -> first_node("entry"); //Setup our initial node
-
     while (cur_node != 0)
     {
         buffer -> push_back( new CommentInfo(cur_node -> first_node("title") -> value(),

@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include "CfgManager.hpp"
-
 
 CfgManager::CfgManager(std::string cfg_file) : m_cfg_file(cfg_file), m_cfg_entries(0)
 {
@@ -55,7 +52,6 @@ bool CfgManager::ParseCfgFile()
     std::ifstream conf_file;
     conf_file.open(m_cfg_file.c_str());
     if (conf_file.fail()) return false; // opening the config file failed
-
     while( ! conf_file.eof() )
     {
         std::string line;

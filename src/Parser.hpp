@@ -25,7 +25,6 @@
 #include "VideoInfo.hpp"
 #include "CommentInfo.hpp"
 
-
 class Parser
 {
 public:
@@ -36,6 +35,5 @@ public:
     // parses the youtube comments feed
     static void parseCommentsFeed(std::vector<CommentInfo*>* buffer, rapidxml::xml_document<>* feed);
 };
-
 
 #endif	// PARSER_H

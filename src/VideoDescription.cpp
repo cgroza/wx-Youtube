@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
 #include "VideoDescription.hpp"
 
 VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, const wxWindowID id,
@@ -39,7 +37,6 @@ VideoDescription::VideoDescription(wxWindow* parent,  EventManager* evt_man, con
     // bind events
     evt_man -> BindEvent(selected_video_event);
     evt_man -> BindEvent(deleted_video_event);
-
 }
 
 ThumbnailFrame* VideoDescription::GetThumbnailFrame() const
@@ -67,15 +64,11 @@ void VideoDescription::OnVideoSelect(VideoSelectEvent& event)
 
     // check if the video has a thumbnail url
     if(info -> getThumbnail() == "N/A") return; // abort, we don't need to continue any longer.
-
     // check if we have it in the dled vector
     bool dled = (std::find(dled_thumbnails->begin(), dled_thumbnails->end(), info->getId()) != dled_thumbnails->end());
-
     if(! dled)
     {
         std::string path(std::string(wxStandardPaths::Get().GetTempDir().mb_str()) + "/" + info -> getId());
-
-
 
         DownloadThread* thumb_dl = new DownloadThread(info, info -> getThumbnail(), path,
                 new ThumbnailDownloadCallback(m_thumbnail_frame));
@@ -86,11 +79,8 @@ void VideoDescription::OnVideoSelect(VideoSelectEvent& event)
         Layout();
         // add this video's ID to the available thumbnails to avoid re-download.
         dled_thumbnails -> push_back( info -> getId() );
-
     }
     // show thumbnail, will be probably implemented in the callback function of the DownoladThread
-
-
 }
 void VideoDescription::OnDeleteVideos(VideosDeleteEvent& event)
 {
